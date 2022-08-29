@@ -14,6 +14,7 @@ return [
     */
 
     'failed' => 'Correo eléctronico y/o contraseña no valido.',
+    'password' => 'La contraseña debe tener al menos 8 caracteres.',
     'throttle' => 'Demasiados intentos de acceso. Por favor inténtelo de nuevo en :seconds segundos.',
 
 ];

@@ -1,11 +1,10 @@
 <script setup>
-import { Head, useForm } from '@inertiajs/inertia-vue3';
+import { Head, useForm, usePage } from '@inertiajs/inertia-vue3';
 import JetAuthenticationCard from '@/Components/AuthenticationCard.vue';
-import JetAuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import JetButton from '@/Components/Button.vue';
 import JetInput from '@/Components/Input.vue';
 import JetLabel from '@/Components/Label.vue';
-import JetValidationErrors from '@/Components/ValidationErrors.vue';
+import { computed } from 'vue';
 
 const props = defineProps({
 	email: String,
@@ -19,6 +18,10 @@ const form = useForm({
 	password_confirmation: '',
 });
 
+const disableButton = computed(() => !form.email || !form.password || !form.password_confirmation);
+const errors = computed(() => usePage().props.value.errors);
+const hasErrors = computed(() => Object.keys(errors.value).length > 0);
+
 const submit = () => {
 	form.post(route('password.update'), {
 		onFinish: () => form.reset('password', 'password_confirmation'),
@@ -28,36 +31,66 @@ const submit = () => {
 
 <template>
 
-	<Head title="Reset Password" />
+	<Head title="Reestablecer Contraseña" />
 
 	<JetAuthenticationCard>
-		<template #logo>
-			<JetAuthenticationCardLogo />
-		</template>
-
-		<JetValidationErrors class="mb-4" />
-
+		<h2 class="font-poppins font-bold text-dark-blue-500 md:text-3xl text-lg mb-5">
+			Reestablecer contraseña
+		</h2>
 		<form @submit.prevent="submit">
 			<div>
-				<JetLabel for="email" value="Email" />
-				<JetInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" required autofocus />
+				<JetLabel for="email" value="Correo Eléctronico" />
+				<JetInput
+					id="email"
+					v-model="form.email"
+					:hasErrors="hasErrors"
+					type="email"
+					class="mt-1 block w-full"
+					required
+					autofocus
+				/>
 			</div>
 
 			<div class="mt-4">
-				<JetLabel for="password" value="Password" />
-				<JetInput id="password" v-model="form.password" type="password" class="mt-1 block w-full" required
-					autocomplete="new-password" />
+				<JetLabel for="password" value="Contraseña" />
+				<JetInput
+					id="password"
+					v-model="form.password"
+					:hasErrors="hasErrors"
+					type="password"
+					class="mt-1 block w-full"
+					required
+					autocomplete="new-password"
+				/>
 			</div>
 
 			<div class="mt-4">
-				<JetLabel for="password_confirmation" value="Confirm Password" />
-				<JetInput id="password_confirmation" v-model="form.password_confirmation" type="password"
-					class="mt-1 block w-full" required autocomplete="new-password" />
+				<JetLabel for="password_confirmation" value="Confirmar Contraseña" />
+				<JetInput
+					id="password_confirmation"
+					v-model="form.password_confirmation"
+					:hasErrors="hasErrors"
+					type="password"
+					class="mt-1 block w-full"
+					required
+					autocomplete="new-password"
+				/>
 			</div>
 
-			<div class="flex items-center justify-end mt-4">
-				<JetButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-					Reset Password
+			<div v-if="hasErrors" class="mt-2">
+        <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+          <li v-for="(error, key) in errors" :key="key">
+            {{ error }}
+          </li>
+        </ul>
+      </div>
+
+			<div class="mt-8">
+				<JetButton
+					:class="{ 'opacity-25': form.processing || disableButton }"
+					:disabled="form.processing || disableButton"
+				>
+					Reestablecer Contraseña
 				</JetButton>
 			</div>
 		</form>
