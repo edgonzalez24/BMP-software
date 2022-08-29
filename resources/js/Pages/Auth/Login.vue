@@ -1,23 +1,26 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/inertia-vue3';
 import JetAuthenticationCard from '@/Components/AuthenticationCard.vue';
-import JetAuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import JetButton from '@/Components/Button.vue';
 import JetInput from '@/Components/Input.vue';
-import JetCheckbox from '@/Components/Checkbox.vue';
 import JetLabel from '@/Components/Label.vue';
-import JetValidationErrors from '@/Components/ValidationErrors.vue';
+import { computed } from 'vue';
 
 defineProps({
   canResetPassword: Boolean,
   status: String,
 });
 
+
 const form = useForm({
-  email: '',
-  password: '',
+  email: null,
+  password: null,
   remember: false,
 });
+
+const disabledButton = computed(() => !form.email || !form.password);
+const errors = computed(() => usePage().props.value.errors);
+const hasErrors = computed(() => Object.keys(errors.value).length > 0);
 
 const submit = () => {
   form.transform(data => ({
@@ -27,53 +30,66 @@ const submit = () => {
     onFinish: () => form.reset('password'),
   });
 };
+
 </script>
 
 <template>
 
-  <Head title="Log in" />
+  <Head title="Iniciar Sesion" />
 
   <JetAuthenticationCard>
-    <template #logo>
-      <JetAuthenticationCardLogo />
-    </template>
-
-    <JetValidationErrors class="mb-4" />
-
-    <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-      {{ status }}
-    </div>
-
     <form @submit.prevent="submit">
+      <h2 class="font-poppins font-bold text-dark-blue-500 md:text-3xl text-lg mb-5">
+        Iniciar Sesión
+      </h2>
       <div>
-        <JetLabel for="email" value="Email" />
-        <JetInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" required autofocus />
+        <JetLabel for="email" value="Correo Eléctronico" />
+        <JetInput
+          id="email"
+          v-model="form.email"
+          type="email"
+          class="mt-1 block w-full"
+          :hasErrors="hasErrors"
+          required
+          autofocus
+        />
       </div>
 
       <div class="mt-4">
-        <JetLabel for="password" value="Password" />
-        <JetInput id="password" v-model="form.password" type="password" class="mt-1 block w-full" required
-          autocomplete="current-password" />
+        <JetLabel for="password" value="Contraseña" />
+        <JetInput
+          id="password"
+          v-model="form.password"
+          type="password"
+          class="mt-1 block w-full"
+          :hasErrors="hasErrors"
+          required
+          autocomplete="current-password"
+        />
       </div>
 
-      <div class="block mt-4">
-        <label class="flex items-center">
-          <JetCheckbox v-model:checked="form.remember" name="remember" />
-          <span class="ml-2 text-sm text-gray-600">Remember me</span>
-        </label>
+      <div v-if="hasErrors" class="mt-2">
+        <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+          <li v-for="(error, key) in errors" :key="key">
+            {{ error }}
+          </li>
+        </ul>
       </div>
 
-      <div class="flex items-center justify-end mt-4">
-        <Link v-if="canResetPassword" :href="route('password.request')"
-          class="underline text-sm text-gray-600 hover:text-gray-900">
-        Forgot your password?
+      <div class="flex justify-end mb-6" :class="{ 'mt-6': !hasErrors }">
+        <Link
+          :href="route('password.request')"
+          class="text-sm text-blue-600 hover:opacity-75"
+        >
+        ¿Olvidaste tu contraseña?
         </Link>
-
-        <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-          Log in
-          
-        </JetButton>
       </div>
+      <JetButton
+        :class="{ 'opacity-25': form.processing || disabledButton }"
+        :disabled="form.processing || disabledButton"
+      >
+        Acceder
+      </JetButton>
     </form>
   </JetAuthenticationCard>
 </template>
