@@ -6,12 +6,6 @@ import JetInput from '@/Components/Input.vue';
 import JetLabel from '@/Components/Label.vue';
 import { computed } from 'vue';
 
-defineProps({
-  canResetPassword: Boolean,
-  status: String,
-});
-
-
 const form = useForm({
   email: null,
   password: null,
