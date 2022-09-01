@@ -11,15 +11,20 @@ export const menuItems = [
     icon: '',
     children: [
       {
-        name: 'Categoria',
+        name: 'Productos',
+        slug: 'inventario-categoria',
+        icon: 'fa-box-open'
+      },
+      {
+        name: 'Unidades de medida',
         slug: 'inventario-categoria',
         icon: 'fa-tag'
       },
       {
-        name: 'Producto',
+        name: 'Proveedores',
         slug: 'inventario-categoria',
-        icon: 'fa-box-open'
-      }
+        icon: 'fa-truck-field-un'
+      },
     ]
   },
   {
