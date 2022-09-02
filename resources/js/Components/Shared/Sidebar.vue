@@ -14,7 +14,7 @@ const menu = menuItems;
 const route = window.route;
 
 const logout = () => {
-  Inertia.post(route('logout'));
+  route && Inertia.post(route('logout'));
 };
 </script>
 
@@ -25,7 +25,7 @@ const logout = () => {
         <div class="px-5 py-3 flex justify-center relative">
           <img src="@/Assets/images/logo-tito.png" alt="" class="md:w-2/3 w-40">
           <div class="md:hidden block absolute right-0 top-0 mr-5 mt-5 text-xl text-gray-400">
-            <font-awesome-icon icon="fa-solid fa-xmark" class="text-xl cursor-pointer"
+            <font-awesome-icon icon="fa-solid fa-xmark" class="text-xl cursor-pointer icon-xmark"
               @click="$emit('changeStatus', !statusMenu)" />
           </div>
         </div>
@@ -53,7 +53,7 @@ const logout = () => {
       </div>
       <div class="p-5 border-t border-gray-100">
         <form @submit.prevent="logout" class="inline-flex items-center text-gray-400 cursor-pointer">
-          <JetDropdownLink as="button">
+          <JetDropdownLink as="button" class="submit">
             <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" class="mr-2" />
             Cerrar Sesión
           </JetDropdownLink>

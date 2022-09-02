@@ -30,5 +30,15 @@ describe('Test suite Sidebar Components', () => {
   })
   it('renders message when component is created', () => {
     expect(wrapper.element).toBeDefined();
-  })
+  });
+
+  it('should emit event to handle status menu mobile', () => {
+    wrapper.find('.icon-xmark').trigger('click');
+    expect(wrapper.emitted().changeStatus).toBeTruthy();
+  });
+
+  it('should emit a submit event', async() => {
+    await wrapper.find('form').trigger('submit.prevent');
+    expect(wrapper.emitted().submit).toBeTruthy();
+  });
 })
