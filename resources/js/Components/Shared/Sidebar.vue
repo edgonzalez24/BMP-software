@@ -23,7 +23,7 @@ const logout = () => {
     <div v-show="statusMenu" class="h-screen fixed bg-white flex justify-between flex-col md:w-2/6 lg:w-1/6 w-full">
       <div class="overflow-y-auto h-full">
         <div class="px-5 py-3 flex justify-center relative">
-          <img src="@/Assets/images/logo-tito.png" alt="" class="md:w-2/3 w-40">
+          <img src="@/Assets/images/logo-updated.png" alt="" class="w-28">
           <div class="md:hidden block absolute right-0 top-0 mr-5 mt-5 text-xl text-gray-400">
             <font-awesome-icon icon="fa-solid fa-xmark" class="text-xl cursor-pointer icon-xmark"
               @click="$emit('changeStatus', !statusMenu)" />
