@@ -34,7 +34,7 @@ const submit = () => {
 	<Head title="Reestablecer Contraseña" />
 
 	<JetAuthenticationCard>
-		<h2 class="font-poppins font-bold text-dark-blue-500 md:text-3xl text-lg mb-5">
+		<h2 class="font-poppins font-bold text-dark-blue-500 md:text-2xl text-lg mb-5">
 			Reestablecer contraseña
 		</h2>
 		<form @submit.prevent="submit">

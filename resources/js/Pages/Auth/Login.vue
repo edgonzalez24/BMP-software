@@ -39,7 +39,7 @@ const submit = () => {
 
   <JetAuthenticationCard>
     <form @submit.prevent="submit">
-      <h2 class="font-poppins font-bold text-dark-blue-500 md:text-3xl text-lg mb-5">
+      <h2 class="font-poppins font-bold text-dark-blue-500 md:text-2xl text-lg mb-5">
         Iniciar Sesión
       </h2>
       <div>
