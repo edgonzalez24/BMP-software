@@ -14,7 +14,26 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+				roboto: ['Roboto'],
+				poppins: ['Poppins'],
+
 			},
+			colors: {
+				'dark-blue': {
+					500: '#404E67'
+				},
+				blue: {
+					600: '#072C8A',
+				},
+				gray: {
+					50: 'rgba(167, 165, 165, 0.27)',
+					100: '#F3F4F6',
+					200: '#F9FBFD'
+				}
+			},
+			boxShadow: {
+				card: '0 4px 6px -1px rgb(0 0 0 / 0.25), 0 2px 4px -2px rgb(0 0 0 / 0.25)'
+			}
 		},
 	},
 
