@@ -48,9 +48,6 @@ services:
       dockerfile: node.dockerfile
     volumes:
       - ./:/var/www
-    working_dir: /var/www
-    tty: true
-    command: npm run dev
     ports:
       - 5173:5173
 
