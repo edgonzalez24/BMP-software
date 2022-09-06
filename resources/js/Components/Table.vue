@@ -6,11 +6,16 @@
 
 
 <template>
-  <div class="w-full">
-    <table class="table-fixed w-full">
+  <div class="">
+    <table class="sm:table-fixed table-auto overflow-x-scroll w-full">
       <thead class="border-b border-gray-300">
         <tr>
-          <th v-for="item in header" class="py-4">{{ item }}</th>
+          <th 
+            v-for="item in header" class="py-4 md:text-base text-sm" 
+            :class="{'hidden md:block': item === header[1]}"
+          >
+            {{ item }}
+          </th>
         </tr>
       </thead>
       <slot />
