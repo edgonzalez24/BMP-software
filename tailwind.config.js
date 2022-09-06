@@ -23,6 +23,7 @@ module.exports = {
 					500: '#404E67'
 				},
 				blue: {
+					500: '#3472D8',
 					600: '#072C8A',
 				},
 				gray: {
@@ -33,7 +34,12 @@ module.exports = {
 			},
 			boxShadow: {
 				card: '0 4px 6px -1px rgb(0 0 0 / 0.25), 0 2px 4px -2px rgb(0 0 0 / 0.25)'
-			}
+			},
+			minHeight: {
+				'base': '500px',
+				'lg': '700px',
+				'xl': '900px',
+			},
 		},
 	},
 
