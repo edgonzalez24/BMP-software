@@ -3,6 +3,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import Table from '@/Components/Table.vue';
 import JetButton from '@/Components/Button.vue';
 import JetModal from '@/Components/Modal.vue';
+import Invite from '@/Components/User/Invite.vue';
 import { ref } from 'vue';
 
 
@@ -32,8 +33,8 @@ const toggleInviteModal = () => {
 
 <template>
   <AppLayout title="Dashboard">
-    <JetModal :show="statusModalInvite" @close="toggleInviteModal" >
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima autem, perspiciatis suscipit fuga nulla quasi ut nesciunt distinctio sed molestias animi totam repudiandae quas reprehenderit earum omnis, esse ad porro.
+    <JetModal :show="statusModalInvite" @close="toggleInviteModal" maxWidth="lg" >
+      <Invite />
     </JetModal>
     <div class="py-12">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
