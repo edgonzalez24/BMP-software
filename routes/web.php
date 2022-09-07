@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,9 @@ Route::middleware([
     Route::get('/dashboard/users', function () {
         return Inertia::render('User/UserList');
     })->name('users');
+});
+
+Route::prefix('user')->group(function () {
+    Route::get('/list', [UserController::class, 'index'])->name('list');
+    Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete');
 });
