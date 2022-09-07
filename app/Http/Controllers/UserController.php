@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\User as UserResources;
 use App\Http\Resources\UserCollection;
 use Spatie\Permission\Models\Role;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -17,12 +18,11 @@ class UserController extends Controller
 
         $users = new UserCollection(User::all());
         $roles = Role::all();
-        return response()->json([
+
+        return Inertia::render('User/UserList',[ 
             'users' => $users,
             'roles' => $roles,
         ]);
-
-        //return view('users.users-list', compact('users', 'roles'));
     }
 
     public function destroy(User $user)
