@@ -12,17 +12,17 @@ export const menuItems = [
     children: [
       {
         name: 'Productos',
-        slug: 'inventario-categoria',
+        slug: '',
         icon: 'fa-box-open'
       },
       {
         name: 'Unidades de medida',
-        slug: 'inventario-categoria',
+        slug: '',
         icon: 'fa-tag'
       },
       {
         name: 'Proveedores',
-        slug: 'inventario-categoria',
+        slug: '',
         icon: 'fa-truck-field-un'
       },
     ]
@@ -34,7 +34,7 @@ export const menuItems = [
     children: [
       {
         name: 'Reportes',
-        slug: 'inventario-categoria',
+        slug: '',
         icon: 'fa-chart-simple'
       },
     ]
@@ -46,7 +46,7 @@ export const menuItems = [
     children: [
       {
         name: 'Entregas',
-        slug: 'inventario-categoria',
+        slug: '',
         icon: 'fa-route'
       },
     ]
@@ -58,12 +58,12 @@ export const menuItems = [
     children: [
       {
         name: 'Personalizar',
-        slug: 'inventario-categoria',
+        slug: '',
         icon: 'fa-wand-sparkles'
       },
       {
         name: 'Roles y Permisos',
-        slug: 'inventario-categoria',
+        slug: 'users',
         icon: 'fa-lock'
       },
     ]
