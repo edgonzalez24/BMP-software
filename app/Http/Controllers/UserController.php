@@ -9,10 +9,10 @@ use App\Http\Resources\User as UserResources;
 use App\Http\Resources\UserCollection;
 use Spatie\Permission\Models\Role;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    //
     public function index()
     {
 
@@ -32,7 +32,7 @@ class UserController extends Controller
         }
 
         if (!$user) {
-            return view('pagues.404');
+            return redirect()->back()->with('error', 'Usuario no encontrado.');
         }
 
         $user->delete();

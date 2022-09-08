@@ -19,8 +19,11 @@ describe('Test suite DeleteUser Component', () => {
   it('should emit close event ', async() => {
     const buttons = wrapper.findAllComponents(JetButton);
     const cancelButton = buttons.at(0);
-    await cancelButton.trigger('click')
-    console.log(cancelButton.emitted())
-    
+    await cancelButton.trigger('click');
+    expect(wrapper.emitted().close).toBeTruthy();
+  });
+  it('should emit a submit event', async () => {
+    await wrapper.find('form').trigger('submit.prevent');
+    expect(wrapper.emitted().submit).toBeTruthy();
   });
 })  

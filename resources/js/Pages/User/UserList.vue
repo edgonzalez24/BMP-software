@@ -4,12 +4,24 @@ import Table from '@/Components/Table.vue';
 import JetButton from '@/Components/Button.vue';
 import JetModal from '@/Components/Modal.vue';
 import DeleteUser from '@/Components/User/DeleteUser.vue'
-import { ref } from 'vue';
+import { useAttrs, ref } from 'vue';
+import { useToast, POSITION } from 'vue-toastification'
 
 defineProps({
   users: Object,
   roles: Array
 })
+
+const attrs = useAttrs();
+const toast = useToast();
+
+if(!!attrs.flash.success) {
+  toast.success(attrs.flash.success, { position: POSITION.BOTTOM_RIGHT});
+} else if(!!attrs.flash.warning){
+  toast.warning(attrs.flash.warning, { position: POSITION.BOTTOM_RIGHT});
+}else if(!!attrs.flash.error){
+  toast.error(attrs.flash.error, { position: POSITION.BOTTOM_RIGHT});
+}
 
 const header = ref(['Nombre', 'Correo Electronico', 'Telefono', 'Rol', 'Acciones']);
 
@@ -53,7 +65,7 @@ const toggleDeleteModal = () => {
             <tbody class="px-5">
               <tr v-for="item in users.data" class="mt-2">
                 <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs hidden md:block">{{ item.email }}</td>
+                <td class="text-center p-2 md:text-base text-xs hidden lg:block">{{ item.email }}</td>
                 <td class="text-center p-2 md:text-base text-xs">
                   <a :href="`tel:${item.telephone}`">
                     {{ item.telephone }}

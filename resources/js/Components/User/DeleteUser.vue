@@ -8,15 +8,18 @@ const emit = defineEmits(['close']);
 const props = defineProps({
   user: Number
 })
+const route = window.route;
 const isLoading = ref(false);
 const submit = () => {
-  isLoading.value = true
-  Inertia.get(route('delete.user', props.user), {
-    onFinish: () => {
-      emit('close');
-      isLoading.value = false;
-    }
-  });
+  isLoading.value = true;
+  if(route) {
+    Inertia.get(route && route('delete.user', { user: props.user}), {
+      onFinish: () => {
+        emit('close');
+        isLoading.value = false;
+      }
+    });
+  }
 };
 </script>
 
