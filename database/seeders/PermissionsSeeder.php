@@ -31,13 +31,15 @@ class PermissionsSeeder extends Seeder
         $user_destroy = Permission::create(['name' => 'user_destroy', 'descriptions' => 'Eliminar un usuario']);
         $user_edit = Permission::create(['name' => 'user_edit', 'descriptions' => 'Editar un usuario']);
 
+        /* INVITACIONES */
+        $send_invitation = Permission::create(['name' => 'send_invitation', 'descriptions' => 'Invitar miembros al sistema']);
         
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
 
         // ----------------- PERMISOS encargado -----------------
-        $permission_encargado = [$user_list, ];
+        $permission_encargado = [$user_list, $send_invitation];
         $encargado->syncPermissions($permission_encargado);
 
     }
