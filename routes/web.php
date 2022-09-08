@@ -31,5 +31,5 @@ Route::middleware([
 });
 
 Route::prefix('user')->group(function () {
-    Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete');
+    Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
 });
