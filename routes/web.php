@@ -26,6 +26,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
     Route::get('/dashboard/users', [UserController::class, 'index'])->name('users');
-});
 
-Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
+    // Routes only to request data(not views)
+    Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
+});
