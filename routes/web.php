@@ -28,6 +28,6 @@ Route::middleware([
     Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
     Route::get('/dashboard/users', [UserController::class, 'index'])->name('users');
     Route::post('/delete/{user}', [UserController::class, 'destroy'])->name('delete');
-    Route::get('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('send/invitation');
+    Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('send/invitation');
 });
 
