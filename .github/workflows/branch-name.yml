@@ -1,0 +1,14 @@
+name: 'Assert branches naming convention'
+on: pull_request
+
+jobs:
+  branch-naming-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: deepakputhraya/action-branch-name@master
+        with:
+          regex: '\/PDSL-(\d+\.?\d*|\.\d+)' # Regex the branch should match. This example enforces grouping
+          allowed_prefixes: 'feature,bugfix,hotfix,release,refactor' # All branches should start with the given prefix
+          ignore: master,develop,test # Ignore exactly matching branch names from convention
+          min_length: 1 # Min length of the branch name
+          max_length: 25 # Max length of the branch name
