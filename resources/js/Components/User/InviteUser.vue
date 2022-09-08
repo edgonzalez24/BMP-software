@@ -42,18 +42,7 @@ import JetDropdown from '@/Components/Dropdown.vue'
       />
     </div>
     <div class="mb-5">
-      <JetLabel for="rol" value="Correo Electrónico" />
-      <JetDropdown
-        id="rol"
-      >
-          <template #trigger>
-            <div>a</div>
-          </template>
-          <template #content>
-            <div>a</div>
-            <div>b</div>
-          </template>
-      </JetDropdown>
+      <JetLabel for="rol" value="Rol" />
     </div>
   </div>
 </template>
