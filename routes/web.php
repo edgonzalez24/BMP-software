@@ -28,8 +28,6 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
     Route::get('/dashboard/users', [UserController::class, 'index'])->name('users');
+    Route::get('/delete/{user}', [UserController::class, 'destroy']);
 });
 
-Route::prefix('user')->group(function () {
-    Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete');
-});
