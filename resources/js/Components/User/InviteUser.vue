@@ -1,7 +1,6 @@
 <script setup>
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
-import JetDropdown from '@/Components/Dropdown.vue'
 </script>
 
 <template>

@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RolePermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,5 @@ Route::middleware([
 
     // Routes only to request data(not views)
     Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
+    Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('invite.user');
 });
