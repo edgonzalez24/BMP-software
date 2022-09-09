@@ -27,7 +27,8 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
     Route::get('/dashboard/users', [UserController::class, 'index'])->name('users');
-    Route::post('/delete/{user}', [UserController::class, 'destroy'])->name('delete');
-    Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('send/invitation');
-});
 
+    // Routes only to request data(not views)
+    Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
+    Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('invite.user');
+});
