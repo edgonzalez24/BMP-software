@@ -9,34 +9,64 @@ import { useToast, POSITION } from 'vue-toastification';
 
 const emit = defineEmits(['close']);
 const toast = useToast();
+const props = defineProps({
+  isEdit: Boolean,
+  user: Object
+})
 
-const form = useForm({
-  name: null,
-  email: null,
-  role_id: null,
-});
 const roles = computed(() => usePage().props.value.roles);
 const isLoading = ref(false);
 
+const getInfoRol = rol => {
+  return rol && rol.length > 0 ? roles.value.find(item => item.name === rol[0]) : null;
+}
+const form = useForm({
+  name: props.isEdit && props.user.name || null,
+  email:  props.isEdit && props.user.email || null,
+  role_id:  props.isEdit && getInfoRol(props.user.user_role).id || null,
+});
 const submit = () => {
   isLoading.value = true;
-  form.post(route('invite.user'), {
-    onSuccess: () => {
-      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-      emit('close')
-    },
-    onError: () => {
-      const errors = usePage().props.value.errors;
-      for (const key in errors) {
-        if (Object.hasOwnProperty.call(errors, key)) {
-          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+  if (props.isEdit) {
+    form.transform(data => ({
+      ...data,
+      user_id: props.user.id
+    })).post(route('change.role'), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        emit('close')
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
         }
+      },
+      onFinish: () => {
+        isLoading.value = false
       }
-    },
-    onFinish: () => {
-      isLoading.value = false
-    }
-  });
+    });
+  } else {
+    form.post(route('invite.user'), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        emit('close')
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
+        }
+      },
+      onFinish: () => {
+        isLoading.value = false
+      }
+    });
+  }
 };
 </script>
 
@@ -44,7 +74,7 @@ const submit = () => {
   <form class="py-8 px-5" @submit.prevent="submit">
     <Loading :active.sync="isLoading" ></Loading>
     <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-      Invitar a usuario
+      {{ isEdit ? 'Editar usuario' : 'Invitar a usuario' }}
     </h2>
     <div class="mb-5">
       <JetLabel for="name" value="Nombre" />
@@ -55,6 +85,7 @@ const submit = () => {
         class="mt-1 block w-full"
         required
         autofocus
+        :onlyRead="isEdit"
       />
     </div>
     <div class="mb-5">
@@ -66,6 +97,7 @@ const submit = () => {
         class="mt-1 block w-full"
         required
         autofocus
+        :onlyRead="isEdit"
       />
     </div>
     <div class="mb-8">
@@ -110,7 +142,7 @@ const submit = () => {
         <JetButton
           type="submit"
         >
-          Eliminar
+          {{ isEdit ? 'Editar' : 'Invitar' }}
         </JetButton>
       </div>
     </div>
