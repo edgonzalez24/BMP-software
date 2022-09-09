@@ -4,8 +4,8 @@ import Table from '@/Components/Table.vue';
 import JetButton from '@/Components/Button.vue';
 import JetModal from '@/Components/Modal.vue';
 import DeleteUser from '@/Components/User/DeleteUser.vue';
-import InviteUser from '@/Components/User/InviteUser.vue';
-import { ref } from 'vue';
+import FormUser from '@/Components/User/FormUser.vue';
+import { reactive, ref } from 'vue';
 
 defineProps({
   users: Object,
@@ -16,10 +16,16 @@ defineProps({
 const header = ref(['Nombre', 'Correo Electronico', 'Telefono', 'Rol', 'Acciones']);
 
 
-// Modal Invite
-const statusModalInvite = ref(false);
-const toggleInviteModal = () => {
-  statusModalInvite.value = !statusModalInvite.value;
+// Modal Form
+const isEdit = ref(false);
+const selectedUser = reactive({
+  name: null,
+  email: null,
+  rol_id: null
+})
+const statusModalForm = ref(false);
+const toggleFormModal = () => {
+  statusModalForm.value = !statusModalForm.value;
 };
 
 // Modal Delete
@@ -33,8 +39,8 @@ const toggleDeleteModal = () => {
 
 <template>
   <AppLayout title="Dashboard">
-    <JetModal :show="statusModalInvite" maxWidth="lg" @close="toggleInviteModal" >
-      <InviteUser @close="toggleInviteModal" />
+    <JetModal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal" >
+      <FormUser :isEdit="isEdit" :user="selectedUser" @close="toggleFormModal" />
     </JetModal>
     <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal" >
       <DeleteUser :user="selectedUID" @close="toggleDeleteModal" />
@@ -46,7 +52,7 @@ const toggleDeleteModal = () => {
             Listado de usuarios
           </h2>
           <JetButton
-            @click="toggleInviteModal"
+            @click="toggleFormModal(); isEdit = false"
           >
             Invitar
           </JetButton>
@@ -66,7 +72,7 @@ const toggleDeleteModal = () => {
                 <td class="text-center p-2 md:text-base text-xs">
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
-                      <a @click="true" class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                      <a @click="toggleFormModal(); selectedUser = item; isEdit = true" class="text-blue-500 font-medium cursor-pointer">Editar</a>
                       <a @click="toggleDeleteModal(); selectedUID = item.id;" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                     </div>
                   </div>
