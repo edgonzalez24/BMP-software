@@ -33,17 +33,16 @@ class PermissionsSeeder extends Seeder
 
         /* INVITACIONES */
         $send_invitation = Permission::create(['name' => 'send_invitation', 'descriptions' => 'Invitar miembros al sistema']);
+
+        /* ROLES */
+        $change_role = Permission::create(['name' => 'change_role', 'descriptions' => 'Cambiar rol']);
         
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
 
         // ----------------- PERMISOS encargado -----------------
-<<<<<<< HEAD
         $permission_encargado = [$user_list, $user_destroy, $user_edit];
-=======
-        $permission_encargado = [$user_list, $send_invitation];
->>>>>>> feature/PDSL-14
         $encargado->syncPermissions($permission_encargado);
 
     }
