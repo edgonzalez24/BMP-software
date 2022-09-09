@@ -33,3 +33,4 @@ Route::middleware([
     Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('invite.user');
     Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');    
 });
+
