@@ -17,3 +17,66 @@
 		transition: all 300ms ease-in 0s;
 	}
 }
+
+.vld-shown {
+	overflow: hidden;
+}
+
+.vld-overlay {
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	align-items: center;
+	display: none;
+	justify-content: center;
+	overflow: hidden;
+	z-index: 9999;
+}
+
+.vld-overlay.is-active {
+	display: flex;
+}
+
+.vld-overlay.is-full-page {
+	z-index: 9999;
+	position: fixed;
+}
+
+.vld-overlay .vld-background {
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	background: #fff;
+	opacity: 0.5;
+}
+
+.vld-overlay .vld-icon,
+.vld-parent {
+	position: relative;
+}
+
+.vs__dropdown-toggle{
+	height: 40px;
+	border-color: rgba(167, 165, 165, 0.27) !important;
+	--tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	--tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+	&:focus, &:hover {
+		--tw-ring-opacity: 0.5;
+		--tw-ring-color: rgb(209 213 219 / var(--tw-ring-opacity));
+		--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+		--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+		box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000) !important;
+		--tw-border-opacity: 1;
+		border-color: rgb(156 163 175 / var(--tw-border-opacity)) !important;
+	}
+	
+}
+
+.vs__search, .vs__selected {
+	cursor: pointer !important;
+}
