@@ -18,7 +18,7 @@ class RolePermissionController extends Controller
     {
         // Validando permiso
         if ( ! Auth::user()->can('send_invitation')){
-            return redirect()->back()->with('warning', 'No posees los permisos necesarios. Ponte en contacto con tu manager!.');
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         // Validando data
@@ -29,13 +29,13 @@ class RolePermissionController extends Controller
 
         if ($validando->fails())
         {
-            return redirect()->back()->with('errors', $validando->errors());
+            return redirect()->back()->withErrors($validando->errors());
         }
 
         // Creando usuario y asignando rol
         $password = Str::random(8);
         $user = new User([
-            'name' => $request->get('email'),
+            'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => bcrypt($password),
         ]);
@@ -43,37 +43,33 @@ class RolePermissionController extends Controller
         $user->assignRole($request->role_id);
         
         // Enviando credenciales por correo
-        $url = env('APP_URL').'login';
+        $url = env('APP_URL').'/login';
         $data = ['url' => $url, 'email' => $user->email, 'password' => $password];
         Mail::to($user->email)->send(new SendInvitation($data));
 
-        return response()->json([
-            'success' => true ,
-            'message' => 'La invitación ha sido enviada exitosamente.',
-        ], 200); 
+        return redirect()->back()->with('success', 'La invitación ha sido enviada exitosamente.');
     }
 
     public function change_role(Request $request)
     {
         // Validando permiso listar recursos
         if ( ! Auth::user()->can('change_role')){
-            return redirect()->back()->with('warning', 'No posees los permisos necesarios. Ponte en contacto con el equipo de EduCursos!.');
+            return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con manager!.']);
         }
-
         // Validando el id del ro
-        if ($request->role_id != '' or $request->role_id != null) {
+        if ($request->get('role_id') != '' or $request->get('role_id') != null) {
             // Validando el recurso solicitado
-            $rol = Role::find($request->role_id);
+            $rol = Role::find($request->get('role_id'));
             if (!isset($rol)) {
-                return redirect()->back()->with('warning', 'Rol no válido!.');  
+                return redirect()->back()->withErrors(['error' => 'Rol no válido!.']);  
             }
 
             // Validando el usuario
-            if ($request->user_id != '' or $request->user_id != null) {
+            if ($request->get('user_id') != '' or $request->get('user_id') != null) {
                 // Validando recurso solicitado
-                $user = User::find($request->user_id);
+                $user = User::find($request->get('user_id'));
                 if (!isset($user)) {
-                    return redirect()->back()->with('warning', 'Usuario no válido!.');  
+                    return redirect()->back()->withErrors(['error' => 'Usuario no válido!.']);  
                 }
 
                 // Verificando si el usuario tenia rol asignado
@@ -85,10 +81,10 @@ class RolePermissionController extends Controller
                 return redirect()->back()->with('success', 'Registro actualizado correctamente!.');                
                     
             }else{                
-                return redirect()->back()->with('warning', 'Debes indicar el usuario al que deseas cambiar el rol!.');  
+                return redirect()->back()->withErros(['error' => 'Debes indicar el usuario al que deseas cambiar el rol!.']);  
             }
         }else{
-            return redirect()->back()->with('warning', 'Debes indicar el rol a asignar!.');  
+            return redirect()->back()->withErrors(['error' => 'Debes indicar el rol a asignar!.']);  
         }        
     }
 }
