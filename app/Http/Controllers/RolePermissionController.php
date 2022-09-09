@@ -18,7 +18,7 @@ class RolePermissionController extends Controller
     {
         // Validando permiso
         if ( ! Auth::user()->can('send_invitation')){
-            return redirect()->back()->with('warning', 'No posees los permisos necesarios. Ponte en contacto con tu manager!.');
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         // Validando data
