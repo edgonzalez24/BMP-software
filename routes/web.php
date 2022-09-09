@@ -24,10 +24,9 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
     Route::get('/dashboard/users', [UserController::class, 'index'])->name('users');
-    Route::get('/delete/{user}', [UserController::class, 'destroy']);
-});
 
+    // Routes only to request data(not views)
+    Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
+});

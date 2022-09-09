@@ -32,7 +32,7 @@ class UserController extends Controller
         }
 
         if (!$user) {
-            return view('pagues.404');
+            return redirect()->back()->with('error', 'Usuario no encontrado.');
         }
 
         $user->delete();

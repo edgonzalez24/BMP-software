@@ -3,12 +3,25 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import Table from '@/Components/Table.vue';
 import JetButton from '@/Components/Button.vue';
 import JetModal from '@/Components/Modal.vue';
-import { ref } from 'vue';
+import DeleteUser from '@/Components/User/DeleteUser.vue'
+import { useAttrs, ref } from 'vue';
+import { useToast, POSITION } from 'vue-toastification'
 
 defineProps({
-  users: Array,
+  users: Object,
   roles: Array
 })
+
+const attrs = useAttrs();
+const toast = useToast();
+
+if(!!attrs.flash.success) {
+  toast.success(attrs.flash.success, { position: POSITION.BOTTOM_RIGHT});
+} else if(!!attrs.flash.warning){
+  toast.warning(attrs.flash.warning, { position: POSITION.BOTTOM_RIGHT});
+}else if(!!attrs.flash.error){
+  toast.error(attrs.flash.error, { position: POSITION.BOTTOM_RIGHT});
+}
 
 const header = ref(['Nombre', 'Correo Electronico', 'Telefono', 'Rol', 'Acciones']);
 
@@ -18,12 +31,22 @@ const toggleInviteModal = () => {
   statusModalInvite.value = !statusModalInvite.value;
 };
 
+// Modal Delete
+const statusModalDelete = ref(false);
+const selectedUID = ref(0)
+const toggleDeleteModal = () => {
+  statusModalDelete.value = !statusModalDelete.value;
+};
+
 </script>
 
 <template>
   <AppLayout title="Dashboard">
     <JetModal :show="statusModalInvite" @close="toggleInviteModal" >
       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima autem, perspiciatis suscipit fuga nulla quasi ut nesciunt distinctio sed molestias animi totam repudiandae quas reprehenderit earum omnis, esse ad porro.
+    </JetModal>
+    <JetModal maxWidth="lg" :show="statusModalDelete" @close="toggleDeleteModal" >
+      <DeleteUser :user="selectedUID" @close="toggleDeleteModal"  />
     </JetModal>
     <div class="py-12">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
@@ -42,7 +65,7 @@ const toggleInviteModal = () => {
             <tbody class="px-5">
               <tr v-for="item in users.data" class="mt-2">
                 <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs hidden md:block">{{ item.email }}</td>
+                <td class="text-center p-2 md:text-base text-xs hidden lg:block">{{ item.email }}</td>
                 <td class="text-center p-2 md:text-base text-xs">
                   <a :href="`tel:${item.telephone}`">
                     {{ item.telephone }}
@@ -53,7 +76,7 @@ const toggleInviteModal = () => {
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
                       <a @click="true" class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                      <a @click="true" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                      <a @click="toggleDeleteModal(); selectedUID = item.id;" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                     </div>
                   </div>
                 </td>
