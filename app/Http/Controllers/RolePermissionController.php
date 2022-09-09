@@ -29,13 +29,13 @@ class RolePermissionController extends Controller
 
         if ($validando->fails())
         {
-            return redirect()->back()->with('errors', $validando->errors());
+            return redirect()->back()->withErrors($validando->errors());
         }
 
         // Creando usuario y asignando rol
         $password = Str::random(8);
         $user = new User([
-            'name' => $request->get('email'),
+            'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => bcrypt($password),
         ]);
@@ -43,13 +43,10 @@ class RolePermissionController extends Controller
         $user->assignRole($request->role_id);
         
         // Enviando credenciales por correo
-        $url = env('APP_URL').'login';
+        $url = env('APP_URL').'/login';
         $data = ['url' => $url, 'email' => $user->email, 'password' => $password];
         Mail::to($user->email)->send(new SendInvitation($data));
 
-        return response()->json([
-            'success' => true ,
-            'message' => 'La invitación ha sido enviada exitosamente.',
-        ], 200); 
+        return redirect()->back()->with('success', 'La invitación ha sido enviada exitosamente.');
     }
 }

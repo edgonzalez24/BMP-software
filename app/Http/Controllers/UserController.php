@@ -32,7 +32,7 @@ class UserController extends Controller
         }
 
         if (!$user) {
-            return redirect()->back()->with('error', 'Usuario no encontrado.');
+            return redirect()->back()->withErrors(['error' => 'Usuario no ha sido encontrado.']);
         }
 
         $user->delete();

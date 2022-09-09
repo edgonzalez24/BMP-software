@@ -5,26 +5,16 @@ import JetButton from '@/Components/Button.vue';
 import JetModal from '@/Components/Modal.vue';
 import DeleteUser from '@/Components/User/DeleteUser.vue';
 import InviteUser from '@/Components/User/InviteUser.vue';
-import { useAttrs, ref } from 'vue';
-import { useToast, POSITION } from 'vue-toastification'
+import { ref } from 'vue';
 
 defineProps({
   users: Object,
   roles: Array
 })
 
-const attrs = useAttrs();
-const toast = useToast();
-
-if(!!attrs.flash.success) {
-  toast.success(attrs.flash.success, { position: POSITION.BOTTOM_RIGHT});
-} else if(!!attrs.flash.warning){
-  toast.warning(attrs.flash.warning, { position: POSITION.BOTTOM_RIGHT});
-}else if(!!attrs.flash.error){
-  toast.error(attrs.flash.error, { position: POSITION.BOTTOM_RIGHT});
-}
 
 const header = ref(['Nombre', 'Correo Electronico', 'Telefono', 'Rol', 'Acciones']);
+
 
 // Modal Invite
 const statusModalInvite = ref(false);
@@ -43,11 +33,11 @@ const toggleDeleteModal = () => {
 
 <template>
   <AppLayout title="Dashboard">
-    <JetModal :show="statusModalInvite" @close="toggleInviteModal" maxWidth="lg" >
-      <InviteUser />
+    <JetModal :show="statusModalInvite" maxWidth="lg" @close="toggleInviteModal" >
+      <InviteUser @close="toggleInviteModal" />
     </JetModal>
-    <JetModal maxWidth="lg" :show="statusModalDelete" @close="toggleDeleteModal" >
-      <DeleteUser :user="selectedUID" @close="toggleDeleteModal"  />
+    <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal" >
+      <DeleteUser :user="selectedUID" @close="toggleDeleteModal" />
     </JetModal>
     <div class="py-12">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">

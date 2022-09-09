@@ -1,25 +1,38 @@
 <script setup>
 import JetButton from '@/Components/Button.vue';
-import { Inertia } from '@inertiajs/inertia';
 import { ref } from 'vue';
 import Loading from 'vue3-loading-overlay';
+import { useToast, POSITION } from 'vue-toastification';
+import { useForm, usePage } from '@inertiajs/inertia-vue3';
 
 const emit = defineEmits(['close']);
 const props = defineProps({
   user: Number
-})
-const route = window.route;
+});
+
+const toast = useToast();
 const isLoading = ref(false);
+const form = useForm()
+
 const submit = () => {
   isLoading.value = true;
-  if(route) {
-    Inertia.get(route && route('delete.user', { user: props.user}), {
-      onFinish: () => {
-        emit('close');
-        isLoading.value = false;
+  form.get(route('delete.user', props.user), {
+    onSuccess: () => {
+      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+    },
+    onError: () => {
+      const errors = usePage().props.value.errors;
+      for (const key in errors) {
+        if (Object.hasOwnProperty.call(errors, key)) {
+          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        }
       }
-    });
-  }
+    },
+    onFinish: () => {
+      emit('close');
+      isLoading.value = false;
+    }
+  });
 };
 </script>
 
