@@ -138,7 +138,7 @@ const submit = () => {
 							autofocus
 						/>
 					</div>
-					<!--- Update Password --->
+					
 					<div class="mt-5">
 						<a
 							class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-5 inline-flex items-center cursor-pointer px-2"
