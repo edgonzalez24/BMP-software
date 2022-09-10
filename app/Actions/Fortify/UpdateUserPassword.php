@@ -25,11 +25,13 @@ class UpdateUserPassword implements UpdatesUserPasswords
         ])->after(function ($validator) use ($user, $input) {
             if (! isset($input['current_password']) || ! Hash::check($input['current_password'], $user->password)) {
                 $validator->errors()->add('current_password', __('La contraseña proporcionada no coincide con su contraseña actual.'));
+                return redirect()->back()->withErrors($validator->errors());
             }
         })->validateWithBag('updatePassword');
 
         $user->forceFill([
             'password' => Hash::make($input['password']),
         ])->save();
+        return redirect()->back()->with('success', 'Contraseña actualizada correctamente!.');
     }
 }

@@ -5,6 +5,7 @@ import Sidebar from '@/Components/Shared/Sidebar.vue';
 import { computed, ref, watch } from 'vue';
 import { useWindowSize } from '@vueuse/core';
 import JetDropdown from '@/Components/Dropdown.vue';
+import { getInitials } from '@/Helpers/Functions.js';
 
 const { width } = useWindowSize();
 
@@ -51,7 +52,7 @@ const userName = computed(() => usePage().props.value.user.name)
 				<div class="md:w-4/6 lg:w-5/6 w-full">
 					<!-- Page Heading -->
 					<header class="bg-white shadow">
-						<div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between">
+						<div class="max-w-7xl mx-auto py-6 md:py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
 							<h2 class="font-semibold text-xl text-gray-800 leading-tight">
 								Dashboard
 							</h2>
@@ -59,13 +60,17 @@ const userName = computed(() => usePage().props.value.user.name)
 								<div class="relative">			
 									<JetDropdown>
 										<template #trigger>
-											<p class="text-gray-400 cursor-pointer flex items-center">Hola, {{ userName }} 
+											<a href="#" class="flex items-center">
+												
+												<div class="h-10 w-10 rounded-full bg-dark-blue-500 flex items-center justify-center text-white">
+													{{ getInitials(userName) }}
+												</div>
 												<font-awesome-icon icon="fa-solid fa-chevron-down" class="md:flex hidden text-xl text-gray-400 cursor-pointer pl-2" />
-											</p>
+											</a>
 										</template>
 										<template #content>
-											<div class="flex flex-col px-2 pt-0 pb-10">
-												<Link :href="'/dashboard/profile'" class="text-400 py-2">
+											<div class="flex flex-col">
+												<Link :href="'/dashboard/profile'" class="text-gray-400 p-2 hover:bg-slate-50">
 													Perfil
 												</Link>
 											</div>

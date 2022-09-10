@@ -80,3 +80,28 @@
 .vs__search, .vs__selected {
 	cursor: pointer !important;
 }
+
+
+.transition-container-full {
+	height: 230px;
+	@media(max-width: 769px){
+		height: 295px;
+	}
+	transition: height 0.35s ease-in;
+	overflow: hidden !important;
+}
+
+.transition-container {
+	height: 0;
+	transition: height 0.35s ease-out;
+	overflow: hidden;
+}
+
+.efect-rotate-down {
+	transition: all 0.4s ease;
+	transform: rotateZ(180deg) !important;
+}
+
+.efect-rotate-up {
+	transition: all 0.4s ease;
+}
