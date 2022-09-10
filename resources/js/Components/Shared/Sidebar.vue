@@ -20,7 +20,7 @@ const logout = () => {
 
 <template>
   <transition name="slide">
-    <div v-show="statusMenu" class="h-screen fixed bg-white flex justify-between flex-col md:w-2/6 lg:w-1/6 w-full">
+    <div v-show="statusMenu" class="h-screen fixed bg-white flex justify-between flex-col md:w-2/6 lg:w-1/6 w-full z-50">
       <div class="overflow-y-auto h-full">
         <div class="px-5 py-3 flex justify-center relative">
           <img src="@/Assets/images/logo-updated.png" alt="" class="w-28">

@@ -57,7 +57,7 @@ const toggleDeleteModal = () => {
             Invitar
           </JetButton>
         </div>
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg min-h-base">
+        <div class="bg-white overflow-hidden shadow-xl rounded-lg min-h-base">
           <Table :header="header">
             <tbody class="px-5">
               <tr v-for="item in users.data" class="mt-2">
