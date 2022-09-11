@@ -1,9 +1,11 @@
 <script setup>
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head, usePage, Link } from '@inertiajs/inertia-vue3';
 import JetBanner from '@/Components/Banner.vue';
 import Sidebar from '@/Components/Shared/Sidebar.vue';
-import { ref, watch } from 'vue';
-import { useWindowSize } from '@vueuse/core'
+import { computed, ref, watch } from 'vue';
+import { useWindowSize } from '@vueuse/core';
+import JetDropdown from '@/Components/Dropdown.vue';
+import { getInitials } from '@/Helpers/Functions.js';
 
 const { width } = useWindowSize();
 
@@ -29,12 +31,14 @@ handleResize();
 watch(width, () => {
 	handleResize();
 });
+
+const userName = computed(() => usePage().props.value.user.name)
 </script>
 
 <template>
 	<div>
 
-		<Head :title="title" />
+		<Head title="Dashboard | BMP" />
 
 		<JetBanner />
 
@@ -47,11 +51,35 @@ watch(width, () => {
 				</div>
 				<div class="md:w-4/6 lg:w-5/6 w-full">
 					<!-- Page Heading -->
-					<header v-if="$slots.header" class="bg-white shadow">
-						<div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between">
-							<slot name="header" />
-							<div class="md:hidden block" @click="statusMenu = !statusMenu">
-								<font-awesome-icon icon="fa-solid fa-bars" class="text-xl text-gray-400 cursor-pointer" />
+					<header class="bg-white shadow">
+						<div class="max-w-7xl mx-auto py-6 md:py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+							<h2 class="font-semibold text-xl text-gray-800 leading-tight">
+								Dashboard
+							</h2>
+							<div class="flex items-center">
+								<div class="relative">			
+									<JetDropdown>
+										<template #trigger>
+											<a href="#" class="flex items-center">
+												
+												<div class="h-10 w-10 rounded-full bg-dark-blue-500 flex items-center justify-center text-white">
+													{{ getInitials(userName) }}
+												</div>
+												<font-awesome-icon icon="fa-solid fa-chevron-down" class="md:flex hidden text-xl text-gray-400 cursor-pointer pl-2" />
+											</a>
+										</template>
+										<template #content>
+											<div class="flex flex-col">
+												<Link :href="'/dashboard/profile'" class="text-gray-400 p-2 hover:bg-slate-50">
+													Perfil
+												</Link>
+											</div>
+										</template>
+									</JetDropdown>
+								</div>
+								<div class="md:hidden block ml-2" @click="statusMenu = !statusMenu">
+									<font-awesome-icon icon="fa-solid fa-bars" class="text-xl text-gray-400 cursor-pointer" />
+								</div>
 							</div>
 						</div>
 					</header>

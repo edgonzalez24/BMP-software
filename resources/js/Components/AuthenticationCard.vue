@@ -6,7 +6,7 @@
 					<img src="@/Assets/images/logo-updated.png" class="h-full w-full" />
 				</div>
 			</div>
-			<div class="w-full md:w-3/5 px-6 md:py-24 py-10">
+			<div class="w-full md:w-3/5 px-6 md:py-16 py-10">
 				<h2 class="font-poppins font-bold text-dark-blue-500 md:text-3xl text-lg mb-10">
 					Sistema de Gestión de Procesos de Negocios
 				</h2>
