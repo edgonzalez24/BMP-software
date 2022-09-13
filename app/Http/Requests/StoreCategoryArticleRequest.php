@@ -24,7 +24,7 @@ class StoreCategoryArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:Category_articles',
+            'name' => 'required|string|unique:category_articles',
         ];
     }
 }

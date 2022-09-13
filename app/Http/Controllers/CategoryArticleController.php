@@ -17,7 +17,7 @@ class CategoryArticleController extends Controller
     public function index()
     {
         //
-        if ( ! Auth::user()->can('category_activity_index')){
+        if ( ! Auth::user()->can('category_article_index')){
             return redirect()->back()->with('warning', 'No posees los permisos necesarios. Ponte en contacto con tu manager!.');
         }
 
@@ -36,6 +36,10 @@ class CategoryArticleController extends Controller
     public function create()
     {
         //
+        if ( ! Auth::user()->can('category_article_create')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+        return Inertia::render('Category/CategoryCreate');
     }
 
     /**
@@ -46,7 +50,20 @@ class CategoryArticleController extends Controller
      */
     public function store(StoreCategoryArticleRequest $request)
     {
-        //
+        if ( ! Auth::user()->can('category_article_create')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        $validated = $request->validated();
+        
+        try {
+            $categoryArticle = new CategoryArticle($request->all());
+            $categoryArticle->save();
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+
+        return redirect()->back()->with('success', 'Registro creado correctamente!.');
     }
 
     /**
