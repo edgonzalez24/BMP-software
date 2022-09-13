@@ -11,6 +11,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Toast from "vue-toastification";
 import vSelect from "vue-select";
+import { useToast } from "vue-toastification";
 
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -20,18 +21,22 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(fas, fab)
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
-
+const toast = useToast();
 createInertiaApp({
 	title: (title) => `${title} - ${appName}`,
 	resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
 	setup({ el, app, props, plugin }) {
-		return createApp({ render: () => h(app, props) })
+		const myApp = createApp({ render: () => h(app, props) })
 			.use(plugin)
 			.use(Toast)
 			.use(ZiggyVue, Ziggy)
+			.mixin({ methods: { route } })
 			.component("v-select", vSelect)
 			.component('FontAwesomeIcon', FontAwesomeIcon)
-			.mount(el);
+		myApp.config.globalProperties.$toast = toast;
+		myApp.mount(el);
+
+		return myApp;
 	},
 });
 
