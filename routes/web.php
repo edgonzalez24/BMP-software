@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\CategoryArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +34,8 @@ Route::middleware([
     Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
     Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('invite.user');
     Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');    
+
+    // CategoryArticle
+    Route::get('/category/list', [CategoryArticleController::class, 'index'])->name('category.list');    
 });
 

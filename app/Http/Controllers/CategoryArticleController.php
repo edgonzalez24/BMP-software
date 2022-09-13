@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CategoryArticle;
 use App\Http\Requests\StoreCategoryArticleRequest;
 use App\Http\Requests\UpdateCategoryArticleRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryArticleController extends Controller
 {
@@ -20,8 +21,10 @@ class CategoryArticleController extends Controller
             return redirect()->back()->with('warning', 'No posees los permisos necesarios. Ponte en contacto con tu manager!.');
         }
 
-        $categoryArticle = CategoryArticle::all();
-        return view('category.index', compact('categoryArticle'));
+        $categoryArticle = CategoryArticle::orderBy('id', 'desc')->paginate(15);
+        return Inertia::render('Category/CategoryList',[ 
+            'categoryArticle' => $categoryArticle,
+        ]);
 
     }
 
