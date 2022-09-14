@@ -37,6 +37,8 @@ class PermissionsSeeder extends Seeder
         /* CATEGORÍAS DE  ARTÍCULOS*/
         $category_article_index = Permission::create(['name' => 'category_article_index', 'descriptions' => 'Listar todas la categorías']);
         $category_article_create = Permission::create(['name' => 'category_article_create', 'descriptions' => 'Crear categorías']);
+        $category_article_edit = Permission::create(['name' => 'category_article_edit', 'descriptions' => 'Editar categoría']);
+        $category_article_destroy = Permission::create(['name' => 'category_article_destroy', 'descriptions' => 'Eliminar categoría']);
 
         /* ROLES */
         $change_role = Permission::create(['name' => 'change_role', 'descriptions' => 'Cambiar rol']);

@@ -86,7 +86,13 @@ class CategoryArticleController extends Controller
      */
     public function edit(CategoryArticle $categoryArticle)
     {
-        //
+        if ( ! Auth::user()->can('category_article_edit')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        return Inertia::render('Category/CategoryEdit',[ 
+            'categoryArticle' => $categoryArticle,
+        ]);
     }
 
     /**
@@ -99,6 +105,18 @@ class CategoryArticleController extends Controller
     public function update(UpdateCategoryArticleRequest $request, CategoryArticle $categoryArticle)
     {
         //
+        if ( ! Auth::user()->can('category_article_edit')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        } 
+
+        $validated = $request->validated();
+        
+        try {
+            $categoryArticle->update($request->all());
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
 
     /**
@@ -109,6 +127,11 @@ class CategoryArticleController extends Controller
      */
     public function destroy(CategoryArticle $categoryArticle)
     {
-        //
+        if ( ! Auth::user()->can('category_article_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        $categoryArticle->delete();
+        return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
     }
 }
