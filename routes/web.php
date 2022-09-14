@@ -36,5 +36,10 @@ Route::middleware([
     Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
     Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('invite.user');
     Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');
+
+    // CategoryArticle
+    //Route::get('/category/list', [CategoryArticleController::class, 'index'])->name('category.list');
+    // Route::get('/category/create', [CategoryArticleController::class, 'create'])->name('category.create');
+    Route::post('/category/save', [CategoryArticleController::class, 'store'])->name('category.save');
 });
 

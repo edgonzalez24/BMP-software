@@ -6,19 +6,24 @@ import JetModal from '@/Components/Modal.vue'
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import Loading from 'vue3-loading-overlay';
-import { ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { ref, getCurrentInstance } from 'vue';
+import { useForm, usePage } from '@inertiajs/inertia-vue3';
+import { POSITION } from 'vue-toastification';
+import Pagination from '@/Components/Shared/Pagination.vue';
 
 // Props
-defineProps({
+const props = defineProps({
   categoryArticle: Object
 });
 
 // Setup State
 const header = ref(['ID', 'Nombre', 'Acciones']);
+const toast = getCurrentInstance().appContext.config.globalProperties.$toast
 const isEdit = ref(false);
 const statusModalForm = ref(false);
 const isLoading = ref(false);
+const currentPage = ref(1);
+const totalPages = Math.ceil(props.categoryArticle.total / props.categoryArticle.per_page);
 const formCreateOrEdit = useForm({
   name: null
 });
@@ -26,14 +31,31 @@ const formCreateOrEdit = useForm({
 // Methods
 const toggleFormModal = () => {
   statusModalForm.value = !statusModalForm.value;
-}
+};
 
 const submitCreateOrEdit = () => {
   isLoading.value = true;
   if(isEdit.value) {
 
   } else {
-    
+    formCreateOrEdit.post(route('category.save'), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        toggleFormModal()
+        formCreateOrEdit.reset();
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
+        }
+      },
+      onFinish: () => {
+        isLoading.value = false
+      }
+    })
   }
 }
 
@@ -58,6 +80,22 @@ const submitCreateOrEdit = () => {
             required
             autofocus
           />
+        </div>
+        <div class="flex justify-end mb-5">
+          <div class="w-auto flex flex-row space-x-4 justify-between">
+            <JetButton
+              background="bg-transparente text-gray-300 focus:ring-transparent focus:border-transparent"
+              type="button"
+              @click="toggleFormModal"
+            >
+              Cancelar
+            </JetButton>
+            <JetButton
+              type="submit"
+            >
+              {{ isEdit ? 'Editar' : 'Crear' }}
+            </JetButton>
+          </div>
         </div>
       </form>
     </JetModal>
@@ -90,6 +128,14 @@ const submitCreateOrEdit = () => {
               </tr>
             </tbody>
           </Table>
+        </div>
+        <div class="flex mt-8 justify-center">
+          <Pagination
+            :total="totalPages"
+            :previous="categoryArticle.prev_page_url"
+            :next="categoryArticle.next_page_url"
+            page="categories"
+          />
         </div>
       </div>
     </div>

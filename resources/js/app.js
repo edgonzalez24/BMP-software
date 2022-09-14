@@ -27,15 +27,14 @@ createInertiaApp({
 	resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
 	setup({ el, app, props, plugin }) {
 		const myApp = createApp({ render: () => h(app, props) })
-			.use(plugin)
+		myApp.config.globalProperties.$toast = toast;
+			myApp.use(plugin)
 			.use(Toast)
 			.use(ZiggyVue, Ziggy)
 			.mixin({ methods: { route } })
 			.component("v-select", vSelect)
 			.component('FontAwesomeIcon', FontAwesomeIcon)
-		myApp.config.globalProperties.$toast = toast;
-		myApp.mount(el);
-
+			.mount(el);
 		return myApp;
 	},
 });
