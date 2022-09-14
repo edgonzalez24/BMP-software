@@ -2,13 +2,12 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import JetButton from '@/Components/Button.vue';
 import Table from '@/Components/Table.vue';
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 
+defineProps({
+  categoryArticle: Object
+})
 const header = ref(['ID', 'Nombre', 'Acciones']);
-const categories = reactive([{
-  id: 1,
-  name: 'Lacteos'
-}])
 
 </script>
 <template>
@@ -27,7 +26,7 @@ const categories = reactive([{
         <div class="bg-white overflow-hidden shadow-xl rounded-lg min-h-base">
           <Table :header="header">
             <tbody class="px-5">
-              <tr v-for="item in categories" class="mt-2">
+              <tr v-for="item in categoryArticle.data" class="mt-2">
                 <td class="text-center p-2 md:text-base text-xs">{{ item.id }}</td>
                 <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
                 <td class="text-center p-2 md:text-base text-xs">

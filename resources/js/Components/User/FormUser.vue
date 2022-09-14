@@ -5,10 +5,9 @@ import JetButton from '@/Components/Button.vue';
 import Loading from 'vue3-loading-overlay';
 import { computed, ref } from 'vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
-import { useToast, POSITION } from 'vue-toastification';
+import { POSITION } from 'vue-toastification';
 
 const emit = defineEmits(['close']);
-const toast = useToast();
 const props = defineProps({
   isEdit: Boolean,
   user: Object
@@ -33,14 +32,14 @@ const submit = () => {
       user_id: props.user.id
     })).post(route('change.role'), {
       onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        this.$toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         emit('close')
       },
       onError: () => {
         const errors = usePage().props.value.errors;
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+            this.$toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
           }
         }
       },
@@ -51,14 +50,14 @@ const submit = () => {
   } else {
     form.post(route('invite.user'), {
       onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        this.$toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         emit('close')
       },
       onError: () => {
         const errors = usePage().props.value.errors;
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+            this.$toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
           }
         }
       },
