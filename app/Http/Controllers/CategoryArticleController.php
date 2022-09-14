@@ -18,10 +18,9 @@ class CategoryArticleController extends Controller
     public function index()
     {
         //
-        if ( ! Auth::user()->can('category_activity_index')){
+        if ( ! Auth::user()->can('category_article_index')){
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
-
         $categoryArticle = CategoryArticle::orderBy('id', 'desc')->paginate(15);
         return Inertia::render('Category/Show',[ 
             'categoryArticle' => $categoryArticle,

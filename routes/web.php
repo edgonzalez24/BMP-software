@@ -35,7 +35,7 @@ Route::middleware([
     // Routes only to request data(not views)
     Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
     Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('invite.user');
-    Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');    
+    Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');
 
     // CategoryArticle
     Route::get('/category/list', [CategoryArticleController::class, 'index'])->name('category.list');
