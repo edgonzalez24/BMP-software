@@ -15,6 +15,9 @@ class UserController extends Controller
 {
     public function index()
     {
+        if ( ! Auth::user()->can('user_list')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
 
         $users = new UserCollection(User::all());
         $roles = Role::all();

@@ -34,8 +34,9 @@ class PermissionsSeeder extends Seeder
         /* INVITACIONES */
         $send_invitation = Permission::create(['name' => 'send_invitation', 'descriptions' => 'Invitar miembros al sistema']);
 
-        /* INVITACIONES */
-        $category_activity_index = Permission::create(['name' => 'category_activity_index', 'descriptions' => 'Listar todas la categorías']);
+        /* CATEGORÍAS DE  ARTÍCULOS*/
+        $category_article_index = Permission::create(['name' => 'category_article_index', 'descriptions' => 'Listar todas la categorías']);
+        $category_article_create = Permission::create(['name' => 'category_article_create', 'descriptions' => 'Crear categorías']);
 
         /* ROLES */
         $change_role = Permission::create(['name' => 'change_role', 'descriptions' => 'Cambiar rol']);
@@ -45,7 +46,7 @@ class PermissionsSeeder extends Seeder
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
 
         // ----------------- PERMISOS encargado -----------------
-        $permission_encargado = [$user_list, $user_destroy, $user_edit, $send_invitation, $change_role, $category_activity_index];
+        $permission_encargado = [$user_list, $user_destroy, $user_edit, $send_invitation, $change_role, $category_article_index, $category_article_create];
         
         $encargado->syncPermissions($permission_encargado);
 

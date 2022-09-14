@@ -36,6 +36,8 @@ Route::middleware([
     Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');    
 
     // CategoryArticle
-    Route::get('/category/list', [CategoryArticleController::class, 'index'])->name('category.list');    
+    Route::get('/category/list', [CategoryArticleController::class, 'index'])->name('category.list');
+    Route::get('/category/create', [CategoryArticleController::class, 'create'])->name('category.create');
+    Route::post('/category/save', [CategoryArticleController::class, 'store'])->name('category.save');
 });
 
