@@ -3,19 +3,23 @@ import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import JetButton from '@/Components/Button.vue';
 import Loading from 'vue3-loading-overlay';
-import { computed, ref } from 'vue';
+import { computed, ref, getCurrentInstance } from 'vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { POSITION } from 'vue-toastification';
 
+// Props and emits
 const emit = defineEmits(['close']);
 const props = defineProps({
   isEdit: Boolean,
   user: Object
 })
 
+// Setup State
 const roles = computed(() => usePage().props.value.roles);
 const isLoading = ref(false);
+const toast = getCurrentInstance().appContext.config.globalProperties.$toast
 
+// Methods
 const getInfoRol = rol => {
   return rol && rol.length > 0 ? roles.value.find(item => item.name === rol[0]) : null;
 }
@@ -24,6 +28,7 @@ const form = useForm({
   email:  props.isEdit && props.user.email || null,
   role_id:  props.isEdit && getInfoRol(props.user.user_role).id || null,
 });
+
 const submit = () => {
   isLoading.value = true;
   if (props.isEdit) {
@@ -32,14 +37,14 @@ const submit = () => {
       user_id: props.user.id
     })).post(route('change.role'), {
       onSuccess: () => {
-        this.$toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         emit('close')
       },
       onError: () => {
         const errors = usePage().props.value.errors;
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
-            this.$toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
           }
         }
       },
@@ -50,14 +55,14 @@ const submit = () => {
   } else {
     form.post(route('invite.user'), {
       onSuccess: () => {
-        this.$toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         emit('close')
       },
       onError: () => {
         const errors = usePage().props.value.errors;
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
-            this.$toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
           }
         }
       },

@@ -2,16 +2,103 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import JetButton from '@/Components/Button.vue';
 import Table from '@/Components/Table.vue';
-import { ref } from 'vue';
+import JetModal from '@/Components/Modal.vue'
+import JetLabel from '@/Components/Label.vue';
+import JetInput from '@/Components/Input.vue';
+import Loading from 'vue3-loading-overlay';
+import { ref, getCurrentInstance } from 'vue';
+import { useForm, usePage } from '@inertiajs/inertia-vue3';
+import { POSITION } from 'vue-toastification';
+import Pagination from '@/Components/Shared/Pagination.vue';
 
-defineProps({
+// Props
+const props = defineProps({
   categoryArticle: Object
-})
+});
+
+// Setup State
 const header = ref(['ID', 'Nombre', 'Acciones']);
+const toast = getCurrentInstance().appContext.config.globalProperties.$toast
+const isEdit = ref(false);
+const statusModalForm = ref(false);
+const isLoading = ref(false);
+const currentPage = ref(1);
+const totalPages = Math.ceil(props.categoryArticle.total / props.categoryArticle.per_page);
+const formCreateOrEdit = useForm({
+  name: null
+});
+
+// Methods
+const toggleFormModal = () => {
+  statusModalForm.value = !statusModalForm.value;
+};
+
+const submitCreateOrEdit = () => {
+  isLoading.value = true;
+  if(isEdit.value) {
+
+  } else {
+    formCreateOrEdit.post(route('category.save'), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        toggleFormModal()
+        formCreateOrEdit.reset();
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
+        }
+      },
+      onFinish: () => {
+        isLoading.value = false
+      }
+    })
+  }
+}
 
 </script>
 <template>
   <AppLayout>
+    <!-- Loading -->
+    <Loading :active.sync="isLoading" ></Loading>
+    <!-- Modal Create / Edit -->
+    <JetModal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal" >
+      <form class="py-8 px-5" @submit.prevent="submitCreateOrEdit">
+        <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
+          {{ isEdit ? 'Editar categoria' : 'Nueva categoria' }}
+        </h2>
+        <div class="mb-5">
+          <JetLabel for="name" value="Nombre" />
+          <JetInput
+            id="name"
+            v-model="formCreateOrEdit.name"
+            type="text"
+            class="mt-1 block w-full"
+            required
+            autofocus
+          />
+        </div>
+        <div class="flex justify-end mb-5">
+          <div class="w-auto flex flex-row space-x-4 justify-between">
+            <JetButton
+              background="bg-transparente text-gray-300 focus:ring-transparent focus:border-transparent"
+              type="button"
+              @click="toggleFormModal"
+            >
+              Cancelar
+            </JetButton>
+            <JetButton
+              type="submit"
+            >
+              {{ isEdit ? 'Editar' : 'Crear' }}
+            </JetButton>
+          </div>
+        </div>
+      </form>
+    </JetModal>
     <div class="min-h-screen">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center my-5">
@@ -19,6 +106,7 @@ const header = ref(['ID', 'Nombre', 'Acciones']);
             Categorias
           </h2>
           <JetButton
+            @click="toggleFormModal(); isEdit = false"
           >
             Crear
           </JetButton>
@@ -40,6 +128,14 @@ const header = ref(['ID', 'Nombre', 'Acciones']);
               </tr>
             </tbody>
           </Table>
+        </div>
+        <div class="flex mt-8 justify-center">
+          <Pagination
+            :total="totalPages"
+            :previous="categoryArticle.prev_page_url"
+            :next="categoryArticle.next_page_url"
+            page="categories"
+          />
         </div>
       </div>
     </div>

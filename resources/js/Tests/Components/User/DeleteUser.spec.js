@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import DeleteUser from '@/Components/User/DeleteUser.vue';
 import JetButton from '@/Components/Button.vue';
@@ -8,6 +8,11 @@ describe('Test suite DeleteUser Component', () => {
 
   beforeEach(() => {
     wrapper = shallowMount(DeleteUser, {
+      global: {
+        provide: {
+          toast: vi.fn()
+        }
+      },
       propsData: {
         user: 2
       }
