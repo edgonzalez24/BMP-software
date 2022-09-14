@@ -2,16 +2,65 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import JetButton from '@/Components/Button.vue';
 import Table from '@/Components/Table.vue';
+import JetModal from '@/Components/Modal.vue'
+import JetLabel from '@/Components/Label.vue';
+import JetInput from '@/Components/Input.vue';
+import Loading from 'vue3-loading-overlay';
 import { ref } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 
+// Props
 defineProps({
   categoryArticle: Object
-})
+});
+
+// Setup State
 const header = ref(['ID', 'Nombre', 'Acciones']);
+const isEdit = ref(false);
+const statusModalForm = ref(false);
+const isLoading = ref(false);
+const formCreateOrEdit = useForm({
+  name: null
+});
+
+// Methods
+const toggleFormModal = () => {
+  statusModalForm.value = !statusModalForm.value;
+}
+
+const submitCreateOrEdit = () => {
+  isLoading.value = true;
+  if(isEdit.value) {
+
+  } else {
+    
+  }
+}
 
 </script>
 <template>
   <AppLayout>
+    <!-- Loading -->
+    <Loading :active.sync="isLoading" ></Loading>
+    <!-- Modal Create / Edit -->
+    <JetModal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal" >
+      <form class="py-8 px-5" @submit.prevent="submitCreateOrEdit">
+        <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
+          {{ isEdit ? 'Editar categoria' : 'Nueva categoria' }}
+        </h2>
+        <div class="mb-5">
+          <JetLabel for="name" value="Nombre" />
+          <JetInput
+            id="name"
+            v-model="formCreateOrEdit.name"
+            type="text"
+            class="mt-1 block w-full"
+            required
+            autofocus
+          />
+        </div>
+      </form>
+    </JetModal>
     <div class="min-h-screen">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center my-5">
@@ -19,6 +68,7 @@ const header = ref(['ID', 'Nombre', 'Acciones']);
             Categorias
           </h2>
           <JetButton
+            @click="toggleFormModal(); isEdit = false"
           >
             Crear
           </JetButton>

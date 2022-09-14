@@ -19,7 +19,7 @@ class UserController extends Controller
         $users = new UserCollection(User::all());
         $roles = Role::all();
 
-        return Inertia::render('User/UserList',[ 
+        return Inertia::render('User/Show',[ 
             'users' => $users,
             'roles' => $roles,
         ]);
