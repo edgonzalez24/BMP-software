@@ -6,6 +6,7 @@ use App\Models\CategoryArticle;
 use App\Http\Requests\StoreCategoryArticleRequest;
 use App\Http\Requests\UpdateCategoryArticleRequest;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class CategoryArticleController extends Controller
 {
@@ -17,12 +18,12 @@ class CategoryArticleController extends Controller
     public function index()
     {
         //
-        if ( ! Auth::user()->can('category_article_index')){
-            return redirect()->back()->with('warning', 'No posees los permisos necesarios. Ponte en contacto con tu manager!.');
+        if ( ! Auth::user()->can('category_activity_index')){
+            return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         $categoryArticle = CategoryArticle::orderBy('id', 'desc')->paginate(15);
-        return Inertia::render('Category/CategoryList',[ 
+        return Inertia::render('Category/Show',[ 
             'categoryArticle' => $categoryArticle,
         ]);
 

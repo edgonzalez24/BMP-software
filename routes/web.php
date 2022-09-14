@@ -29,6 +29,8 @@ Route::middleware([
     Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
     Route::get('/dashboard/users', [UserController::class, 'index'])->name('users');
     Route::get('/dashboard/profile', function () { return Inertia::render('Profile/Show'); })->name('profile');
+    Route::get('/dashboard/categories',  [CategoryArticleController::class, 'index'])->name('categories');
+    
     
     // Routes only to request data(not views)
     Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
