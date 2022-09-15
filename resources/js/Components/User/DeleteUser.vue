@@ -1,8 +1,8 @@
 <script setup>
 import JetButton from '@/Components/Button.vue';
-import { ref } from 'vue';
+import { ref, getCurrentInstance } from 'vue';
 import Loading from 'vue3-loading-overlay';
-import { useToast, POSITION } from 'vue-toastification';
+import { POSITION } from 'vue-toastification';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 
 const emit = defineEmits(['close']);
@@ -10,13 +10,14 @@ const props = defineProps({
   user: Number
 });
 
-const toast = useToast();
 const isLoading = ref(false);
 const form = useForm()
+const route = window.route;
+const toast = getCurrentInstance().appContext.config.globalProperties.$toast
 
 const submit = () => {
   isLoading.value = true;
-  form.get(route('delete.user', props.user), {
+  route && form.get(route('delete.user', props.user), {
     onSuccess: () => {
       toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
     },
@@ -40,7 +41,7 @@ const submit = () => {
   <form @submit.prevent="submit" class="py-8 px-5">
     <Loading :active.sync="isLoading" ></Loading>
     <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Esta seguro de eliminar a este usuario?</h2>
-    <div class="md:px-5 px-10">
+    <div class="px-5">
       <p class="mt-5 text-justify text-gray-400">
         Al  eliminar a este miembro se borrará permanentemente del sistema,
         por favor confirmar la acción haciendo click en el botón de 'Eliminar'.

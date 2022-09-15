@@ -46,10 +46,10 @@ const userName = computed(() => usePage().props.value.user.name)
 
 			<!-- Page Content -->
 			<main class="w-full flex flex-wrap">
-				<div class="md:w-2/6 lg:w-1/6 w-full">
+				<div class="md:w-3/12 lg:w-1/6 w-full">
 					<Sidebar :statusMenu="statusMenu" @changeStatus="changeStatus" />
 				</div>
-				<div class="md:w-4/6 lg:w-5/6 w-full">
+				<div class="md:w-9/12	lg:w-5/6 w-full">
 					<!-- Page Heading -->
 					<header class="bg-white shadow">
 						<div class="max-w-7xl mx-auto py-6 md:py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
