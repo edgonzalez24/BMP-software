@@ -74,7 +74,7 @@ class CategoryArticleController extends Controller
      */
     public function show(CategoryArticle $categoryArticle)
     {
-        //
+        die('show');
     }
 
     /**
@@ -85,6 +85,7 @@ class CategoryArticleController extends Controller
      */
     public function edit(CategoryArticle $categoryArticle)
     {
+        die('sss');
         if ( ! Auth::user()->can('category_article_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
