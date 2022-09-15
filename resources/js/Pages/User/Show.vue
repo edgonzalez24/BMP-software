@@ -45,11 +45,11 @@ const toggleDeleteModal = () => {
     <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal" >
       <DeleteUser :user="selectedUID" @close="toggleDeleteModal" />
     </JetModal>
-    <div class="py-12">
+    <div class="py-12 min-h-screen">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center mb-5">
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
-            Listado de usuarios
+            Usuarios
           </h2>
           <JetButton
             @click="toggleFormModal(); isEdit = false"
@@ -62,7 +62,7 @@ const toggleDeleteModal = () => {
             <tbody class="px-5">
               <tr v-for="item in users.data" class="mt-2">
                 <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs hidden lg:block">{{ item.email }}</td>
+                <td class="text-center p-2 md:text-base text-xs hidden lg:block break-words">{{ item.email }}</td>
                 <td class="text-center p-2 md:text-base text-xs">
                   <a :href="`tel:${item.telephone}`">
                     {{ item.telephone }}
