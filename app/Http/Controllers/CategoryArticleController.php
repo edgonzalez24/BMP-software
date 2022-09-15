@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+use Illuminate\Http\Request;
 use App\Models\CategoryArticle;
 use App\Http\Requests\StoreCategoryArticleRequest;
 use App\Http\Requests\UpdateCategoryArticleRequest;
