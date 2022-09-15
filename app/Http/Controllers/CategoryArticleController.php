@@ -83,15 +83,21 @@ class CategoryArticleController extends Controller
      * @param  \App\Models\CategoryArticle  $categoryArticle
      * @return \Illuminate\Http\Response
      */
-    public function edit(CategoryArticle $categoryArticle)
+    public function edit(Request $request)
     {
         if ( ! Auth::user()->can('category_article_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        return Inertia::render('Category/CategoryEdit',[ 
-            'categoryArticle' => $categoryArticle,
-        ]);
+        try {
+            $categoryArticle = CategoryArticle::find($request->category_id);
+            return Inertia::render('Category/CategoryEdit',[ 
+                'categoryArticle' => $categoryArticle,
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+        
     }
 
     /**
@@ -101,16 +107,17 @@ class CategoryArticleController extends Controller
      * @param  \App\Models\CategoryArticle  $categoryArticle
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryArticleRequest $request, CategoryArticle $categoryArticle)
+    public function update(UpdateCategoryArticleRequest $validateRequest, Request $request)
     {
         //
         if ( ! Auth::user()->can('category_article_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         } 
 
-        $validated = $request->validated();
+        $validated = $validateRequest->validated($request->name);
         
         try {
+            $categoryArticle = CategoryArticle::find($request->category_id);
             $categoryArticle->update($request->all());
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
@@ -124,13 +131,18 @@ class CategoryArticleController extends Controller
      * @param  \App\Models\CategoryArticle  $categoryArticle
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CategoryArticle $categoryArticle)
+    public function destroy(Request $request)
     {
         if ( ! Auth::user()->can('category_article_destroy')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $categoryArticle->delete();
-        return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        try {
+            $categoryArticle = CategoryArticle::find($request->category_id);
+            $categoryArticle->delete();
+            return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
     }
 }
