@@ -43,12 +43,23 @@ class PermissionsSeeder extends Seeder
         /* ROLES */
         $change_role = Permission::create(['name' => 'change_role', 'descriptions' => 'Cambiar rol']);
         
+        /* UNIDADES DE MEDIDA*/
+        $measure_units_index = Permission::create(['name' => 'measure_units_index', 'descriptions' => 'Listar todas la unida de medidas']);
+        $measure_units_create = Permission::create(['name' => 'measure_units_create', 'descriptions' => 'Crear unida de medidas']);
+        $measure_units_edit = Permission::create(['name' => 'measure_units_edit', 'descriptions' => 'Editar unida de medida']);
+        $measure_units_destroy = Permission::create(['name' => 'measure_units_destroy', 'descriptions' => 'Eliminar unida de medida']);
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
 
         // ----------------- PERMISOS encargado -----------------
-        $permission_encargado = [$user_list, $user_destroy, $user_edit, $send_invitation, $change_role, $category_article_index, $category_article_create];
+        $permission_encargado = [
+            $user_list, $user_destroy, $user_edit, $send_invitation, 
+            $change_role, $category_article_index, $category_article_create,
+            $category_article_index, $category_article_create, $category_article_edit, $category_article_destroy,
+            $measure_units_index, $measure_units_create, $measure_units_edit, $measure_units_destroy,
+
+        ];
         
         $encargado->syncPermissions($permission_encargado);
 

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\PermissionsSeeder;
 use Database\Seeders\CategoryArticleSeeder;
+use Database\Seeders\MeasureUnitsSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,12 +27,14 @@ class DatabaseSeeder extends Seeder
             'teams',
             'team_invitations',
             'team_user',
-            'category_articles'
+            'category_articles',
+            'measure_units'
         ]);
         
         $this->call(PermissionsSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(CategoryArticleSeeder::class);
+        $this->call(MeasureUnitsSeeder::class);
 
     }
 

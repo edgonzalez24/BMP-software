@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('category_articles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->comment('nombre de la categoría');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
