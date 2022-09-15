@@ -104,6 +104,7 @@ class CategoryArticleController extends Controller
     public function update(UpdateCategoryArticleRequest $request, CategoryArticle $categoryArticle)
     {
         //
+        die($request);
         if ( ! Auth::user()->can('category_article_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         } 

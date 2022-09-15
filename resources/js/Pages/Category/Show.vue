@@ -6,7 +6,7 @@ import JetModal from '@/Components/Modal.vue'
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import Loading from 'vue3-loading-overlay';
-import { ref, getCurrentInstance } from 'vue';
+import { ref, getCurrentInstance, reactive } from 'vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { POSITION } from 'vue-toastification';
 import Pagination from '@/Components/Shared/Pagination.vue';
@@ -20,23 +20,50 @@ const props = defineProps({
 const header = ref(['ID', 'Nombre', 'Acciones']);
 const toast = getCurrentInstance().appContext.config.globalProperties.$toast
 const isEdit = ref(false);
-const statusModalForm = ref(false);
 const isLoading = ref(false);
-const currentPage = ref(1);
 const totalPages = Math.ceil(props.categoryArticle.total / props.categoryArticle.per_page);
-const formCreateOrEdit = useForm({
+const selectedCategory = reactive({
+  id: null,
   name: null
 });
+const formCreateOrEdit = useForm({
+  name: isEdit.value ? 'sds' : null
+});
+const statusModalForm = ref(false);
 
 // Methods
 const toggleFormModal = () => {
   statusModalForm.value = !statusModalForm.value;
 };
+const selectItem = item => {
+  formCreateOrEdit.name = item.name;
+  formCreateOrEdit.category_id = item.id;
+  isEdit.value = true;
+  toggleFormModal();  
+};
 
 const submitCreateOrEdit = () => {
   isLoading.value = true;
   if(isEdit.value) {
-
+    console.log(formCreateOrEdit)
+    formCreateOrEdit.post(route('category.edit'), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        toggleFormModal()
+        formCreateOrEdit.reset();
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
+        }
+      },
+      onFinish: () => {
+        isLoading.value = false
+      }
+    })
   } else {
     formCreateOrEdit.post(route('category.save'), {
       onSuccess: () => {
@@ -120,7 +147,7 @@ const submitCreateOrEdit = () => {
                 <td class="text-center p-2 md:text-base text-xs">
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
-                      <a @click="true" class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                      <a @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
                       <a @click="true" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                     </div>
                   </div>
