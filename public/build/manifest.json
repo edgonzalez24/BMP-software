@@ -628,12 +628,12 @@
       "assets/Welcome.b87c756e.css"
     ]
   },
-  "resources/js/Pages/Welcome.css": {
-    "file": "assets/Welcome.b87c756e.css",
-    "src": "resources/js/Pages/Welcome.css"
-  },
   "resources/js/app.css": {
     "file": "assets/app.9666dcaf.css",
     "src": "resources/js/app.css"
+  },
+  "resources/js/Pages/Welcome.css": {
+    "file": "assets/Welcome.b0e95faf.css",
+    "src": "resources/js/Pages/Welcome.css"
   }
 }
