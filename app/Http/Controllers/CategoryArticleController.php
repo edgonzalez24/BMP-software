@@ -67,40 +67,6 @@ class CategoryArticleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CategoryArticle  $categoryArticle
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CategoryArticle $categoryArticle)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CategoryArticle  $categoryArticle
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request)
-    {
-        if ( ! Auth::user()->can('category_article_edit')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
-        }
-
-        try {
-            $categoryArticle = CategoryArticle::find($request->category_id);
-            return Inertia::render('Category/CategoryEdit',[ 
-                'categoryArticle' => $categoryArticle,
-            ]);
-        } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
-        }
-        
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateCategoryArticleRequest  $request
