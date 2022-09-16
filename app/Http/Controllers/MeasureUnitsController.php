@@ -58,17 +58,17 @@ class MeasureUnitsController extends Controller
      * @param  \App\Models\MeasureUnits  $measureUnits
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMeasureUnitsRequest $validateRequest, Request $request)
+    public function update(UpdateMeasureUnitsRequest $validateRequest)
     {
         //
         if ( ! Auth::user()->can('measure_units_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         } 
 
-        $validated = $validateRequest->validated($request->all());
+        $validated = $validateRequest->validated($validateRequest->get('name'));
         
         try {
-            $measureUnitsRequest = MeasureUnitsRequest::find($validated->measure_id);
+            $measureUnitsRequest = MeasureUnitsRequest::find($validateRequest->get('measure_id'));
             $measureUnitsRequest->update($request->all());
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
