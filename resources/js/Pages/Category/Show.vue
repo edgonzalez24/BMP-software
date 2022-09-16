@@ -23,7 +23,8 @@ const isEdit = ref(false);
 const isLoading = ref(false);
 const totalPages = Math.ceil(props.categoryArticle.total / props.categoryArticle.per_page);
 const formCreateOrEdit = useForm({
-  name: null
+  name: null,
+  category_id: null
 });
 const formDelete = useForm({
   id: null
