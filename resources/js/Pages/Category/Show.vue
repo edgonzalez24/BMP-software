@@ -52,7 +52,7 @@ const selectDeleteItem = item => {
 const submitCreateOrEdit = () => {
   isLoading.value = true;
   if(isEdit.value) {
-    useForm().get(route('category.edit', formCreateOrEdit.name ), {
+    formCreateOrEdit.post(route('category.change'), {
       onSuccess: () => {
         toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         toggleFormModal()

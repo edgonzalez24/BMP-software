@@ -23,8 +23,8 @@ class UpdateCategoryArticleRequest extends FormRequest
      */
     public function rules()
     {
-        $validando = \Validator::make($request->all(), [
+        return [
             'name' => 'required|string|unique:Category_articles',
-        ]);
+        ];
     }
 }

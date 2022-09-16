@@ -67,52 +67,24 @@ class CategoryArticleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CategoryArticle  $categoryArticle
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CategoryArticle $categoryArticle)
-    {
-        die('show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CategoryArticle  $categoryArticle
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CategoryArticle $categoryArticle)
-    {
-        die('sss');
-        if ( ! Auth::user()->can('category_article_edit')){
-            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
-        }
-
-        return Inertia::render('Category/CategoryEdit',[ 
-            'categoryArticle' => $categoryArticle,
-        ]);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateCategoryArticleRequest  $request
      * @param  \App\Models\CategoryArticle  $categoryArticle
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryArticleRequest $request, CategoryArticle $categoryArticle)
+    public function update(UpdateCategoryArticleRequest $validateRequest, Request $request)
     {
         //
-        die($request);
+        die('hereee');
         if ( ! Auth::user()->can('category_article_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         } 
 
-        $validated = $request->validated();
+        $validated = $validateRequest->validated($request->name);
         
         try {
+            $categoryArticle = CategoryArticle::find($request->category_id);
             $categoryArticle->update($request->all());
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
@@ -132,7 +104,11 @@ class CategoryArticleController extends Controller
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $categoryArticle->delete();
-        return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        try {
+            $categoryArticle->delete();
+            return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
     }
 }
