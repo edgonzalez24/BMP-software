@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+use Illuminate\Http\Request;
 use App\Models\CategoryArticle;
 use App\Http\Requests\StoreCategoryArticleRequest;
 use App\Http\Requests\UpdateCategoryArticleRequest;
@@ -83,7 +85,7 @@ class CategoryArticleController extends Controller
         $validated = $validateRequest->validated($request->name);
         
         try {
-            $categoryArticle = CategoryArticle::find($request->category_id);
+            $categoryArticle = CategoryArticle::find($validated->category_id);
             $categoryArticle->update($request->all());
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
