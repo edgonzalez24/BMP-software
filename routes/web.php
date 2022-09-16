@@ -42,6 +42,6 @@ Route::middleware([
     Route::get('/category/create', [CategoryArticleController::class, 'create'])->name('category.create');
     Route::post('/category/save', [CategoryArticleController::class, 'store'])->name('category.save');
     Route::post('/category/change', [CategoryArticleController::class, 'update'])->name('category.change');
-    Route::post('/category/delete', [CategoryArticleController::class, 'destroy'])->name('category.delete');
+    Route::get('/category/delete/{categoryArticle}', [CategoryArticleController::class, 'destroy'])->name('category.delete');
 });
 

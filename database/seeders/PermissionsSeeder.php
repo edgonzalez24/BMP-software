@@ -48,7 +48,7 @@ class PermissionsSeeder extends Seeder
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
 
         // ----------------- PERMISOS encargado -----------------
-        $permission_encargado = [$user_list, $user_destroy, $user_edit, $send_invitation, $change_role, $category_article_index, $category_article_create];
+        $permission_encargado = [$user_list, $user_destroy, $user_edit, $send_invitation, $change_role, $category_article_index, $category_article_create, $category_article_edit,$category_article_destroy ];
         
         $encargado->syncPermissions($permission_encargado);
 
