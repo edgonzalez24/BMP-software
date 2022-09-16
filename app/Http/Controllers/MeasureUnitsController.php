@@ -58,9 +58,22 @@ class MeasureUnitsController extends Controller
      * @param  \App\Models\MeasureUnits  $measureUnits
      * @return \Illuminate\Http\Response
      */
-    public function edit(MeasureUnits $measureUnits)
+    public function update(UpdateMeasureUnitsRequest $validateRequest, Request $request)
     {
         //
+        if ( ! Auth::user()->can('measure_units_edit')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        } 
+
+        $validated = $validateRequest->validated($request->all());
+        
+        try {
+            $measureUnitsRequest = MeasureUnitsRequest::find($validated->measure_id);
+            $measureUnitsRequest->update($request->all());
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
 
     /**
@@ -71,6 +84,15 @@ class MeasureUnitsController extends Controller
      */
     public function destroy(MeasureUnits $measureUnits)
     {
-        //
+        if ( ! Auth::user()->can('measure_units_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        try {
+            $measureUnits->delete();
+            return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
     }
 }

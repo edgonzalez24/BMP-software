@@ -48,6 +48,8 @@ Route::middleware([
     // CategoryArticle
     Route::get('/measureUnits/list', [MeasureUnitsController::class, 'index'])->name('measureUnits.list');
     Route::post('/measureUnits/save', [MeasureUnitsController::class, 'store'])->name('measureUnits.save');
+    Route::post('/measureUnits/change', [MeasureUnitsController::class, 'update'])->name('measureUnits.change');
+    Route::post('/measureUnits/delete', [MeasureUnitsController::class, 'destroy'])->name('measureUnits.delete');
     
 });
 

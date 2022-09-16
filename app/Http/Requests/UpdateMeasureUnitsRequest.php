@@ -24,7 +24,7 @@ class UpdateMeasureUnitsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:category_articles',
+            'name' => 'required|string|unique:measure_units',
         ];
     }
 }
