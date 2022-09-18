@@ -31,6 +31,7 @@ Route::middleware([
     Route::get('/dashboard/users', [UserController::class, 'index'])->name('users');
     Route::get('/dashboard/profile', function () { return Inertia::render('Profile/Show'); })->name('profile');
     Route::get('/dashboard/categories',  [CategoryArticleController::class, 'index'])->name('categories');
+    Route::get('/dashboard/measures', [MeasureUnitsController::class, 'index'])->name('measures');
     
     
     // Routes only to request data(not views)
@@ -46,7 +47,6 @@ Route::middleware([
     Route::post('/category/delete', [CategoryArticleController::class, 'destroy'])->name('category.delete');
     
     // CategoryArticle
-    Route::get('/measureUnits/list', [MeasureUnitsController::class, 'index'])->name('measureUnits.list');
     Route::post('/measureUnits/save', [MeasureUnitsController::class, 'store'])->name('measureUnits.save');
     Route::post('/measureUnits/change', [MeasureUnitsController::class, 'update'])->name('measureUnits.change');
     Route::post('/measureUnits/delete', [MeasureUnitsController::class, 'destroy'])->name('measureUnits.delete');

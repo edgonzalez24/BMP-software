@@ -24,7 +24,7 @@ class MeasureUnitsController extends Controller
         }
 
         $measureUnits = MeasureUnits::orderBy('id', 'desc')->paginate(15);
-        return Inertia::render('MeasureUnits/Show',[ 
+        return Inertia::render('Measure/Show',[ 
             'measureUnits' => $measureUnits,
         ]);
     }
