@@ -75,18 +75,17 @@ class CategoryArticleController extends Controller
      * @param  \App\Models\CategoryArticle  $categoryArticle
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryArticleRequest $validateRequest, Request $request)
+    public function update(UpdateCategoryArticleRequest $validateRequest)
     {
         //
         if ( ! Auth::user()->can('category_article_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         } 
 
-        $validated = $validateRequest->validated($request->name);
-        
+        $validated = $validateRequest->validated($validateRequest->get('name'));
         try {
-            $categoryArticle = CategoryArticle::find($validated->category_id);
-            $categoryArticle->update($request->all());
+            $categoryArticle = CategoryArticle::find($validateRequest->get('category_id'));
+            $categoryArticle->update($validateRequest->all());
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
@@ -99,14 +98,13 @@ class CategoryArticleController extends Controller
      * @param  \App\Models\CategoryArticle  $categoryArticle
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(CategoryArticle $categoryArticle)
     {
         if ( ! Auth::user()->can('category_article_destroy')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
         try {
-            $categoryArticle = CategoryArticle::find($request->category_id);
             $categoryArticle->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
         } catch (\Throwable $th) {
