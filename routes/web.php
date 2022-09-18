@@ -45,10 +45,10 @@ Route::middleware([
     Route::post('/category/change', [CategoryArticleController::class, 'update'])->name('category.change');
     Route::get('/category/delete/{categoryArticle}', [CategoryArticleController::class, 'destroy'])->name('category.delete');
     Route::post('/category/delete', [CategoryArticleController::class, 'destroy'])->name('category.delete');
-
-    // MeasureUnits
+    
+    // CategoryArticle
     Route::get('/measureUnits/list', [MeasureUnitsController::class, 'index'])->name('measureUnits.list');
+    Route::post('/measureUnits/save', [MeasureUnitsController::class, 'store'])->name('measureUnits.save');
     
 });
-
 

@@ -34,9 +34,22 @@ class MeasureUnitsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function store(StoreMeasureUnitsRequest $request)
     {
-        //
+        if ( ! Auth::user()->can('measure_units_create')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        $validated = $request->validated();
+        
+        try {
+            $measureUnits = new MeasureUnits($request->all());
+            $measureUnits->save();
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+
+        return redirect()->back()->with('success', 'Registro creado correctamente!.');
     }
 
     /**
