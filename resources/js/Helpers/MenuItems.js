@@ -16,8 +16,13 @@ export const menuItems = [
         icon: 'fa-box-open'
       },
       {
+        name: 'Categorias',
+        slug: 'categories',
+        icon: 'fa-network-wired'
+      },
+      {
         name: 'Unidades de medida',
-        slug: '',
+        slug: 'measures',
         icon: 'fa-tag'
       },
       {

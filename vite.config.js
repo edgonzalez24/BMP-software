@@ -24,6 +24,9 @@ export default defineConfig({
         }),
     ],
     test: {
+        globals: true,
+        // setupFiles: 'resources/js/Tests/SetupTests.js',
+        includeSource: ["src/**/*.{js,ts,vue}"],
         environment: 'happy-dom'
     },
 });

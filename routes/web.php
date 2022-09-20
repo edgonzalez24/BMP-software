@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\CategoryArticleController;
+use App\Http\Controllers\MeasureUnitsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,10 +30,27 @@ Route::middleware([
     Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
     Route::get('/dashboard/users', [UserController::class, 'index'])->name('users');
     Route::get('/dashboard/profile', function () { return Inertia::render('Profile/Show'); })->name('profile');
+    Route::get('/dashboard/categories',  [CategoryArticleController::class, 'index'])->name('categories');
+    Route::get('/dashboard/measures', [MeasureUnitsController::class, 'index'])->name('measures');
+    
     
     // Routes only to request data(not views)
     Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
     Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('invite.user');
-    Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');    
+    Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');
+
+    // CategoryArticle
+    Route::get('/category/list', [CategoryArticleController::class, 'index'])->name('category.list');
+    Route::get('/category/create', [CategoryArticleController::class, 'create'])->name('category.create');
+    Route::post('/category/save', [CategoryArticleController::class, 'store'])->name('category.save');
+    Route::post('/category/change', [CategoryArticleController::class, 'update'])->name('category.change');
+    Route::get('/category/delete/{categoryArticle}', [CategoryArticleController::class, 'destroy'])->name('category.delete');
+    Route::post('/category/delete', [CategoryArticleController::class, 'destroy'])->name('category.delete');
+    
+    // CategoryArticle
+    Route::post('/measureUnits/save', [MeasureUnitsController::class, 'store'])->name('measureUnits.save');
+    Route::post('/measureUnits/change', [MeasureUnitsController::class, 'update'])->name('measureUnits.change');
+    Route::post('/measureUnits/delete', [MeasureUnitsController::class, 'destroy'])->name('measureUnits.delete');
+    
 });
 

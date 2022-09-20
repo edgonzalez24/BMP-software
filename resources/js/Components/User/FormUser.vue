@@ -3,20 +3,23 @@ import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import JetButton from '@/Components/Button.vue';
 import Loading from 'vue3-loading-overlay';
-import { computed, ref } from 'vue';
+import { computed, ref, getCurrentInstance } from 'vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
-import { useToast, POSITION } from 'vue-toastification';
+import { POSITION } from 'vue-toastification';
 
+// Props and emits
 const emit = defineEmits(['close']);
-const toast = useToast();
 const props = defineProps({
   isEdit: Boolean,
   user: Object
 })
 
+// Setup State
 const roles = computed(() => usePage().props.value.roles);
 const isLoading = ref(false);
+const toast = getCurrentInstance().appContext.config.globalProperties.$toast
 
+// Methods
 const getInfoRol = rol => {
   return rol && rol.length > 0 ? roles.value.find(item => item.name === rol[0]) : null;
 }
@@ -25,6 +28,7 @@ const form = useForm({
   email:  props.isEdit && props.user.email || null,
   role_id:  props.isEdit && getInfoRol(props.user.user_role).id || null,
 });
+
 const submit = () => {
   isLoading.value = true;
   if (props.isEdit) {

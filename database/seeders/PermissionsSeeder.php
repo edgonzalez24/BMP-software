@@ -34,15 +34,33 @@ class PermissionsSeeder extends Seeder
         /* INVITACIONES */
         $send_invitation = Permission::create(['name' => 'send_invitation', 'descriptions' => 'Invitar miembros al sistema']);
 
+        /* CATEGORÍAS DE  ARTÍCULOS*/
+        $category_article_index = Permission::create(['name' => 'category_article_index', 'descriptions' => 'Listar todas la categorías']);
+        $category_article_create = Permission::create(['name' => 'category_article_create', 'descriptions' => 'Crear categorías']);
+        $category_article_edit = Permission::create(['name' => 'category_article_edit', 'descriptions' => 'Editar categoría']);
+        $category_article_destroy = Permission::create(['name' => 'category_article_destroy', 'descriptions' => 'Eliminar categoría']);
+
         /* ROLES */
         $change_role = Permission::create(['name' => 'change_role', 'descriptions' => 'Cambiar rol']);
         
+        /* UNIDADES DE MEDIDA*/
+        $measure_units_index = Permission::create(['name' => 'measure_units_index', 'descriptions' => 'Listar todas la unida de medidas']);
+        $measure_units_create = Permission::create(['name' => 'measure_units_create', 'descriptions' => 'Crear unida de medidas']);
+        $measure_units_edit = Permission::create(['name' => 'measure_units_edit', 'descriptions' => 'Editar unida de medida']);
+        $measure_units_destroy = Permission::create(['name' => 'measure_units_destroy', 'descriptions' => 'Eliminar unida de medida']);
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
 
         // ----------------- PERMISOS encargado -----------------
-        $permission_encargado = [$user_list, $user_destroy, $user_edit, $send_invitation, $change_role];
+        $permission_encargado = [
+            $user_list, $user_destroy, $user_edit, $send_invitation, 
+            $change_role, $category_article_index, $category_article_create,
+            $category_article_index, $category_article_create, $category_article_edit, $category_article_destroy,
+            $measure_units_index, $measure_units_create, $measure_units_edit, $measure_units_destroy,
+
+        ];
+        
         $encargado->syncPermissions($permission_encargado);
 
     }

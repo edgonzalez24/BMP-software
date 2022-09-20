@@ -12,7 +12,7 @@
         <tr>
           <th 
             v-for="item in header" class="py-4 md:text-base text-sm" 
-            :class="{'hidden lg:block': item === header[1]}"
+            :class="{'hidden lg:block': item ===  'Correo Electronico' }"
           >
             {{ item }}
           </th>
