@@ -49,7 +49,7 @@ Route::middleware([
     // CategoryArticle
     Route::post('/measureUnits/save', [MeasureUnitsController::class, 'store'])->name('measureUnits.save');
     Route::post('/measureUnits/change', [MeasureUnitsController::class, 'update'])->name('measureUnits.change');
-    Route::post('/measureUnits/delete', [MeasureUnitsController::class, 'destroy'])->name('measureUnits.delete');
+    Route::get('/measureUnits/delete/{measureUnits}', [MeasureUnitsController::class, 'destroy'])->name('measureUnits.delete');
     
 });
 

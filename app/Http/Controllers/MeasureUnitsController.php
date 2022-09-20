@@ -66,10 +66,9 @@ class MeasureUnitsController extends Controller
         } 
 
         $validated = $validateRequest->validated($validateRequest->get('name'));
-        
         try {
             $measureUnits = MeasureUnits::find($validateRequest->get('measure_id'));
-            $measureUnits->update($request->all());
+            $measureUnits->update($validateRequest->all());
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
