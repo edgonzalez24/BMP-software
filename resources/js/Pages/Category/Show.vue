@@ -6,7 +6,7 @@ import JetModal from '@/Components/Modal.vue'
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import Loading from 'vue3-loading-overlay';
-import { ref, getCurrentInstance, reactive } from 'vue';
+import { ref, getCurrentInstance, computed } from 'vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { POSITION } from 'vue-toastification';
 import Pagination from '@/Components/Shared/Pagination.vue';
@@ -21,7 +21,7 @@ const header = ref(['ID', 'Nombre', 'Acciones']);
 const toast = getCurrentInstance().appContext.config.globalProperties.$toast
 const isEdit = ref(false);
 const isLoading = ref(false);
-const totalPages = Math.ceil(props.categoryArticle.total / props.categoryArticle.per_page);
+const totalPages = computed(() => Math.ceil(props.categoryArticle.total / props.categoryArticle.per_page));
 const formCreateOrEdit = useForm({
   name: null,
   category_id: null
@@ -108,7 +108,6 @@ const submitDelete = () => {
       }
     },
     onFinish: () => {
-      emit('close');
       isLoading.value = false;
     }
   });

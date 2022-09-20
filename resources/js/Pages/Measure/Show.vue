@@ -6,7 +6,7 @@ import JetModal from '@/Components/Modal.vue'
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import Loading from 'vue3-loading-overlay';
-import { ref, getCurrentInstance } from 'vue';
+import { ref, getCurrentInstance , computed } from 'vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { POSITION } from 'vue-toastification';
 import Pagination from '@/Components/Shared/Pagination.vue';
@@ -22,8 +22,7 @@ const toast = getCurrentInstance().appContext.config.globalProperties.$toast
 const isEdit = ref(false);
 const statusModalForm = ref(false);
 const isLoading = ref(false);
-const currentPage = ref(1);
-const totalPages = Math.ceil(props.measureUnits.total / props.measureUnits.per_page);
+const totalPages = computed(() => Math.ceil(props.measureUnits.total / props.measureUnits.per_page));
 const formCreateOrEdit = useForm({
   name: null
 });
@@ -134,7 +133,7 @@ const submitCreateOrEdit = () => {
             :total="totalPages"
             :previous="measureUnits.prev_page_url"
             :next="measureUnits.next_page_url"
-            page="categories"
+            page="measures"
           />
         </div>
       </div>
