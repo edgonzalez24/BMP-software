@@ -22,7 +22,7 @@ export const menuItems = [
       },
       {
         name: 'Unidades de medida',
-        slug: '',
+        slug: 'measures',
         icon: 'fa-tag'
       },
       {
