@@ -38,7 +38,7 @@ const userName = computed(() => usePage().props.value.user.name)
 <template>
 	<div>
 
-		<Head title="Dashboard | BMP" />
+		<Head title="Dashboard" />
 
 		<JetBanner />
 

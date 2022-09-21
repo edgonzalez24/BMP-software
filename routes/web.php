@@ -32,6 +32,7 @@ Route::middleware([
     Route::get('/dashboard/profile', function () { return Inertia::render('Profile/Show'); })->name('profile');
     Route::get('/dashboard/categories',  [CategoryArticleController::class, 'index'])->name('categories');
     Route::get('/dashboard/measures', [MeasureUnitsController::class, 'index'])->name('measures');
+    Route::get('/dashboard/suppliers', function () { return Inertia::render('Suppliers/Show'); })->name('suppliers');
     
     
     // Routes only to request data(not views)
