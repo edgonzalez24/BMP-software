@@ -27,7 +27,7 @@ export const menuItems = [
       },
       {
         name: 'Proveedores',
-        slug: '',
+        slug: 'suppliers',
         icon: 'fa-truck-field-un'
       },
     ]

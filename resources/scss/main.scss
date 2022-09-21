@@ -105,3 +105,18 @@
 .efect-rotate-up {
 	transition: all 0.4s ease;
 }
+
+.toggle__dot {
+	top: -0.25rem;
+	left: -0.25rem;
+	transition: all 0.3s ease-in-out;
+}
+
+input:checked~.toggle__line {
+	background-color: #D1FAE5;
+}
+
+input:checked~.toggle__dot {
+	transform: translateX(100%);
+	background-color: #6cbfae;
+}
