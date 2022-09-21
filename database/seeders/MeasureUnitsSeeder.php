@@ -17,6 +17,11 @@ class MeasureUnitsSeeder extends Seeder
     {
         MeasureUnits::insert([
             [                
+                'name' => 'Sin Asignar',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [                
                 'name' => 'Cajas',
                 'created_at' => now(),
                 'updated_at' => now(),

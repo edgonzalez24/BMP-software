@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\MeasureUnits;
+// use App\Models\Articles;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreMeasureUnitsRequest;
 use App\Http\Requests\UpdateMeasureUnitsRequest;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +25,7 @@ class MeasureUnitsController extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $measureUnits = MeasureUnits::orderBy('id', 'desc')->paginate(15);
+        $measureUnits = MeasureUnits::where('name', '<>', 'Sin Asignar')->orderBy('id', 'desc')->paginate(15);
         return Inertia::render('Measure/Show',[ 
             'measureUnits' => $measureUnits,
         ]);
@@ -66,10 +68,9 @@ class MeasureUnitsController extends Controller
         } 
 
         $validated = $validateRequest->validated($validateRequest->get('name'));
-        
         try {
             $measureUnits = MeasureUnits::find($validateRequest->get('measure_id'));
-            $measureUnits->update($request->all());
+            $measureUnits->update($validateRequest->all());
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
@@ -89,6 +90,8 @@ class MeasureUnitsController extends Controller
         }
 
         try {
+            /* $articles = DB::select('UPDATE articles SET measure_unit_id = ? WHERE measure_unit_id = ?', [1, $measureUnits->id]); */
+
             $measureUnits->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
         } catch (\Throwable $th) {

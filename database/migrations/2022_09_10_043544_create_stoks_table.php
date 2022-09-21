@@ -28,7 +28,7 @@ return new class extends Migration
             
             $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
             $table->foreign('measure_unit_id')->references('id')->on('measure_units')->onDelete('cascade');
-            $table->foreign('supplier_id')->references('id')->on('supliers')->onDelete('cascade');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
             
         });
     }
