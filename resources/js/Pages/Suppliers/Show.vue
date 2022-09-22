@@ -7,8 +7,35 @@ import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import Toggle from '@/Components/Shared/Toggle.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
+import Table from '@/Components/Table.vue';
+import Status from '@/Components/Shared/Status.vue';
 
+const props = defineProps({
+  suppliers: Object
+});
+const header = reactive([
+  {
+    name: 'Nombre',
+    showInMobile: true
+  },
+  {
+    name: 'Teléfono',
+    showInMobile: true
+  },
+  {
+    name: 'Estado',
+    showInMobile: true
+  },
+  {
+    name: 'Correo Electrónico',
+    showInMobile: false
+  },
+  {
+    name: 'Acciones',
+    showInMobile: true
+  }
+]);
 const isLoading = ref(false);
 const isEdit = ref(false);
 const statusModalForm = ref(false);
@@ -99,7 +126,32 @@ const toggleFormModal = () => {
           </JetButton>
         </div>
         <div class="bg-white overflow-hidden shadow-xl rounded-lg min-h-base">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus culpa soluta placeat molestias exercitationem commodi voluptatem id, possimus inventore qui reprehenderit ad repudiandae officia ea aut, voluptates alias quos. Sapiente.
+          <Table :header="header">
+            <tbody class="px-5">
+              <tr v-for="item in suppliers.data" class="mt-2">
+                <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
+                <td class="text-center p-2 md:text-base text-xs">
+                  <a :href="`tel:${item.telephone}`">
+                    {{ item.telephone }}
+                  </a>
+                </td>
+                <td class="text-center p-2 md:text-base text-xs">
+                  <div class="flex justify-center">
+                    <Status :status="item.active" class="sm:w-1/2 md:w-1/3 w-full" />
+                  </div>
+                </td>
+                <td class="text-center p-2 md:text-base text-xs hidden lg:block">{{ item.email }}</td>
+                <td class="text-center p-2 md:text-base text-xs">
+                  <div class="flex justify-center">
+                    <div class="flex flex-row space-x-4">
+                      <a @click="true" class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                      <a @click="true" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
         </div>
       </div>
     </div>

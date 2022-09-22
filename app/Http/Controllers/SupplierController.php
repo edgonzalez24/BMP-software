@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SupplierController extends Controller
 {
@@ -23,7 +24,7 @@ class SupplierController extends Controller
 
         $suppliers = Supplier::where('name', '<>', 'Sin Asignar')->orderBy('id', 'desc')->paginate(15);
         return Inertia::render('Suppliers/Show',[ 
-            'supp$suppliers' => $suppliers,
+            'suppliers' => $suppliers,
         ]);
     }
 
