@@ -6,11 +6,12 @@ import JetModal from '@/Components/Modal.vue';
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import Toggle from '@/Components/Shared/Toggle.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-import { ref, reactive, computed } from 'vue';
+import { useForm, usePage } from '@inertiajs/inertia-vue3';
+import { ref, reactive, computed, getCurrentInstance } from 'vue';
 import Table from '@/Components/Table.vue';
 import Status from '@/Components/Shared/Status.vue';
 import Pagination from '@/Components/Shared/Pagination.vue';
+import { POSITION } from 'vue-toastification';
 
 const props = defineProps({
   suppliers: Object
@@ -45,7 +46,7 @@ const formInitial = useForm({
   name: null,
   telephone: null,
   email: null,
-  active: true
+  active: 1
 });
 const formDelete = useForm({
   id: null
@@ -60,7 +61,29 @@ const selectDeleteItem = item => {
   formDelete.id = item.id;
   toggleDeleteModal();
 };
+const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
 const totalPages = computed(() => Math.ceil(props.suppliers.total / props.suppliers.per_page));
+
+const submitForm = () => {
+  formInitial.post(route('supplier.save'), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        toggleFormModal()
+        formCreateOrEdit.reset();
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
+        }
+      },
+      onFinish: () => {
+        isLoading.value = false
+      }
+    })
+}
 </script>
 
 <template>
@@ -68,7 +91,7 @@ const totalPages = computed(() => Math.ceil(props.suppliers.total / props.suppli
     <!-- Loading -->
     <Loading :active.sync="isLoading" ></Loading>
     <JetModal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal" >
-      <form class="py-8 px-5" @submit.prevent="true">
+      <form class="py-8 px-5" @submit.prevent="submitForm">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
           {{ isEdit ? 'Editar proveedor' : 'Añadir proveedor' }}
         </h2>
