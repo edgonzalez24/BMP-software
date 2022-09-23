@@ -2,19 +2,18 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-  checked: Boolean,
+  checked: Number,
   label: Boolean
 });
 const emit = defineEmits(['update:checked']);
 
 const proxyChecked = computed({
 	get() {
-		return props.checked;
+		return props.checked === 1;
 	},
 
 	set(val) {
-    console.log(val)
-		emit('update:checked', val);
+		emit('update:checked', val ? 1 : 0);
 	},
 });
 </script>
