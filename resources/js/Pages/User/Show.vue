@@ -13,7 +13,28 @@ defineProps({
 })
 
 
-const header = ref(['Nombre', 'Correo Electronico', 'Telefono', 'Rol', 'Acciones']);
+const header = reactive([
+  {
+    name: 'Nombre',
+    showInMobile: true
+  },
+  {
+    name: 'Correo Electrónico',
+    showInMobile: false
+  },
+  {
+    name: 'Teléfono',
+    showInMobile: true
+  },
+  {
+    name: 'Rol',
+    showInMobile: true
+  },
+  {
+    name: 'Acciones',
+    showInMobile: true
+  }
+]);
 
 
 // Modal Form
