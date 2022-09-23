@@ -69,7 +69,7 @@ const submitForm = () => {
       onSuccess: () => {
         toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         toggleFormModal()
-        formCreateOrEdit.reset();
+        formInitial.reset();
       },
       onError: () => {
         const errors = usePage().props.value.errors;
