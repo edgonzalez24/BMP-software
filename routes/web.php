@@ -52,6 +52,7 @@ Route::middleware([
     Route::get('/measureUnits/delete/{measureUnits}', [MeasureUnitsController::class, 'destroy'])->name('measureUnits.delete');
 
     // Supliers
+    Route::post('/supplier/save', [SupplierController::class, 'store'])->name('supplier.save');
     
     
 });
