@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class SupplierController extends Controller
@@ -59,9 +60,20 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSupplierRequest $request, Supplier $supplier)
+    public function update(UpdateSupplierRequest $request)
     {
-        //
+        if ( ! Auth::user()->can('supplier_edit')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        } 
+
+        $validated = $request->validated($request->all());
+        try {
+            $supplier = Supplier::find($validated->get('supplier_id'));
+            $supplier->update($validateRequest->all());
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
 
     /**
@@ -72,6 +84,17 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        //
+        if ( ! Auth::user()->can('supplier_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        try {
+            /* $articles = DB::select('UPDATE stoks SET supplier_id = ? WHERE supplier_id = ?', [1, $supplier->id]); */
+
+            $supplier->delete();
+            return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
     }
 }

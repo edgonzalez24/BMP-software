@@ -53,6 +53,8 @@ Route::middleware([
 
     // Supliers
     Route::post('/supplier/save', [SupplierController::class, 'store'])->name('supplier.save');
+    Route::post('/supplier/change', [SupplierController::class, 'update'])->name('supplier.change');
+    Route::post('/supplier/delete', [SupplierController::class, 'destroy'])->name('supplier.delete');
     
     
 });
