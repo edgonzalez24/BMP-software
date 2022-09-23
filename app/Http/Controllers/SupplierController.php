@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateSupplierRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class SupplierController extends Controller
 {
