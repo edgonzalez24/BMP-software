@@ -19,7 +19,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 
-console.log(import.meta.env)
 import Echo from 'laravel-echo';
 
 import Pusher from 'pusher-js';
@@ -34,5 +33,5 @@ window.Echo = new Echo({
     forceTLS: false,
     encrypted: true,
     disableStats: true,
-    enabledTransports: ['ws'],
+    enabledTransports: ['ws', 'wss'],
 });

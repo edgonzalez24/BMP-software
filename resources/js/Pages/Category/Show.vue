@@ -6,15 +6,25 @@ import JetModal from '@/Components/Modal.vue'
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import Loading from 'vue3-loading-overlay';
-import { ref, getCurrentInstance, computed, reactive } from 'vue';
+import { ref, getCurrentInstance, computed, reactive, onMounted } from 'vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { POSITION } from 'vue-toastification';
 import Pagination from '@/Components/Shared/Pagination.vue';
+import { Inertia } from '@inertiajs/inertia';
 
 // Props
 const props = defineProps({
   categoryArticle: Object
-});
+})
+
+onMounted(() => {
+  console.log(window.Echo.channel('category').listen('category'))
+  window.Echo.channel('category')
+  .listen("my-event", (e) => {
+    console.log(e);
+  })
+})
+
 
 // Setup State
 const header = reactive([
