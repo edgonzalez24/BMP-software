@@ -40,7 +40,7 @@ class SupplierController extends Controller
         if ( ! Auth::user()->can('supplier_create')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
-
+        dd($request->all());
         $validated = $request->validated();
         
         try {
@@ -66,12 +66,14 @@ class SupplierController extends Controller
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         } 
 
+        dd($request->all());
         $validated = $request->validated($request->all());
         try {
             $supplier = Supplier::find($validated->get('supplier_id'));
-            $supplier->update($validateRequest->all());
+            $supplier->update($request->all());
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            die($th);
+            //return redirect()->back()->withErrors(['error' => $th]);
         }
         return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
