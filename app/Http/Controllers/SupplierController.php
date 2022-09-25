@@ -63,13 +63,12 @@ class SupplierController extends Controller
         if ( ! Auth::user()->can('supplier_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         } 
-        
+
         try {
             $supplier = Supplier::find($request->get('supplier_id'));
             $supplier->update($request->all());
         } catch (\Throwable $th) {
-            die($th);
-            //return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => $th]);
         }
         return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
