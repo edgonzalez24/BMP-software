@@ -6,7 +6,7 @@ import JetModal from '@/Components/Modal.vue'
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import Loading from 'vue3-loading-overlay';
-import { ref, getCurrentInstance, computed } from 'vue';
+import { ref, getCurrentInstance, computed, reactive } from 'vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { POSITION } from 'vue-toastification';
 import Pagination from '@/Components/Shared/Pagination.vue';
@@ -17,7 +17,20 @@ const props = defineProps({
 });
 
 // Setup State
-const header = ref(['ID', 'Nombre', 'Acciones']);
+const header = reactive([
+  {
+    name: 'ID',
+    showInMobile: true
+  },
+  {
+    name: 'Nombre',
+    showInMobile: true
+  },
+  {
+    name: 'Acciones',
+    showInMobile: true
+  }
+]);
 const toast = getCurrentInstance().appContext.config.globalProperties.$toast
 const isEdit = ref(false);
 const isLoading = ref(false);

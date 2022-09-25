@@ -12,9 +12,9 @@
         <tr>
           <th 
             v-for="item in header" class="py-4 md:text-base text-sm" 
-            :class="{'hidden lg:block': item ===  'Correo Electronico' }"
+            :class="{'hidden lg:block': !item.showInMobile }"
           >
-            {{ item }}
+            {{ item.name }}
           </th>
         </tr>
       </thead>

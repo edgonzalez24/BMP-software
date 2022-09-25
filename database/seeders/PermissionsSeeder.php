@@ -48,6 +48,12 @@ class PermissionsSeeder extends Seeder
         $measure_units_create = Permission::create(['name' => 'measure_units_create', 'descriptions' => 'Crear unida de medidas']);
         $measure_units_edit = Permission::create(['name' => 'measure_units_edit', 'descriptions' => 'Editar unida de medida']);
         $measure_units_destroy = Permission::create(['name' => 'measure_units_destroy', 'descriptions' => 'Eliminar unida de medida']);
+        
+        /* PROVEEDORES*/
+        $supplier_index = Permission::create(['name' => 'supplier_index', 'descriptions' => 'Listar todos los proveedores']);
+        $supplier_create = Permission::create(['name' => 'supplier_create', 'descriptions' => 'Crear proveedor']);
+        $supplier_edit = Permission::create(['name' => 'supplier_edit', 'descriptions' => 'Editar proveedor']);
+        $supplier_destroy = Permission::create(['name' => 'supplier_destroy', 'descriptions' => 'Eliminar proveedor']);
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
@@ -58,7 +64,7 @@ class PermissionsSeeder extends Seeder
             $change_role, $category_article_index, $category_article_create,
             $category_article_index, $category_article_create, $category_article_edit, $category_article_destroy,
             $measure_units_index, $measure_units_create, $measure_units_edit, $measure_units_destroy,
-
+            $supplier_index, $supplier_create, $supplier_edit, $supplier_destroy,
         ];
         
         $encargado->syncPermissions($permission_encargado);
