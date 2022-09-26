@@ -58,6 +58,8 @@ Route::middleware([
     Route::post('/supplier/change', [SupplierController::class, 'update'])->name('supplier.change');
     Route::post('/supplier/delete', [SupplierController::class, 'destroy'])->name('supplier.delete');
     
+    // Articles
+    Route::post('/article/save', [ArticleController::class, 'store'])->name('article.save');
     
 });
 
