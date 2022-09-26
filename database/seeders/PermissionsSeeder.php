@@ -54,6 +54,12 @@ class PermissionsSeeder extends Seeder
         $supplier_create = Permission::create(['name' => 'supplier_create', 'descriptions' => 'Crear proveedor']);
         $supplier_edit = Permission::create(['name' => 'supplier_edit', 'descriptions' => 'Editar proveedor']);
         $supplier_destroy = Permission::create(['name' => 'supplier_destroy', 'descriptions' => 'Eliminar proveedor']);
+        
+        /* ARTÍCULOS*/
+        $article_index = Permission::create(['name' => 'article_index', 'descriptions' => 'Listar todos los artículos']);
+        $article_create = Permission::create(['name' => 'article_create', 'descriptions' => 'Crear artículo']);
+        $article_edit = Permission::create(['name' => 'article_edit', 'descriptions' => 'Editar artículo']);
+        $article_destroy = Permission::create(['name' => 'article_destroy', 'descriptions' => 'Eliminar artículo']);
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
@@ -65,6 +71,7 @@ class PermissionsSeeder extends Seeder
             $category_article_index, $category_article_create, $category_article_edit, $category_article_destroy,
             $measure_units_index, $measure_units_create, $measure_units_edit, $measure_units_destroy,
             $supplier_index, $supplier_create, $supplier_edit, $supplier_destroy,
+            $article_index, $article_create, $article_edit, $article_destroy,
         ];
         
         $encargado->syncPermissions($permission_encargado);

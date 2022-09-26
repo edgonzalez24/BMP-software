@@ -7,6 +7,7 @@ use Database\Seeders\PermissionsSeeder;
 use Database\Seeders\CategoryArticleSeeder;
 use Database\Seeders\MeasureUnitsSeeder;
 use Database\Seeders\SupplierSeeder;
+use Database\Seeders\ArticleSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
     {
         // Reseteando tablas
         $this->truncateTables([
+            'suppliers',
             'permissions',
             'roles',
             'role_has_permissions',
@@ -29,8 +31,8 @@ class DatabaseSeeder extends Seeder
             'team_invitations',
             'team_user',
             'category_articles',
+            'articles',
             'measure_units',
-            'suppliers'
         ]);
         
         $this->call(PermissionsSeeder::class);
@@ -38,6 +40,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoryArticleSeeder::class);
         $this->call(MeasureUnitsSeeder::class);
         $this->call(SupplierSeeder::class);
+        $this->call(ArticleSeeder::class);
 
     }
 

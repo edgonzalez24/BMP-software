@@ -20,6 +20,8 @@ class CreateArticlesTable extends Migration
             $table->string('comment')->comment('Aclaraciones, comentarios, observaciones del o los artículos');
             $table->unsignedInteger('measure_unit_id')->comment('ID de la unidad de medida');
             $table->boolean('active')->default(true)->comment('Marca al articulo como activo o inactivo ');
+            
+            $table->foreign('measure_unit_id')->references('id')->on('measure_units');
             $table->timestamps();
         });
     }

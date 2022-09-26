@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateSupplierRequest extends FormRequest
+class UpdateArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class UpdateSupplierRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,11 +23,12 @@ class UpdateSupplierRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name'  => 'required|string', 
-            'telephone'  => 'required|string|unique:suppliers', 
-            'email'  => 'required|email', 
-            'active'  => 'required|boolean',
+        return [            
+            'name'  => 'required|string|unique:suppliers,name'.$request->id, 
+            'photo'  => '', 
+            'comment'  => 'string', 
+            'measure_unit_id'  => 'required|boolean',
+            'measure_unit_id'  => 'boolean',
         ];
     }
 }

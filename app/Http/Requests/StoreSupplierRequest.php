@@ -23,10 +23,10 @@ class StoreSupplierRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name'  => 'required|string|unique:suppliers', 
+        return [            
+            'name'  => 'required|string', 
             'telephone'  => 'required|string|unique:suppliers', 
-            'email'  => 'required|email|unique:suppliers', 
+            'email'  => 'required|email', 
             'active'  => 'required|boolean',
         ];
     }
