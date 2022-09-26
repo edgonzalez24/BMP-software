@@ -25,7 +25,7 @@ class StoreArticleRequest extends FormRequest
     {
         return [
             'name'  => 'required|string|unique:suppliers', 
-            'photo'  => '', 
+            'photo'  => 'string', 
             'comment'  => 'string', 
             'measure_unit_id'  => 'required|boolean',
             'measure_unit_id'  => 'boolean',
