@@ -8,7 +8,7 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\CategoryArticleController;
 use App\Http\Controllers\MeasureUnitsController;
 use App\Http\Controllers\SupplierController;
-
+use App\Http\Controllers\PositionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,6 +56,7 @@ Route::middleware([
     // Supliers
     Route::post('/supplier/save', [SupplierController::class, 'store'])->name('supplier.save');
     
+    Route::post('/map', [PositionController::class, 'store'])->name('map.save');
     
 });
 

@@ -48,7 +48,6 @@ const formInitial = useForm({
   email: null,
   active: 1
 });
-console.log(window.Echo)
 const formDelete = useForm({
   id: null
 });

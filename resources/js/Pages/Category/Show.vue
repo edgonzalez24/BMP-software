@@ -18,10 +18,9 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  console.log(window.Echo.channel('category').listen('category'))
-  window.Echo.channel('category')
-  .listen("my-event", (e) => {
-    console.log(e);
+  window.Echo.channel('my-channel')
+  .listen('my-event', (e) => {
+    console.log(e)
   })
 })
 

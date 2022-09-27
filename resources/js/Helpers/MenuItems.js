@@ -12,7 +12,7 @@ export const menuItems = [
     children: [
       {
         name: 'Productos',
-        slug: '',
+        slug: 'location',
         icon: 'fa-box-open'
       },
       {
