@@ -48,7 +48,7 @@ Route::middleware([
     Route::post('/category/change', [CategoryArticleController::class, 'update'])->name('category.change');
     Route::get('/category/delete/{categoryArticle}', [CategoryArticleController::class, 'destroy'])->name('category.delete');
     
-    // CategoryArticle
+    // Measures
     Route::post('/measureUnits/save', [MeasureUnitsController::class, 'store'])->name('measureUnits.save');
     Route::post('/measureUnits/change', [MeasureUnitsController::class, 'update'])->name('measureUnits.change');
     Route::get('/measureUnits/delete/{measureUnits}', [MeasureUnitsController::class, 'destroy'])->name('measureUnits.delete');
@@ -56,7 +56,7 @@ Route::middleware([
     // Supliers
     Route::post('/supplier/save', [SupplierController::class, 'store'])->name('supplier.save');
     Route::post('/supplier/change', [SupplierController::class, 'update'])->name('supplier.change');
-    Route::post('/supplier/delete', [SupplierController::class, 'destroy'])->name('supplier.delete');
+    Route::get('/supplier/delete/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.delete');
     
     // Articles
     Route::post('/article/save', [ArticleController::class, 'store'])->name('article.save');

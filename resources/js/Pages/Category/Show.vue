@@ -203,7 +203,7 @@ const submitDelete = () => {
             Categorias
           </h2>
           <JetButton
-            @click="toggleFormModal(); isEdit = false"
+            @click="isEdit = false; formCreateOrEdit.reset(); toggleFormModal()"
           >
             Crear
           </JetButton>
