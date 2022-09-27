@@ -60,6 +60,8 @@ Route::middleware([
     
     // Articles
     Route::post('/article/save', [ArticleController::class, 'store'])->name('article.save');
+    Route::post('/article/change', [ArticleController::class, 'update'])->name('article.change');
+    Route::get('/article/delete/{article}', [ArticleController::class, 'destroy'])->name('article.delete');
     
 });
 

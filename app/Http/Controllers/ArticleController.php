@@ -25,7 +25,6 @@ class ArticleController extends Controller
         }
 
         $article = new ArticleCollection(Article::orderBy('id', 'desc')->paginate(15));
-        dd($article);
         return Inertia::render('Article/Show',[ 
             'article' => $article,
         ]);
@@ -56,26 +55,26 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Article $article)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateArticleRequest  $request
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(UpdateArticleRequest $request)
     {
-        //
+        if ( ! Auth::user()->can('article_edit')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        } 
+
+        $validated = $request->validated($request->all());
+        try {
+            $article = Article::find($request->get('article_id'));
+            $article->update($request->all());
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
 
     /**
@@ -86,6 +85,21 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        if ( ! Auth::user()->can('article_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+        
+        try {
+            /* PARA IMPLEMENTAR CUANDO SE MANEJEN LOS STOCKS */
+            // Un artículo no puede ser eliminado si tiene existencias en estocks
+            /* if (count($article->stocks) > 0) {                
+                return redirect()->back()->withErrors(['warning' => 'No se puede eliminar un artículo que tenga unidades en existencias en estock!.']);
+            } */
+
+            $article->delete();
+            return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
     }
 }

@@ -24,7 +24,7 @@ class UpdateArticleRequest extends FormRequest
     public function rules()
     {
         return [            
-            'name'  => 'required|string|unique:suppliers,name'.$request->id, 
+            'name'  => 'required|string|unique:suppliers', 
             'photo'  => '', 
             'comment'  => 'string', 
             'measure_unit_id'  => 'required|boolean',

@@ -27,4 +27,14 @@ class Article extends Model
     {
         return $this->belongsTo(MeasureUnits::class);
     }
+
+    /**
+     * Get all of the comments for the Article
+     * Un artículo tiene muchas unidades relacionadas en stocks
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    /* public function stocks()
+    {
+        return $this->hasMany(Stock::class);
+    } */
 }
