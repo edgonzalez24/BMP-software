@@ -8,6 +8,7 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\CategoryArticleController;
 use App\Http\Controllers\MeasureUnitsController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,7 @@ Route::middleware([
     Route::get('/dashboard/categories',  [CategoryArticleController::class, 'index'])->name('categories');
     Route::get('/dashboard/measures', [MeasureUnitsController::class, 'index'])->name('measures');
     Route::get('/dashboard/suppliers', [SupplierController::class, 'index'])->name('suppliers');
+    Route::get('/dashboard/articles', [ArticleController::class, 'index'])->name('articles');
     
     
     // Routes only to request data(not views)
@@ -56,6 +58,8 @@ Route::middleware([
     Route::post('/supplier/change', [SupplierController::class, 'update'])->name('supplier.change');
     Route::get('/supplier/delete/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.delete');
     
+    // Articles
+    Route::post('/article/save', [ArticleController::class, 'store'])->name('article.save');
     
 });
 
