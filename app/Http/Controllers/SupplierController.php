@@ -64,6 +64,7 @@ class SupplierController extends Controller
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         } 
 
+        $validated = $request->validated($request->all());
         try {
             $supplier = Supplier::find($request->get('supplier_id'));
             $supplier->update($request->all());
