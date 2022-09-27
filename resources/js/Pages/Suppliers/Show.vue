@@ -43,6 +43,7 @@ const isEdit = ref(false);
 const statusModalForm = ref(false);
 const statusModalDelete = ref(false);
 const formInitial = useForm({
+  supplier_id: null,
   name: null,
   telephone: null,
   email: null,
@@ -57,6 +58,15 @@ const toggleFormModal = () => {
 const toggleDeleteModal = () => {
   statusModalDelete.value = !statusModalDelete.value;
 };
+const selectItem = item => {
+  formInitial.name = item.name;
+  formInitial.supplier_id = item.id;
+  formInitial.telephone = item.telephone;
+  formInitial.active = item.active;
+  formInitial.email = item.email;
+  isEdit.value = true;
+  toggleFormModal();
+};
 const selectDeleteItem = item => {
   formDelete.id = item.id;
   toggleDeleteModal();
@@ -65,7 +75,9 @@ const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
 const totalPages = computed(() => Math.ceil(props.suppliers.total / props.suppliers.per_page));
 
 const submitForm = () => {
-  formInitial.post(route('supplier.save'), {
+  isLoading.value = true;
+  if (isEdit.value) { 
+    formInitial.post(route('supplier.change'), {
       onSuccess: () => {
         toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         toggleFormModal()
@@ -83,6 +95,47 @@ const submitForm = () => {
         isLoading.value = false
       }
     })
+  } else {
+    formInitial.post(route('supplier.save'), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        toggleFormModal()
+        formInitial.reset();
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
+        }
+      },
+      onFinish: () => {
+        isLoading.value = false
+      }
+    })
+  }
+}
+
+
+const submitDelete = () => {
+  isLoading.value = true;
+  formDelete.get(route('supplier.delete', formDelete.id), {
+    onSuccess: () => {
+      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+    },
+    onError: () => {
+      const errors = usePage().props.value.errors;
+      for (const key in errors) {
+        if (Object.hasOwnProperty.call(errors, key)) {
+          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        }
+      }
+    },
+    onFinish: () => {
+      isLoading.value = false;
+    }
+  });
 }
 </script>
 
@@ -185,7 +238,7 @@ const submitForm = () => {
             Proveedores
           </h2>
           <JetButton
-            @click="toggleFormModal"
+            @click="isEdit = false; formInitial.reset();toggleFormModal();"
           >
             Añadir
           </JetButton>
@@ -209,7 +262,7 @@ const submitForm = () => {
                 <td class="text-center p-2 md:text-base text-xs">
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
-                      <a @click="true" class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                      <a @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
                       <a @click="selectDeleteItem(item)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                     </div>
                   </div>
