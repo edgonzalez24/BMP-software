@@ -21,7 +21,7 @@ import { useForm, usePage } from '@inertiajs/inertia-vue3';
     let marker = new google.maps.Marker;
     const map = new google.maps.Map(mapDiv.value, {
       center: currPos.value,
-      zoom: 13
+      zoom: 15
     })
     const toggleBounce = () => {
       if (marker.getAnimation() !== null) {
@@ -38,15 +38,8 @@ import { useForm, usePage } from '@inertiajs/inertia-vue3';
     });
     marker.addListener("click", toggleBounce);
   }
-  const listen = () => {
-    window.Echo.channel('location')
-      .listen('.SendPosition', (e) => {
-        console.log(e.location)
-      })
-  }
   watch([coords], () => {
     initMap()
-    listen()
   });
 
   const dataForm = useForm(

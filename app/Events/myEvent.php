@@ -5,6 +5,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\Channel;
 
 class MyEvent implements ShouldBroadcast
 {
@@ -19,7 +20,7 @@ class MyEvent implements ShouldBroadcast
 
   public function broadcastOn()
   {
-      return ['my-channel'];
+      return new Channel('my-channel');
   }
 
   public function broadcastAs()
