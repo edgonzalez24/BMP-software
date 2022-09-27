@@ -24,9 +24,9 @@ class ArticleController extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $article = new ArticleCollection(Article::orderBy('id', 'desc')->paginate(15));
+        $articles = new ArticleCollection(Article::orderBy('id', 'desc')->paginate(15));
         return Inertia::render('Article/Show',[ 
-            'article' => $article,
+            'articles' => $articles,
         ]);
     }
 

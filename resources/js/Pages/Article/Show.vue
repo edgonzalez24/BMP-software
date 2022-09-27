@@ -1,5 +1,8 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+defineProps({
+  articles: Object
+})
 </script>
 
 <template>
