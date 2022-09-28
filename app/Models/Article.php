@@ -14,6 +14,7 @@ class Article extends Model
         'photo', 
         'comment',
         'measure_unit_id',
+        'category_id',
         'active'
     ];
 
@@ -37,4 +38,14 @@ class Article extends Model
     {
         return $this->hasMany(Stock::class);
     } */
+    
+    /**
+     * Get the category that owns the Article
+     * Un articulo pertenece a una categoría
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(CategoryArticle::class);
+    }
 }

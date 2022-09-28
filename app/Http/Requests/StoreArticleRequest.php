@@ -28,7 +28,8 @@ class StoreArticleRequest extends FormRequest
             'photo'  => 'string', 
             'comment'  => 'string', 
             'measure_unit_id'  => 'required|boolean',
-            'measure_unit_id'  => 'boolean',
+            'category_id'  => 'required|boolean',
+            'active'  => 'boolean',
         ];
     }
 }
