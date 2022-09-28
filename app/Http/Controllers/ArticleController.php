@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\CategoryArticle;
+use App\Models\MeasureUnits;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
@@ -27,11 +28,11 @@ class ArticleController extends Controller
 
         $article = new ArticleCollection(Article::orderBy('id', 'desc')->paginate(15));
         $category = CategoryArticle::orderBy('id', 'desc')->get();
-        
-        return response()->json(['category' => $category, 'article' => $article]);
+        $measureUnits = MeasureUnits::orderBy('id', 'desc')->get();
         return Inertia::render('Article/Show',[ 
-            'article' => $article,
-            'category' => $category,
+            'articles' => $article,
+            'categories' => $category,
+            'measures_units' => $measureUnits
         ]);
     }
 
