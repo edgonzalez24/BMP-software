@@ -101,7 +101,7 @@ class ArticleController extends Controller
                 return redirect()->back()->withErrors(['warning' => 'No se puede eliminar un artículo que tenga unidades en existencias en estock!.']);
             } */
 
-            $supplier->delete();
+            $article->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
