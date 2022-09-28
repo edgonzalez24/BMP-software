@@ -28,7 +28,8 @@ class UpdateArticleRequest extends FormRequest
             'photo'  => '', 
             'comment'  => 'string', 
             'measure_unit_id'  => 'required|boolean',
-            'measure_unit_id'  => 'boolean',
+            'category_id'  => 'required|boolean',
+            'active'  => 'boolean',
         ];
     }
 }

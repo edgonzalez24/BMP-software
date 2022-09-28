@@ -13,4 +13,14 @@ class CategoryArticle extends Model
     protected $fillable = [
         'name'
     ];
+
+    /**
+     * Get all of the article for the CategoryArticle
+     * Una categoría tiene muchos articulos
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function article()
+    {
+        return $this->hasMany(Article::class);
+    }
 }

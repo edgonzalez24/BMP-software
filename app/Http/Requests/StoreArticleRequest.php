@@ -24,11 +24,12 @@ class StoreArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'  => 'required|string|unique:suppliers', 
+            'name'  => 'required|string|unique:articles', 
             'photo'  => 'string', 
             'comment'  => 'string', 
-            'measure_unit_id'  => 'required|boolean',
-            'measure_unit_id'  => 'boolean',
+            'measure_unit_id'  => 'required',
+            'category_id'  => 'required',
+            'active'  => 'boolean',
         ];
     }
 }

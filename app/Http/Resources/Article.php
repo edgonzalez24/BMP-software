@@ -19,7 +19,8 @@ class Article extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'measure_unit' => $this->measure_unit->name,
-            'active' => $this->active === 0 ? 'Inactivo' : 'Activo',      
+            'active' => $this->active,
+            'category_id' => $this->category->name
             /* 'created' => $this->created_at->diffForHumans(),
             'updated' => $this->updated_at->diffForHumans(),
             'deleted' => $this->deleted_at->diffForHumans(),
