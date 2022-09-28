@@ -174,7 +174,7 @@ const submitDelete = () => {
           <v-select 
             v-model="formInitial.measure_unit_id"
             :options="measures_units.length ? measures_units : []"
-            :reduce="(option) => option.id" label="name" placeholder="Seleccionar una categoria"
+            :reduce="(option) => option.id" label="name" placeholder="Seleccionar unidad de medida"
             class="appearance-none capitalize"
           >
             <template #open-indicator="{ attributes }">
