@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryArticleController;
 use App\Http\Controllers\MeasureUnitsController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,7 @@ Route::middleware([
     Route::get('/dashboard/measures', [MeasureUnitsController::class, 'index'])->name('measures');
     Route::get('/dashboard/suppliers', [SupplierController::class, 'index'])->name('suppliers');
     Route::get('/dashboard/articles', [ArticleController::class, 'index'])->name('articles');
+    Route::get('/dashboard/stocks', [StockController::class, 'index'])->name('stocks');
     
     
     // Routes only to request data(not views)

@@ -30,11 +30,11 @@ class Article extends Model
 
     /**
      * Get all of the comments for the Article
-     * Un artículo tiene muchas unidades relacionadas en stocks
+     * Un artículo tiene muchas entradas en stock relacionadas
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    /* public function stocks()
+    public function stocks()
     {
         return $this->hasMany(Stock::class);
-    } */
+    }
 }

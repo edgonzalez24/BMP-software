@@ -8,6 +8,7 @@ use Database\Seeders\CategoryArticleSeeder;
 use Database\Seeders\MeasureUnitsSeeder;
 use Database\Seeders\SupplierSeeder;
 use Database\Seeders\ArticleSeeder;
+use Database\Seeders\StockSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
             'category_articles',
             'articles',
             'measure_units',
+            'stocks',
         ]);
         
         $this->call(PermissionsSeeder::class);
@@ -41,6 +43,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MeasureUnitsSeeder::class);
         $this->call(SupplierSeeder::class);
         $this->call(ArticleSeeder::class);
+        $this->call(StockSeeder::class);
 
     }
 
