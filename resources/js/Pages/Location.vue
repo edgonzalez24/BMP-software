@@ -13,6 +13,12 @@ import { useForm, usePage } from '@inertiajs/inertia-vue3';
   const loader = new Loader({ apiKey: import.meta.env.VITE_GOOGLE_MAP_APP_KEY });
   const mapDiv = ref(null);
   onMounted(async() => {
+    window.Echo.channel('location')
+      .listen('.App\\Events\\SendPosition', (e) => {
+        console.log(e.location)
+        coords.value.latitude = e.location.lat
+        coords.value.longitude = e.location.long
+      });
     if(currPos.value) {
       await loader.load()
     }
@@ -49,23 +55,11 @@ import { useForm, usePage } from '@inertiajs/inertia-vue3';
     }
   )
 
-  const send = () => {
-    dataForm.lat = currPos.value.lat
-    dataForm.long = currPos.value.lng
-
-    dataForm.post(route('map.save'), {
-      onSuccess: () => {
-        console.log(usePage().props.value.flash.success)
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          console.log(errors[key])
-        }
-      },
-    })
-  }
-  
+  // setInterval(() => {
+  //   dataForm.lat = currPos.value.lat + 150
+  //   dataForm.long = currPos.value.lng + 100
+  //   dataForm.post(route('map.save'))
+  // }, 20000);
 
 </script>
 <template>
@@ -75,13 +69,6 @@ import { useForm, usePage } from '@inertiajs/inertia-vue3';
       <p>Longitude: {{ currPos.lng.toFixed(2) }}</p>
       <div class="mt-10">
         <div ref="mapDiv" style="width:100%; height: 50vh;"></div>
-      </div>
-      <div class="mt-10">
-        <button
-          @click="send"
-        >
-          Guardar
-        </button>
       </div>
     </div>
   </AppLayout>

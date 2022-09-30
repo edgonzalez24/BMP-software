@@ -13,7 +13,7 @@ class PositionController extends Controller
         $lat = $request->input('lat');
         $long = $request->input('long');
         $location = ["lat" => $lat, "long" => $long];
-        event(new SendPosition($location));
+        SendPosition::dispatch($location);
 
         return redirect()->back()->with('success', $location);
     }

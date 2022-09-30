@@ -18,10 +18,11 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  window.Echo.channel('my-channel')
-    .listen('.my-event', (e) => {
-    console.log(e)
-  })
+
+  window.Echo.channel('public')
+    .listen('.App\\Events\\PublicEvent', (e) => {
+      console.log(e)
+    });
 })
 
 

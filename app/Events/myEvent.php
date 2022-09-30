@@ -18,13 +18,13 @@ class MyEvent implements ShouldBroadcast
       $this->message = $message;
   }
 
-  public function broadcastOn()
+  public function broadcastOn(): Channel
   {
-      return new Channel('my-channel');
+      return new Channel('my-channel-test');
   }
 
   public function broadcastAs()
   {
-      return 'my-event';
+      return 'my-event-test';
   }
 }

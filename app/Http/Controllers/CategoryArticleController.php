@@ -9,7 +9,7 @@ use App\Http\Requests\StoreCategoryArticleRequest;
 use App\Http\Requests\UpdateCategoryArticleRequest;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use App\Events\myEvent;
+use App\Events\PublicEvent;
 
 class CategoryArticleController extends Controller
 {
@@ -59,7 +59,7 @@ class CategoryArticleController extends Controller
 
         $validated = $request->validated();
 
-        event(new MyEvent('hello world'));
+        PublicEvent::dispatch('Created');
         
         try {
             $categoryArticle = new CategoryArticle($request->all());
