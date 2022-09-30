@@ -17,13 +17,13 @@ class Stock extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'article_id' => $this->article->name,
+            'article' => $this->article,
             'quantity_items' => intval($this->quantity_items),
             'units_for_unit' => $this->units_for_unit,
             'buy_price' => $this->buy_price,
             'sale_price' => $this->sale_price,
-            'supplier_id' => $this->supplier->name,
-            'measure_unit_id' => $this->measure_unit->name,
+            'supplier' => $this->supplier,
+            'measure_unit' => $this->measure_unit,
             /* 'created' => $this->created_at->diffForHumans(),
             'updated' => $this->updated_at->diffForHumans(),
             'deleted' => $this->deleted_at->diffForHumans(),
