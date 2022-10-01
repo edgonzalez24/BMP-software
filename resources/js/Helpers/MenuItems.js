@@ -44,7 +44,7 @@ export const menuItems = [
     children: [
       {
         name: 'Reportes',
-        slug: '',
+        slug: 'location',
         icon: 'fa-chart-simple'
       },
     ]
