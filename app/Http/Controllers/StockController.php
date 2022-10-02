@@ -47,7 +47,20 @@ class StockController extends Controller
      */
     public function store(StoreStockRequest $request)
     {
-        //
+        if ( ! Auth::user()->can('stock_create')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        $validated = $request->validated();
+        
+        try {
+            $stock = new Stock($request->all());
+            $stock->save();
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+
+        return redirect()->back()->with('success', 'Registro creado correctamente!.');
     }
 
     /**

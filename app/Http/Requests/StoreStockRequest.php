@@ -25,12 +25,13 @@ class StoreStockRequest extends FormRequest
     {
         return [
             'article_id' => 'requerid|integer',
-            'quantity_items' => 'integer',
-            'units_for_unit' => 'requerid|',
+            'quantity_items' => 'requerid|integer',
+            'units_for_unit' => 'integer',
             'buy_price' => 'requerid|float',
-            'sale_price' => 'requerid|float',
+            'sale_price' => 'float',
             'supplier_id' => 'requerid|integer',
             'measure_unit_id' => 'requerid|integer',
+            'comment' => 'string',
         ];
     }
 }

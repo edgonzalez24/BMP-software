@@ -31,6 +31,7 @@ class UpdateStockRequest extends FormRequest
             'sale_price' => 'requerid|float',
             'supplier_id' => 'requerid|integer',
             'measure_unit_id' => 'requerid|integer',
+            'comment' => 'string',
         ];
     }
 }
