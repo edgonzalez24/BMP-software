@@ -24,11 +24,12 @@ class UpdateArticleRequest extends FormRequest
     public function rules()
     {
         return [            
-            'name'  => 'required|string|unique:suppliers', 
+            'name'  => 'required|string', 
             'photo'  => '', 
             'comment'  => 'string', 
-            'measure_unit_id'  => 'required|boolean',
-            'measure_unit_id'  => 'boolean',
+            'measure_unit_id'  => 'required',
+            'category_id'  => 'required',
+            'active'  => 'boolean',
         ];
     }
 }

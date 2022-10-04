@@ -10,7 +10,7 @@ use App\Http\Controllers\MeasureUnitsController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\StockController;
-
+use App\Http\Controllers\PositionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,6 +38,8 @@ Route::middleware([
     Route::get('/dashboard/suppliers', [SupplierController::class, 'index'])->name('suppliers');
     Route::get('/dashboard/articles', [ArticleController::class, 'index'])->name('articles');
     Route::get('/dashboard/stocks', [StockController::class, 'index'])->name('stocks');
+
+    Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
     
     
     // Routes only to request data(not views)
@@ -73,6 +75,9 @@ Route::middleware([
     Route::post('/stock/save', [StockController::class, 'store'])->name('stock.save');
     Route::post('/stock/change', [StockController::class, 'update'])->name('stock.change');
     Route::get('/stock/delete/{stock}', [StockController::class, 'destroy'])->name('stock.delete');
+
+    // Map
+    Route::post('/map', [PositionController::class, 'store'])->name('map.save');
     
 });
 
