@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('stoks', function (Blueprint $table) {
+        Schema::create('stocks', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('article_id')->comment('ID del articulo');
             $table->string('quantity_items')->comment('Cantidad de artículos respecto a la unidad de medida');
@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stoks');
+        Schema::dropIfExists('stocks');
     }
 };

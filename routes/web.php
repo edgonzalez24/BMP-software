@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryArticleController;
 use App\Http\Controllers\MeasureUnitsController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\PositionController;
 /*
 |--------------------------------------------------------------------------
@@ -36,12 +37,17 @@ Route::middleware([
     Route::get('/dashboard/measures', [MeasureUnitsController::class, 'index'])->name('measures');
     Route::get('/dashboard/suppliers', [SupplierController::class, 'index'])->name('suppliers');
     Route::get('/dashboard/articles', [ArticleController::class, 'index'])->name('articles');
+    Route::get('/dashboard/stocks', [StockController::class, 'index'])->name('stocks');
 
     Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
     
     
     // Routes only to request data(not views)
+
+    // Users
     Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
+    
+    // Roles and permissions
     Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('invite.user');
     Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');
 
@@ -64,6 +70,13 @@ Route::middleware([
     Route::post('/article/save', [ArticleController::class, 'store'])->name('article.save');
     Route::post('/article/change', [ArticleController::class, 'update'])->name('article.change');
     Route::get('/article/delete/{article}', [ArticleController::class, 'destroy'])->name('article.delete');
+
+    // Stocks
+    Route::post('/stock/save', [StockController::class, 'store'])->name('stock.save');
+    Route::post('/stock/change', [StockController::class, 'update'])->name('stock.change');
+    Route::get('/stock/delete/{stock}', [StockController::class, 'destroy'])->name('stock.delete');
+
+    // Map
     Route::post('/map', [PositionController::class, 'store'])->name('map.save');
     
 });
