@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('type_clients', function (Blueprint $table) {
+        Schema::create('method_paids', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 10)->comment('Nombre descriptivo del tipo del tipo de cliente');
-            $table->string('description')->comment('Descripción del tipo de cliente');
-
+            $table->string('name')->comment('Nombre del método o madalidad de pago');
+            $table->string('description')->nullable()->comment('Descripción del método o modalidad de pago');
             $table->timestamps();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      *
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('type_clients');
+        Schema::dropIfExists('method_paids');
     }
 };

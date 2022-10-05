@@ -9,6 +9,8 @@ use Database\Seeders\MeasureUnitsSeeder;
 use Database\Seeders\SupplierSeeder;
 use Database\Seeders\ArticleSeeder;
 use Database\Seeders\StockSeeder;
+use Database\Seeders\MethodPaidSeeder;
+use Database\Seeders\TypeClientSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -35,6 +37,8 @@ class DatabaseSeeder extends Seeder
             'articles',
             'measure_units',
             'stocks',
+            'method_paids',
+            'type_clients',
         ]);
         
         $this->call(PermissionsSeeder::class);
@@ -44,6 +48,8 @@ class DatabaseSeeder extends Seeder
         $this->call(SupplierSeeder::class);
         $this->call(ArticleSeeder::class);
         $this->call(StockSeeder::class);
+        $this->call(MethodPaidSeeder::class);
+        $this->call(TypeClientSeeder::class);
 
     }
 
