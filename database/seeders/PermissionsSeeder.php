@@ -63,9 +63,10 @@ class PermissionsSeeder extends Seeder
         
         /* EXISTENCIAS / STOCKS */
         $stock_index = Permission::create(['name' => 'stock_index', 'descriptions' => 'Listar todas las existencias de stock']);
-        $stock_create = Permission::create(['name' => 'stock_create', 'descriptions' => 'Crear una entrada en estock']);
+        $stock_create = Permission::create(['name' => 'stock_create', 'descriptions' => 'Crear una entrada en stock']);
         $stock_edit = Permission::create(['name' => 'stock_edit', 'descriptions' => 'Editar editar una entrada en stock']);
         $stock_destroy = Permission::create(['name' => 'stock_destroy', 'descriptions' => 'Eliminar una entrada en stock']);
+        $stock_show = Permission::create(['name' => 'stock_show', 'descriptions' => 'Ver entrada de stock']);
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
@@ -78,7 +79,7 @@ class PermissionsSeeder extends Seeder
             $measure_units_index, $measure_units_create, $measure_units_edit, $measure_units_destroy,
             $supplier_index, $supplier_create, $supplier_edit, $supplier_destroy,
             $article_index, $article_create, $article_edit, $article_destroy,
-            $stock_index, $stock_create, $stock_edit, $stock_destroy,
+            $stock_index, $stock_create, $stock_edit, $stock_destroy, $stock_show,
         ];
         
         $encargado->syncPermissions($permission_encargado);

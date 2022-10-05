@@ -24,8 +24,9 @@ class Stock extends JsonResource
             'sale_price' => $this->sale_price,
             'supplier' => $this->supplier,
             'measure_unit' => $this->measure_unit,
-            /* 'created' => $this->created_at->diffForHumans(),
-            'updated' => $this->updated_at->diffForHumans(),
+            'comment' => $this->comment,
+            'created_at' => $this->created_at
+            /* 'updated' => $this->updated_at->diffForHumans(),
             'deleted' => $this->deleted_at->diffForHumans(),
             'created_at' => $this->created_at->format('d-m-y'),
             'updated_at' => $this->updated_at->format('d-m-y'),

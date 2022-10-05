@@ -13,7 +13,7 @@ class StoreStockRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,13 +24,13 @@ class StoreStockRequest extends FormRequest
     public function rules()
     {
         return [
-            'article_id' => 'requerid|integer',
-            'quantity_items' => 'requerid|integer',
+            'article_id' => 'required|integer',
+            'quantity_items' => 'required|integer',
             'units_for_unit' => 'integer',
-            'buy_price' => 'requerid|float',
-            'sale_price' => 'float',
-            'supplier_id' => 'requerid|integer',
-            'measure_unit_id' => 'requerid|integer',
+            'buy_price' => 'required|numeric',
+            'sale_price' => 'numeric',
+            'supplier_id' => 'required|integer',
+            'measure_unit_id' => 'required|integer',
             'comment' => 'string',
         ];
     }

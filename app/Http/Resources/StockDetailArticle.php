@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Article extends JsonResource
+class StockDetailArticle extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,7 +14,6 @@ class Article extends JsonResource
      */
     public function toArray($request)
     {
-        //return parent::toArray($request);
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -22,7 +21,7 @@ class Article extends JsonResource
             'active' => $this->active,
             'category' => $this->category,
             'comment' => $this->comment,
-            'stocks' => $this->stocks
+            'stock' => $this->countTotalStock($this->stocks)
             /* 'created' => $this->created_at->diffForHumans(),
             'updated' => $this->updated_at->diffForHumans(),
             'deleted' => $this->deleted_at->diffForHumans(),
@@ -30,5 +29,10 @@ class Article extends JsonResource
             'updated_at' => $this->updated_at->format('d-m-y'),
             'deleted_at' => $this->deleted_at->format('d-m-y'), */
         ];
+    }
+
+    protected function countTotalStock($stock)
+    {
+        return $stock->pluck('quantity_items')->sum();
     }
 }
