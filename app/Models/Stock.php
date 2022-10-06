@@ -17,6 +17,7 @@ class Stock extends Model
         'sale_price',
         'supplier_id',
         'measure_unit_id',
+        'comment'
     ];
 
     /**

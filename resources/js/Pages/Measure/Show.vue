@@ -206,7 +206,7 @@ const submitDelete = () => {
             Crear
           </JetButton>
         </div>
-        <div class="bg-white overflow-hidden shadow-xl rounded-lg min-h-base">
+        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base">
           <Table :header="header">
             <tbody class="px-5">
               <tr v-for="item in measureUnits.data" class="mt-2">

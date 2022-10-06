@@ -12,8 +12,8 @@ export const menuItems = [
     children: [
       {
         name: 'Stock',
-        slug: '',
-        icon: 'fa-box-open'
+        slug: 'stocks',
+        icon: 'fa-cart-plus'
       },
       {
         name: 'Artículos',
