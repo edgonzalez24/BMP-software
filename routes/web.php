@@ -11,6 +11,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\ClientController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,6 +39,7 @@ Route::middleware([
     Route::get('/dashboard/suppliers', [SupplierController::class, 'index'])->name('suppliers');
     Route::get('/dashboard/articles', [ArticleController::class, 'index'])->name('articles');
     Route::get('/dashboard/stocks', [StockController::class, 'index'])->name('stocks');
+    Route::get('/dashboard/clients', [ClientController::class, 'index'])->name('clients');
 
     Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
     
@@ -75,6 +77,11 @@ Route::middleware([
     Route::post('/stock/save', [StockController::class, 'store'])->name('stock.save');
     Route::post('/stock/change', [StockController::class, 'update'])->name('stock.change');
     Route::get('/stock/delete/{stock}', [StockController::class, 'destroy'])->name('stock.delete');
+
+    // clients
+    Route::post('/client/save', [ClientController::class, 'store'])->name('client.save');
+    Route::post('/client/change', [ClientController::class, 'update'])->name('client.change');
+    Route::get('/client/delete/{client}', [ClientController::class, 'destroy'])->name('client.delete');
 
     // Map
     Route::post('/map', [PositionController::class, 'store'])->name('map.save');
