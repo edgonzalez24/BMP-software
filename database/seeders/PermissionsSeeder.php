@@ -66,6 +66,12 @@ class PermissionsSeeder extends Seeder
         $stock_create = Permission::create(['name' => 'stock_create', 'descriptions' => 'Crear una entrada en estock']);
         $stock_edit = Permission::create(['name' => 'stock_edit', 'descriptions' => 'Editar editar una entrada en stock']);
         $stock_destroy = Permission::create(['name' => 'stock_destroy', 'descriptions' => 'Eliminar una entrada en stock']);
+        
+        /* CLIENTES */
+        $client_index = Permission::create(['name' => 'client_index', 'descriptions' => 'Listar todas los clientes']);
+        $client_create = Permission::create(['name' => 'client_create', 'descriptions' => 'Crear una entrada en eclientes']);
+        $client_edit = Permission::create(['name' => 'client_edit', 'descriptions' => 'Editar editar una entrada en clientes']);
+        $client_destroy = Permission::create(['name' => 'client_destroy', 'descriptions' => 'Eliminar una entrada en clientes']);
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
@@ -79,6 +85,7 @@ class PermissionsSeeder extends Seeder
             $supplier_index, $supplier_create, $supplier_edit, $supplier_destroy,
             $article_index, $article_create, $article_edit, $article_destroy,
             $stock_index, $stock_create, $stock_edit, $stock_destroy,
+            $client_index, $client_create, $client_edit, $client_destroy,
         ];
         
         $encargado->syncPermissions($permission_encargado);
