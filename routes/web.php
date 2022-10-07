@@ -39,6 +39,7 @@ Route::middleware([
     Route::get('/dashboard/articles', [ArticleController::class, 'index'])->name('articles');
     Route::get('/dashboard/stocks/{id}/detail', [StockController::class, 'show'])->name('stocks-details');
     Route::get('/dashboard/stocks', [StockController::class, 'index'])->name('stocks');
+    Route::get('/dashboard/clients', function () { return Inertia::render('Clients/Show'); })->name('clients');
 
     Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
     

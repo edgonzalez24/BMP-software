@@ -43,6 +43,11 @@ export const menuItems = [
     icon: '',
     children: [
       {
+        name: 'Clientes',
+        slug: 'clients',
+        icon: 'fa-users'
+      },
+      {
         name: 'Reportes',
         slug: 'location',
         icon: 'fa-chart-simple'
