@@ -13,11 +13,13 @@ import { useForm, usePage, Link } from '@inertiajs/inertia-vue3';
 import Toggle from '@/Components/Shared/Toggle.vue';
 import QuillEditor from '@/Components/Shared/QuillEditor.vue';
 import { POSITION } from 'vue-toastification';
+import DetailArticle from '@/Components/Article/Detail.vue';
 
 const props =  defineProps({
   articles: Object,
   categories: Array,
-  measures_units: Array
+  measures_units: Array,
+  suppliers: Array
 });
 
 
@@ -44,9 +46,11 @@ const header = reactive([
     showInMobile: true
   }
 ]);
+const article = reactive({});
 const isLoading = ref(false);
 const statusModalForm = ref(false);
 const statusModalDelete = ref(false);
+const statusModalDetail = ref(false);
 const isEdit = ref(false);
 const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
 const totalPages = computed(() => Math.ceil(props.articles.meta.total / props.articles.meta.per_page));
@@ -56,6 +60,9 @@ const toggleFormModal = () => {
 const toggleDeleteModal = () => {
   statusModalDelete.value = !statusModalDelete.value;
 };
+const toggleDetailModal = () => {
+  statusModalDetail.value = !statusModalDetail.value;
+}
 const formInitial = useForm({
   article_id: null,
   name: null,
@@ -80,6 +87,10 @@ const selectItem = item => {
   formInitial.category_id = item.category.id;
   isEdit.value = true;
   toggleFormModal();
+};
+const selectDetailItem = item => {
+  article.value = item;
+  toggleDetailModal();
 };
 const submitForm = () => {
   isLoading.value = true;
@@ -214,6 +225,12 @@ const submitDelete = () => {
             </template>
           </v-select>
         </div>
+        <div v-if="isEdit" class="mb-5">
+          <Link :href="`stocks/${formInitial.article_id}/detail`" class="cursor-pointer inline-flex items-center text-base text-blue-600">
+            Explorar Stock 
+            <font-awesome-icon icon="fa-solid fa-right-long" class="text-blue-600 cursor-pointer pl-2" />
+          </Link>
+        </div>
         <div class="flex justify-end mb-5">
           <div class="w-auto flex flex-row space-x-4 justify-between">
             <JetButton background="bg-transparente text-gray-300 focus:ring-transparent focus:border-transparent"
@@ -251,6 +268,12 @@ const submitDelete = () => {
         </div>
       </form>
     </JetModal>
+    <JetModal :show="statusModalDetail" maxWidth="2xl" @close="toggleDetailModal">
+      <DetailArticle
+        :article="article.value"
+        @close="toggleDetailModal"
+      />
+    </JetModal>
     <div class="min-h-screen">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center my-5">
@@ -261,10 +284,10 @@ const submitDelete = () => {
             Añadir
           </JetButton>
         </div>
-        <div class="bg-white overflow-hidden shadow-xl rounded-lg min-h-base">
+        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base">
           <Table :header="header">
             <tbody class="px-5">
-              <tr v-for="item in articles.data" class="mt-2">
+              <tr v-for="item in articles.data" class="mt-2 cursor-pointer hover:bg-slate-50 transition duration-300 ease-in-out" @click="selectDetailItem(item)">
                 <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
                 <td class="text-center p-2 md:text-base text-xs md:block hidden">{{ item.category.name}}</td>
                 <td class="text-center p-2 md:text-base text-xs">
@@ -273,7 +296,7 @@ const submitDelete = () => {
                   </div>
                 </td>
                 <td class="text-center p-2 md:text-base text-xs">{{ item.measure_unit.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 md:text-base text-xs" @click.stop>
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
                       <a @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>

@@ -48,9 +48,9 @@ class ArticleSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [                
-                'name' => 'Arina de Arroz',
+                'name' => 'Harina de Arroz',
                 'photo' => null,
-                'comment' => 'Arina de Arroz',
+                'comment' => 'Harina de Arroz',
                 'measure_unit_id' => 2,
                 'category_id' => 1,
                 'active' => true,

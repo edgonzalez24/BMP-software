@@ -38,6 +38,7 @@ Route::middleware([
     Route::get('/dashboard/measures', [MeasureUnitsController::class, 'index'])->name('measures');
     Route::get('/dashboard/suppliers', [SupplierController::class, 'index'])->name('suppliers');
     Route::get('/dashboard/articles', [ArticleController::class, 'index'])->name('articles');
+    Route::get('/dashboard/stocks/{id}/detail', [StockController::class, 'show'])->name('stocks-details');
     Route::get('/dashboard/stocks', [StockController::class, 'index'])->name('stocks');
     Route::get('/dashboard/clients', [ClientController::class, 'index'])->name('clients');
 

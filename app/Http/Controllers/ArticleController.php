@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Resources\ArticleCollection;
 use App\Http\Resources\Article as ArticleResources;
+use App\Http\Resources\StockDetailArticleCollection;
+use App\Http\Resources\StockDetailArticle as StockDetailArticleResources;
+use App\Models\Supplier;
 
 class ArticleController extends Controller
 {
@@ -26,13 +29,15 @@ class ArticleController extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $article = new ArticleCollection(Article::orderBy('id', 'desc')->paginate(15));
+        $article = new StockDetailArticleCollection(Article::orderBy('id', 'desc')->paginate(15));
         $category = CategoryArticle::orderBy('id', 'desc')->get();
         $measureUnits = MeasureUnits::orderBy('id', 'desc')->get();
+        $supplier = Supplier::orderBy('id', 'ASC')->get();
         return Inertia::render('Article/Show',[ 
             'articles' => $article,
             'categories' => $category,
-            'measures_units' => $measureUnits
+            'measures_units' => $measureUnits,
+            'suppliers' => $supplier
         ]);
     }
 

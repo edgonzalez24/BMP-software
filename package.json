@@ -28,15 +28,17 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "@coders-tm/vue-number-format": "^3.2.1",
         "@fortawesome/fontawesome-svg-core": "^6.1.2",
         "@fortawesome/free-brands-svg-icons": "^6.1.2",
         "@fortawesome/free-regular-svg-icons": "^6.1.2",
         "@fortawesome/free-solid-svg-icons": "^6.1.2",
         "@fortawesome/vue-fontawesome": "^3.0.1",
-        "@vueup/vue-quill": "^1.0.0-beta.10",
         "@googlemaps/js-api-loader": "^1.14.3",
+        "@vueup/vue-quill": "^1.0.0-beta.10",
         "@vueuse/core": "^9.1.1",
         "happy-dom": "^6.0.4",
+        "moment": "^2.29.4",
         "vue-select": "^4.0.0-beta.5",
         "vue-toastification": "^2.0.0-rc.5",
         "vue3-google-map": "^0.15.0",
