@@ -27,7 +27,7 @@ class SupplierSeeder extends Seeder
                     'updated_at' => now(),
                 ],
                 [
-                    'name' => 'Dsitribuidora Rocosa',
+                    'name' => 'Distribuidora Rocosa',
                     'telephone' => '0000 - 0001',
                     'email' => 'dr@dr.com',
                     'active' => true,
