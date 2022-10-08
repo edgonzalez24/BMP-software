@@ -57,26 +57,26 @@ class ClientController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Client  $client
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Client $client)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateClientRequest  $request
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateClientRequest $request, Client $client)
-    {
-        //
+    public function update(UpdateClientRequest $request)
+    {        
+        if ( ! Auth::user()->can('client_edit')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        } 
+
+        $validated = $request->validated($request->all());
+        try {
+            $client = Client::find($request->get('client_id'));
+            $client->update($request->all());
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
 
     /**
@@ -87,6 +87,15 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        if ( ! Auth::user()->can('client_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+        
+        try {
+            $client->delete();
+            return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
     }
 }
