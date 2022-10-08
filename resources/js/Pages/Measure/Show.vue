@@ -64,45 +64,25 @@ const selectDeleteItem = item => {
 };
 const submitCreateOrEdit = () => {
   isLoading.value = true;
-  if(isEdit.value) {
-    formCreateOrEdit.post(route('measureUnits.change'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formCreateOrEdit.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
+  const request = isEdit.value ? 'measureUnits.change' : 'measureUnits.save';
+  formCreateOrEdit.post(route(request), {
+    onSuccess: () => {
+      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+      toggleFormModal()
+      formCreateOrEdit.reset();
+    },
+    onError: () => {
+      const errors = usePage().props.value.errors;
+      for (const key in errors) {
+        if (Object.hasOwnProperty.call(errors, key)) {
+          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         }
-      },
-      onFinish: () => {
-        isLoading.value = false
       }
-    })
-  } else {
-    formCreateOrEdit.post(route('measureUnits.save'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formCreateOrEdit.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
-        }
-      },
-      onFinish: () => {
-        isLoading.value = false
-      }
-    })
-  }
+    },
+    onFinish: () => {
+      isLoading.value = false
+    }
+  })
 };
 const submitDelete = () => {
   isLoading.value = true;

@@ -76,45 +76,25 @@ const totalPages = computed(() => Math.ceil(props.suppliers.total / props.suppli
 
 const submitForm = () => {
   isLoading.value = true;
-  if (isEdit.value) { 
-    formInitial.post(route('supplier.change'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formInitial.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
+  const request = isEdit.value ? 'supplier.change' : 'supplier.save';
+  formInitial.post(route(request), {
+    onSuccess: () => {
+      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+      toggleFormModal()
+      formInitial.reset();
+    },
+    onError: () => {
+      const errors = usePage().props.value.errors;
+      for (const key in errors) {
+        if (Object.hasOwnProperty.call(errors, key)) {
+          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         }
-      },
-      onFinish: () => {
-        isLoading.value = false
       }
-    })
-  } else {
-    formInitial.post(route('supplier.save'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formInitial.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
-        }
-      },
-      onFinish: () => {
-        isLoading.value = false
-      }
-    })
-  }
+    },
+    onFinish: () => {
+      isLoading.value = false
+    }
+  })
 }
 
 

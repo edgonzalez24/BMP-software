@@ -94,45 +94,25 @@ const selectDetailItem = item => {
 };
 const submitForm = () => {
   isLoading.value = true;
-  if (isEdit.value) {
-    formInitial.post(route('article.change'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formInitial.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
+  const request = isEdit.value ? 'article.change' : 'article.save';
+  formInitial.post(route(request), {
+    onSuccess: () => {
+      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+      toggleFormModal()
+      formInitial.reset();
+    },
+    onError: () => {
+      const errors = usePage().props.value.errors;
+      for (const key in errors) {
+        if (Object.hasOwnProperty.call(errors, key)) {
+          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         }
-      },
-      onFinish: () => {
-        isLoading.value = false
       }
-    })
-  } else {
-    formInitial.post(route('article.save'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formInitial.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
-        }
-      },
-      onFinish: () => {
-        isLoading.value = false
-      }
-    })
-  }
+    },
+    onFinish: () => {
+      isLoading.value = false
+    }
+  })
 }
 const submitDelete = () => {
   isLoading.value = true;

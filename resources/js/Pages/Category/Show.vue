@@ -75,45 +75,25 @@ const selectDeleteItem = item => {
 
 const submitCreateOrEdit = () => {
   isLoading.value = true;
-  if(isEdit.value) {
-    formCreateOrEdit.post(route('category.change'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formCreateOrEdit.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
+  const request = isEdit.value ? 'category.change' : 'category.save';
+  formCreateOrEdit.post(route(request), {
+    onSuccess: () => {
+      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+      toggleFormModal()
+      formCreateOrEdit.reset();
+    },
+    onError: () => {
+      const errors = usePage().props.value.errors;
+      for (const key in errors) {
+        if (Object.hasOwnProperty.call(errors, key)) {
+          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         }
-      },
-      onFinish: () => {
-        isLoading.value = false
       }
-    })
-  } else {
-    formCreateOrEdit.post(route('category.save'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formCreateOrEdit.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
-        }
-      },
-      onFinish: () => {
-        isLoading.value = false
-      }
-    })
-  }
+    },
+    onFinish: () => {
+      isLoading.value = false
+    }
+  })
 };
 
 const submitDelete = () => {
