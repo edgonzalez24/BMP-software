@@ -178,7 +178,7 @@
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
             {{ articleDetail.name }}
           </h2>
-          <JetButton @click="toggleFormModal">
+          <JetButton @click="isEdit = false; form.reset(); toggleFormModal()">
             Nuevo
           </JetButton>
         </div>

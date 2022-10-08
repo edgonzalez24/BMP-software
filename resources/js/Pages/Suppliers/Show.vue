@@ -164,12 +164,13 @@ const submitDelete = () => {
           />
         </div>
         <div class="mb-5">
-          <JetLabel for="name" value="Télefono" />
+          <JetLabel for="phone" value="Télefono" />
           <JetInput
-            id="name"
+            id="phone"
             v-model="formInitial.telephone"
             type="text"
             class="mt-1 block w-full"
+            phoneNumber
             autofocus
           />
         </div>

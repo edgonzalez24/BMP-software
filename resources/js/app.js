@@ -13,7 +13,8 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Toast from "vue-toastification";
 import vSelect from "vue-select";
 import { useToast } from "vue-toastification";
-import { QuillEditor } from '@vueup/vue-quill'
+import { QuillEditor } from '@vueup/vue-quill';
+import Maska from 'maska';
 
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -33,6 +34,7 @@ createInertiaApp({
 			myApp.use(plugin)
 			.use(Toast)
 			.use(ZiggyVue, Ziggy)
+			.use(Maska)
 			.mixin({ methods: { route } })
 			.component("v-select", vSelect)
 			.component('FontAwesomeIcon', FontAwesomeIcon)

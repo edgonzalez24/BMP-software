@@ -135,6 +135,7 @@ const submit = () => {
 							v-model="form.telephone"
 							type="text"
 							class="mt-1 block w-full"
+							phoneNumber
 							autofocus
 						/>
 					</div>

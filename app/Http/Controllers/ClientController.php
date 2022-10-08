@@ -8,6 +8,7 @@ use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ClientController extends Controller
 {
@@ -25,8 +26,8 @@ class ClientController extends Controller
 
         $clients = Client::orderBy('id', 'desc')->paginate(15);
         $typeClient = TypeClient::all();
-        return Inertia::render('Client/Show',[ 
-            'client' => $client,
+        return Inertia::render('Clients/Show',[ 
+            'clients' => $clients,
             'typeClient' => $typeClient,
         ]);
         
@@ -43,9 +44,7 @@ class ClientController extends Controller
         if ( ! Auth::user()->can('client_create')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
-
-        $validated = $request->validated();
-        
+    
         try {
             $client = new Client($request->all());
             $client->save();
