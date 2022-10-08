@@ -1,5 +1,4 @@
 <script  setup>
-  import { reactive, computed } from 'vue';
   import JetButton from '@/Components/Button.vue';
 
   const props = defineProps({

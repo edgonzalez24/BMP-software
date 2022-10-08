@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'BMP',
                 'email' => 'main.bmp@gmail.com',
-                'telephone' => '00000000',
+                'telephone' => '0000 - 0000',
                 'email_verified_at' => now(),
                 'password' => bcrypt('12345678'),
                 'created_at' => now(),
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Edwin',
                 'email' => 'edgoca2498@gmail.com',
-                'telephone' => '00000001',
+                'telephone' => '0000 - 0001',
                 'email_verified_at' => now(),
                 'password' => bcrypt('12345678'),
                 'created_at' => now(),
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Álvaro',
                 'email' => 'moralesalvaro308@gmail.com',
-                'telephone' => '00000002',
+                'telephone' => '0000 - 0002',
                 'email_verified_at' => now(),
                 'password' => bcrypt('12345678'),
                 'created_at' => now(),

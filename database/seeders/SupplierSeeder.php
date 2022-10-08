@@ -20,7 +20,7 @@ class SupplierSeeder extends Seeder
             [            
                 [
                     'name' => 'Diana',
-                    'telephone' => '00000000',
+                    'telephone' => '0000 - 0000',
                     'email' => 'diana@diana.com',
                     'active' => true,
                     'created_at' => now(),
@@ -28,7 +28,7 @@ class SupplierSeeder extends Seeder
                 ],
                 [
                     'name' => 'Dsitribuidora Rocosa',
-                    'telephone' => '00000001',
+                    'telephone' => '0000 - 0001',
                     'email' => 'dr@dr.com',
                     'active' => true,
                     'created_at' => now(),
@@ -36,7 +36,7 @@ class SupplierSeeder extends Seeder
                 ],
                 [
                     'name' => 'Suli',
-                    'telephone' => '00000002',
+                    'telephone' => '0000 - 0002',
                     'email' => 'suli@suli.com',
                     'active' => true,
                     'created_at' => now(),

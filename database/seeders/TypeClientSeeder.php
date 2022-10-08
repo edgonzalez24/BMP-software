@@ -25,7 +25,7 @@ class TypeClientSeeder extends Seeder
                     'updated_at' => now(),
                 ],
                 [
-                    'name' => 'Pupuseros',
+                    'name' => 'Pupuserias',
                     'description' => '',
                     'created_at' => now(),
                     'updated_at' => now(),

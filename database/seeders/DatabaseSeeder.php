@@ -11,6 +11,7 @@ use Database\Seeders\ArticleSeeder;
 use Database\Seeders\StockSeeder;
 use Database\Seeders\MethodPaidSeeder;
 use Database\Seeders\TypeClientSeeder;
+use Database\Seeders\ClientSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
             'stocks',
             'method_paids',
             'type_clients',
+            'clients',
         ]);
         
         $this->call(PermissionsSeeder::class);
@@ -50,6 +52,7 @@ class DatabaseSeeder extends Seeder
         $this->call(StockSeeder::class);
         $this->call(MethodPaidSeeder::class);
         $this->call(TypeClientSeeder::class);
+        $this->call(ClientSeeder::class);
 
     }
 
