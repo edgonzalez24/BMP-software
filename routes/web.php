@@ -73,6 +73,8 @@ Route::middleware([
     Route::post('/article/save', [ArticleController::class, 'store'])->name('article.save');
     Route::post('/article/change', [ArticleController::class, 'update'])->name('article.change');
     Route::get('/article/delete/{article}', [ArticleController::class, 'destroy'])->name('article.delete');
+    Route::get('/article/filter', [ArticleController::class, 'filter'])->name('article.filter');
+    Route::get('/article/search', [ArticleController::class, 'search'])->name('article.search');
 
     // Stocks
     Route::post('/stock/save', [StockController::class, 'store'])->name('stock.save');

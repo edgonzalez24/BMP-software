@@ -15,6 +15,7 @@ use App\Http\Resources\Article as ArticleResources;
 use App\Http\Resources\StockDetailArticleCollection;
 use App\Http\Resources\StockDetailArticle as StockDetailArticleResources;
 use App\Models\Supplier;
+use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
 {
@@ -109,6 +110,44 @@ class ArticleController extends Controller
 
             $article->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+    }
+
+    public function filter(Request $request)
+    {
+        try {
+            // Estructurando datos
+            $category = $request->get('category');
+            $measure_unit = $request->get('measure_unit');
+
+            if (isset($category)) {
+                $filter = Article::where('active', '1')->where('category_id', $category)->get();
+                dd($filter);
+            }elseif (isset($measure_unit)) {
+                $filter = Article::where('active', '1')->where('measure_unit_id', $measure_unit)->get();
+                dd($filter);
+            }else{                
+                $filter = Article::where('active', '1')->where('measure_unit_id', $measure_unit)->where('category_id', $category)->get();
+                dd($filter);
+            }
+    
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            $search = $request->get('search');
+            return DB::table("articles")
+            ->where("name", "like", "%" .$search. "%")
+            ->where('active', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(15);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
