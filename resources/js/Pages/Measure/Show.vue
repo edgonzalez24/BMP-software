@@ -64,45 +64,25 @@ const selectDeleteItem = item => {
 };
 const submitCreateOrEdit = () => {
   isLoading.value = true;
-  if(isEdit.value) {
-    formCreateOrEdit.post(route('measureUnits.change'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formCreateOrEdit.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
+  const request = isEdit.value ? 'measureUnits.change' : 'measureUnits.save';
+  formCreateOrEdit.post(route(request), {
+    onSuccess: () => {
+      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+      toggleFormModal()
+      formCreateOrEdit.reset();
+    },
+    onError: () => {
+      const errors = usePage().props.value.errors;
+      for (const key in errors) {
+        if (Object.hasOwnProperty.call(errors, key)) {
+          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         }
-      },
-      onFinish: () => {
-        isLoading.value = false
       }
-    })
-  } else {
-    formCreateOrEdit.post(route('measureUnits.save'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formCreateOrEdit.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
-        }
-      },
-      onFinish: () => {
-        isLoading.value = false
-      }
-    })
-  }
+    },
+    onFinish: () => {
+      isLoading.value = false
+    }
+  })
 };
 const submitDelete = () => {
   isLoading.value = true;
@@ -201,12 +181,12 @@ const submitDelete = () => {
             Unidades de Medidas
           </h2>
           <JetButton
-            @click="toggleFormModal(); isEdit = false"
+            @click="isEdit = false;formCreateOrEdit.reset(); toggleFormModal();"
           >
             Crear
           </JetButton>
         </div>
-        <div class="bg-white overflow-hidden shadow-xl rounded-lg min-h-base">
+        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base">
           <Table :header="header">
             <tbody class="px-5">
               <tr v-for="item in measureUnits.data" class="mt-2">

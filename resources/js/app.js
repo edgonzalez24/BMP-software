@@ -3,6 +3,7 @@ import '../css/app.css';
 import '../scss/main.scss';
 import "vue-toastification/dist/index.css";
 import "vue-select/dist/vue-select.css";
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
@@ -12,6 +13,8 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Toast from "vue-toastification";
 import vSelect from "vue-select";
 import { useToast } from "vue-toastification";
+import { QuillEditor } from '@vueup/vue-quill';
+import Maska from 'maska';
 
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -31,9 +34,11 @@ createInertiaApp({
 			myApp.use(plugin)
 			.use(Toast)
 			.use(ZiggyVue, Ziggy)
+			.use(Maska)
 			.mixin({ methods: { route } })
 			.component("v-select", vSelect)
 			.component('FontAwesomeIcon', FontAwesomeIcon)
+			.component('QuillEditor', QuillEditor)
 			.mount(el);
 		return myApp;
 	},

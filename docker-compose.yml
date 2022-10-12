@@ -51,6 +51,16 @@ services:
     ports:
       - 5173:5173
 
+  soketi:
+    image: 'quay.io/soketi/soketi:0.17-16-alpine'
+    environment:
+      DEBUG: '1'
+    ports:
+      - 6001:6001
+      - 9601:9601
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge

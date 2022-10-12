@@ -11,8 +11,13 @@ export const menuItems = [
     icon: '',
     children: [
       {
-        name: 'Productos',
-        slug: '',
+        name: 'Stock',
+        slug: 'stocks',
+        icon: 'fa-cart-plus'
+      },
+      {
+        name: 'Artículos',
+        slug: 'articles',
         icon: 'fa-box-open'
       },
       {
@@ -38,8 +43,13 @@ export const menuItems = [
     icon: '',
     children: [
       {
+        name: 'Clientes',
+        slug: 'clients',
+        icon: 'fa-users'
+      },
+      {
         name: 'Reportes',
-        slug: '',
+        slug: 'location',
         icon: 'fa-chart-simple'
       },
     ]

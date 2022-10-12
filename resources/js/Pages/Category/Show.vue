@@ -6,15 +6,25 @@ import JetModal from '@/Components/Modal.vue'
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
 import Loading from 'vue3-loading-overlay';
-import { ref, getCurrentInstance, computed, reactive } from 'vue';
+import { ref, getCurrentInstance, computed, reactive, onMounted } from 'vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { POSITION } from 'vue-toastification';
 import Pagination from '@/Components/Shared/Pagination.vue';
+import { Inertia } from '@inertiajs/inertia';
 
 // Props
 const props = defineProps({
   categoryArticle: Object
-});
+})
+
+onMounted(() => {
+
+  window.Echo.channel('public')
+    .listen('.App\\Events\\PublicEvent', (e) => {
+      console.log(e)
+    });
+})
+
 
 // Setup State
 const header = reactive([
@@ -65,45 +75,25 @@ const selectDeleteItem = item => {
 
 const submitCreateOrEdit = () => {
   isLoading.value = true;
-  if(isEdit.value) {
-    formCreateOrEdit.post(route('category.change'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formCreateOrEdit.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
+  const request = isEdit.value ? 'category.change' : 'category.save';
+  formCreateOrEdit.post(route(request), {
+    onSuccess: () => {
+      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+      toggleFormModal()
+      formCreateOrEdit.reset();
+    },
+    onError: () => {
+      const errors = usePage().props.value.errors;
+      for (const key in errors) {
+        if (Object.hasOwnProperty.call(errors, key)) {
+          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         }
-      },
-      onFinish: () => {
-        isLoading.value = false
       }
-    })
-  } else {
-    formCreateOrEdit.post(route('category.save'), {
-      onSuccess: () => {
-        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        toggleFormModal()
-        formCreateOrEdit.reset();
-      },
-      onError: () => {
-        const errors = usePage().props.value.errors;
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-          }
-        }
-      },
-      onFinish: () => {
-        isLoading.value = false
-      }
-    })
-  }
+    },
+    onFinish: () => {
+      isLoading.value = false
+    }
+  })
 };
 
 const submitDelete = () => {
@@ -203,12 +193,12 @@ const submitDelete = () => {
             Categorias
           </h2>
           <JetButton
-            @click="toggleFormModal(); isEdit = false"
+            @click="isEdit = false; formCreateOrEdit.reset(); toggleFormModal()"
           >
             Crear
           </JetButton>
         </div>
-        <div class="bg-white overflow-hidden shadow-xl rounded-lg min-h-base">
+        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base">
           <Table :header="header">
             <tbody class="px-5">
               <tr v-for="item in categoryArticle.data" class="mt-2">

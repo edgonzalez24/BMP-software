@@ -7,6 +7,11 @@ use Database\Seeders\PermissionsSeeder;
 use Database\Seeders\CategoryArticleSeeder;
 use Database\Seeders\MeasureUnitsSeeder;
 use Database\Seeders\SupplierSeeder;
+use Database\Seeders\ArticleSeeder;
+use Database\Seeders\StockSeeder;
+use Database\Seeders\MethodPaidSeeder;
+use Database\Seeders\TypeClientSeeder;
+use Database\Seeders\ClientSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +24,7 @@ class DatabaseSeeder extends Seeder
     {
         // Reseteando tablas
         $this->truncateTables([
+            'suppliers',
             'permissions',
             'roles',
             'role_has_permissions',
@@ -29,8 +35,12 @@ class DatabaseSeeder extends Seeder
             'team_invitations',
             'team_user',
             'category_articles',
+            'articles',
             'measure_units',
-            'suppliers'
+            'stocks',
+            'method_paids',
+            'type_clients',
+            'clients',
         ]);
         
         $this->call(PermissionsSeeder::class);
@@ -38,6 +48,11 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoryArticleSeeder::class);
         $this->call(MeasureUnitsSeeder::class);
         $this->call(SupplierSeeder::class);
+        $this->call(ArticleSeeder::class);
+        $this->call(StockSeeder::class);
+        $this->call(MethodPaidSeeder::class);
+        $this->call(TypeClientSeeder::class);
+        $this->call(ClientSeeder::class);
 
     }
 

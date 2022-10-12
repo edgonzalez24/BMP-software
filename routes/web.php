@@ -8,7 +8,10 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\CategoryArticleController;
 use App\Http\Controllers\MeasureUnitsController;
 use App\Http\Controllers\SupplierController;
-
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\PositionController;
+use App\Http\Controllers\ClientController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,10 +37,20 @@ Route::middleware([
     Route::get('/dashboard/categories',  [CategoryArticleController::class, 'index'])->name('categories');
     Route::get('/dashboard/measures', [MeasureUnitsController::class, 'index'])->name('measures');
     Route::get('/dashboard/suppliers', [SupplierController::class, 'index'])->name('suppliers');
+    Route::get('/dashboard/articles', [ArticleController::class, 'index'])->name('articles');
+    Route::get('/dashboard/stocks/{id}/detail', [StockController::class, 'show'])->name('stocks-details');
+    Route::get('/dashboard/stocks', [StockController::class, 'index'])->name('stocks');
+    Route::get('/dashboard/clients', [ClientController::class, 'index'])->name('clients');
+
+    Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
     
     
     // Routes only to request data(not views)
+
+    // Users
     Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
+    
+    // Roles and permissions
     Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('invite.user');
     Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');
 
@@ -46,7 +59,7 @@ Route::middleware([
     Route::post('/category/change', [CategoryArticleController::class, 'update'])->name('category.change');
     Route::get('/category/delete/{categoryArticle}', [CategoryArticleController::class, 'destroy'])->name('category.delete');
     
-    // CategoryArticle
+    // Measures
     Route::post('/measureUnits/save', [MeasureUnitsController::class, 'store'])->name('measureUnits.save');
     Route::post('/measureUnits/change', [MeasureUnitsController::class, 'update'])->name('measureUnits.change');
     Route::get('/measureUnits/delete/{measureUnits}', [MeasureUnitsController::class, 'destroy'])->name('measureUnits.delete');
@@ -54,8 +67,25 @@ Route::middleware([
     // Supliers
     Route::post('/supplier/save', [SupplierController::class, 'store'])->name('supplier.save');
     Route::post('/supplier/change', [SupplierController::class, 'update'])->name('supplier.change');
-    Route::post('/supplier/delete', [SupplierController::class, 'destroy'])->name('supplier.delete');
+    Route::get('/supplier/delete/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.delete');
     
+    // Articles
+    Route::post('/article/save', [ArticleController::class, 'store'])->name('article.save');
+    Route::post('/article/change', [ArticleController::class, 'update'])->name('article.change');
+    Route::get('/article/delete/{article}', [ArticleController::class, 'destroy'])->name('article.delete');
+
+    // Stocks
+    Route::post('/stock/save', [StockController::class, 'store'])->name('stock.save');
+    Route::post('/stock/change', [StockController::class, 'update'])->name('stock.change');
+    Route::get('/stock/delete/{stock}', [StockController::class, 'destroy'])->name('stock.delete');
+
+    // clients
+    Route::post('/client/save', [ClientController::class, 'store'])->name('client.save');
+    Route::post('/client/change', [ClientController::class, 'update'])->name('client.change');
+    Route::get('/client/delete/{client}', [ClientController::class, 'destroy'])->name('client.delete');
+
+    // Map
+    Route::post('/map', [PositionController::class, 'store'])->name('map.save');
     
 });
 

@@ -54,6 +54,26 @@ class PermissionsSeeder extends Seeder
         $supplier_create = Permission::create(['name' => 'supplier_create', 'descriptions' => 'Crear proveedor']);
         $supplier_edit = Permission::create(['name' => 'supplier_edit', 'descriptions' => 'Editar proveedor']);
         $supplier_destroy = Permission::create(['name' => 'supplier_destroy', 'descriptions' => 'Eliminar proveedor']);
+        
+        /* ARTÍCULOS*/
+        $article_index = Permission::create(['name' => 'article_index', 'descriptions' => 'Listar todos los artículos']);
+        $article_create = Permission::create(['name' => 'article_create', 'descriptions' => 'Crear artículo']);
+        $article_edit = Permission::create(['name' => 'article_edit', 'descriptions' => 'Editar artículo']);
+        $article_destroy = Permission::create(['name' => 'article_destroy', 'descriptions' => 'Eliminar artículo']);
+        
+        /* EXISTENCIAS / STOCKS */
+        $stock_index = Permission::create(['name' => 'stock_index', 'descriptions' => 'Listar todas las existencias de stock']);
+        $stock_create = Permission::create(['name' => 'stock_create', 'descriptions' => 'Crear una entrada en stock']);
+        $stock_edit = Permission::create(['name' => 'stock_edit', 'descriptions' => 'Editar editar una entrada en stock']);
+        $stock_destroy = Permission::create(['name' => 'stock_destroy', 'descriptions' => 'Eliminar una entrada en stock']);
+        $stock_show = Permission::create(['name' => 'stock_show', 'descriptions' => 'Ver entrada de stock']);
+        
+        /* CLIENTES */
+        $client_index = Permission::create(['name' => 'client_index', 'descriptions' => 'Listar todas los clientes']);
+        $client_create = Permission::create(['name' => 'client_create', 'descriptions' => 'Crear una entrada en eclientes']);
+        $client_edit = Permission::create(['name' => 'client_edit', 'descriptions' => 'Editar editar una entrada en clientes']);
+        $client_destroy = Permission::create(['name' => 'client_destroy', 'descriptions' => 'Eliminar una entrada en clientes']);
+        
 
         // ----------------------------------------
         // **** ASIGNANDO PERMISOS A LOS ROLES ****
@@ -65,6 +85,8 @@ class PermissionsSeeder extends Seeder
             $category_article_index, $category_article_create, $category_article_edit, $category_article_destroy,
             $measure_units_index, $measure_units_create, $measure_units_edit, $measure_units_destroy,
             $supplier_index, $supplier_create, $supplier_edit, $supplier_destroy,
+            $article_index, $article_create, $article_edit, $article_destroy,
+            $stock_index, $stock_create, $stock_edit, $stock_destroy, $stock_show, $client_index, $client_create, $client_edit, $client_destroy,
         ];
         
         $encargado->syncPermissions($permission_encargado);

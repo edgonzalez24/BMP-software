@@ -120,3 +120,24 @@ input:checked~.toggle__dot {
 	transform: translateX(100%);
 	background-color: #6cbfae;
 }
+
+.ql-editor {
+	height: 100px !important;
+	padding: 12px 10px !important;
+} 
+
+.ql-toolbar.ql-snow {
+	border-radius: 6px 6px 0 0;
+}
+
+.ql-toolbar.ql-snow+.ql-container.ql-snow {
+	border-radius: 0 0 6px 6px;
+}
+
+.vs__dropdown-menu {
+	height: 100px !important;
+}
+
+.ql-container {
+	font-size: 1rem !important;
+}

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('type_clients', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 10)->comment('Nombre descriptivo del tipo del tipo de cliente');
-            $table->string('method_paid', 10)->comment('Métdo de pago: factura por factura, crédito, etc.');
+            $table->string('description')->comment('Descripción del tipo de cliente');
 
             $table->timestamps();
         });

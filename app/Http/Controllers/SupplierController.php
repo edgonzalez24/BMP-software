@@ -40,8 +40,6 @@ class SupplierController extends Controller
         if ( ! Auth::user()->can('supplier_create')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
-
-        $validated = $request->validated();
         
         try {
             $supplier = new Supplier($request->all());
@@ -68,8 +66,8 @@ class SupplierController extends Controller
 
         $validated = $request->validated($request->all());
         try {
-            $supplier = Supplier::find($validated->get('supplier_id'));
-            $supplier->update($validateRequest->all());
+            $supplier = Supplier::find($request->get('supplier_id'));
+            $supplier->update($request->all());
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
