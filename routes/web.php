@@ -41,6 +41,7 @@ Route::middleware([
     Route::get('/dashboard/stocks/{id}/detail', [StockController::class, 'show'])->name('stocks-details');
     Route::get('/dashboard/stocks', [StockController::class, 'index'])->name('stocks');
     Route::get('/dashboard/clients', [ClientController::class, 'index'])->name('clients');
+    Route::get('/dashboard/articles/filter', [ArticleController::class, 'filter'])->name('article.filter');
 
     Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
     
@@ -73,8 +74,6 @@ Route::middleware([
     Route::post('/article/save', [ArticleController::class, 'store'])->name('article.save');
     Route::post('/article/change', [ArticleController::class, 'update'])->name('article.change');
     Route::get('/article/delete/{article}', [ArticleController::class, 'destroy'])->name('article.delete');
-    Route::get('/article/filter', [ArticleController::class, 'filter'])->name('article.filter');
-    Route::get('/article/search', [ArticleController::class, 'search'])->name('article.search');
 
     // Stocks
     Route::post('/stock/save', [StockController::class, 'store'])->name('stock.save');

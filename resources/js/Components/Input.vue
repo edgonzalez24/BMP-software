@@ -5,7 +5,8 @@ defineProps({
 	modelValue: String | Number,
 	hasErrors: Boolean,
 	onlyRead: Boolean,
-	phoneNumber: Boolean
+	phoneNumber: Boolean,
+	placeholder: String
 });
 
 defineEmits(['update:modelValue']);
@@ -29,6 +30,7 @@ defineExpose({ focus: () => input.value.focus() });
 		:value="modelValue"
 		:disabled="onlyRead"
 		v-maska="phoneNumber && '#### - ####'"
+		:placeholder="placeholder"
 		@input="$emit('update:modelValue', $event.target.value)"
 	>
 </template>

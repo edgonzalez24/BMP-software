@@ -119,22 +119,35 @@ class ArticleController extends Controller
     {
         try {
             // Estructurando datos
-            $category = $request->get('category');
-            $measure_unit = $request->get('measure_unit');
+            $category = $request->get('category_id');
+            $measure_unit = $request->get('measure_unit_id');
+            $search = $request->get('search');
 
-            if (isset($category)) {
-                $filter = Article::where('active', '1')->where('category_id', $category)->get();
-                dd($filter);
-            }elseif (isset($measure_unit)) {
-                $filter = Article::where('active', '1')->where('measure_unit_id', $measure_unit)->get();
-                dd($filter);
-            }else{                
-                $filter = Article::where('active', '1')->where('measure_unit_id', $measure_unit)->where('category_id', $category)->get();
-                dd($filter);
+            $filter = Article::where('active', '1');
+            if(isset($search)){                
+                $filter->where("name", "like", "%" .$search. "%");
             }
+            if (isset($category)) {
+                $filter->where('category_id', $category);
+            }
+            if (isset($measure_unit)) {
+                $filter->where('measure_unit_id', $measure_unit);
+            }
+
+            $article = new StockDetailArticleCollection($filter->orderBy('id', 'desc')->paginate(15));
+            $category = CategoryArticle::orderBy('id', 'desc')->get();
+            $measureUnits = MeasureUnits::orderBy('id', 'desc')->get();
+            $supplier = Supplier::orderBy('id', 'ASC')->get();
+            return Inertia::render('Article/Show',[ 
+                'articles' => $article,
+                'categories' => $category,
+                'measures_units' => $measureUnits,
+                'suppliers' => $supplier
+            ]);
+
     
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            redirect()->back()->withErrors(['error' => $th]);
         }
 
     }
