@@ -93,7 +93,7 @@ const submit = () => {
 <template>
 	<AppLayout>
 		<Loading :active.sync="isLoading" ></Loading>
-		<form @submit.prevent="submit">
+		<form @submit.prevent="submit" class="min-h-screen">
 			<div class="max-w-7xl mx-auto py-10 px-5 sm:px-6 lg:px-8">
 				<h1 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight mb-5">
           Perfil
@@ -231,7 +231,7 @@ const submit = () => {
 							</div>
 						</div>
 					</div>
-					<div class="w-48">
+					<div class="w-48 px-2">
 						<JetButton
 							type="submit"
 							class="w-full flex justify-center"

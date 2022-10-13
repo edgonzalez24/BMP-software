@@ -6,7 +6,7 @@ const props = defineProps({
 	size: String
 });
 const colorText = computed(() => props.color ? props.color : 'text-black' );
-const sizeText = computed(() => props.size ? props.size : 'text-base');
+const sizeText = computed(() => props.size ? props.size : 'md:text-base text-sm');
 </script>
 
 <template>
