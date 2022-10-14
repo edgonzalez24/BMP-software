@@ -122,8 +122,7 @@ class StockController extends Controller
                 'stocks' => $stocks,
             ]);
         } catch (\Throwable $th) {
-            dd($th);
-            //redirect()->back()->withErrors(['error' => $th]);
+            redirect()->back()->withErrors(['error' => $th]);
         }
 
     }
