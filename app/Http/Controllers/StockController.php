@@ -106,4 +106,25 @@ class StockController extends Controller
     {
         //
     }
+
+    public function filter(Request $request)
+    {
+        $from = "{$request->get('from')} 00:00:00";
+        $to = "{$request->get('to')} 23:59:59";
+        try {
+            if($request->get('from') && $request->get('to')){
+                $filter = Stock::whereBetween('created_at', [$from, $to]);
+                $stocks = new StockCollection($filter->orderBy('id', 'desc')->paginate(15));
+            } else {
+                $stocks = new StockCollection(Stock::orderBy('id', 'desc')->paginate(15));
+            }
+            return Inertia::render('Stock/Show',[ 
+                'stocks' => $stocks,
+            ]);
+        } catch (\Throwable $th) {
+            dd($th);
+            //redirect()->back()->withErrors(['error' => $th]);
+        }
+
+    }
 }
