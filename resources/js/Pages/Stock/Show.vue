@@ -56,8 +56,8 @@ const formatRangeDate = date => {
 const date = ref();
 const datepicker = ref()
 onMounted(() => {
-  const startDate = new Date();
-  const endDate = new Date();
+  const startDate = new URLSearchParams(window.location.search).has('from') ? moment(new URLSearchParams(window.location.search).get('from')) : new Date();
+  const endDate = new URLSearchParams(window.location.search).has('to') ? moment(new URLSearchParams(window.location.search).get('to')) : new Date();
   date.value = [startDate, endDate];
 })
 const handleFilter = () => {
