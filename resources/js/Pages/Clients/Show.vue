@@ -37,10 +37,6 @@ const header = reactive([
     showInMobile: true
   },
   {
-    name: 'Dirección',
-    showInMobile: true
-  },
-  {
     name: 'Acciones',
     showInMobile: true
   }
@@ -248,7 +244,6 @@ const submitDelete = () => {
                     {{ item.telephone || '-' }}
                   </a>
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">-</td>
                 <td class="text-center p-2 md:text-base text-xs" @click.stop>
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
