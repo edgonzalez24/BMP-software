@@ -43,6 +43,7 @@ Route::middleware([
     Route::get('/dashboard/clients', [ClientController::class, 'index'])->name('clients');
     Route::get('/dashboard/articles/filter', [ArticleController::class, 'filter'])->name('article.filter');
     Route::get('/dashboard/stocks/filter', [StockController::class, 'filter'])->name('stock.filter');
+    Route::get('/dashboard/orders', function () { return Inertia::render('Order/Show'); })->name('orders');
 
     Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
     

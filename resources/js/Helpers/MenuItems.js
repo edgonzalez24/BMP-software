@@ -11,11 +11,6 @@ export const menuItems = [
     icon: '',
     children: [
       {
-        name: 'Stock',
-        slug: 'stocks',
-        icon: 'fa-cart-plus'
-      },
-      {
         name: 'Artículos',
         slug: 'articles',
         icon: 'fa-box-open'
@@ -34,6 +29,11 @@ export const menuItems = [
         name: 'Proveedores',
         slug: 'suppliers',
         icon: 'fa-truck-field-un'
+      },
+      {
+        name: 'Stock',
+        slug: 'stocks',
+        icon: 'fa-cart-flatbed'
       },
     ]
   },
@@ -59,6 +59,11 @@ export const menuItems = [
     slug: '',
     icon: '',
     children: [
+      {
+        name: 'Pedidos',
+        slug: 'orders',
+        icon: 'fa-cart-shopping'
+      },
       {
         name: 'Entregas',
         slug: '',
