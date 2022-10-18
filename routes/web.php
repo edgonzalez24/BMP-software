@@ -12,6 +12,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\PresaleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,6 +43,7 @@ Route::middleware([
     Route::get('/dashboard/stocks', [StockController::class, 'index'])->name('stocks');
     Route::get('/dashboard/clients', [ClientController::class, 'index'])->name('clients');
     Route::get('/dashboard/articles/filter', [ArticleController::class, 'filter'])->name('article.filter');
+    Route::get('/dashboard/presales', [PresaleController::class, 'index'])->name('presales');
 
     Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
     
@@ -84,6 +86,11 @@ Route::middleware([
     Route::post('/client/save', [ClientController::class, 'store'])->name('client.save');
     Route::post('/client/change', [ClientController::class, 'update'])->name('client.change');
     Route::get('/client/delete/{client}', [ClientController::class, 'destroy'])->name('client.delete');
+
+    // presales
+    Route::post('/presale/save', [PresaleController::class, 'store'])->name('presale.save');
+    Route::post('/presale/change', [PresaleController::class, 'update'])->name('presale.change');
+    Route::get('/presale/delete/{presale}', [PresaleController::class, 'destroy'])->name('presale.delete');
 
     // Map
     Route::post('/map', [PositionController::class, 'store'])->name('map.save');
