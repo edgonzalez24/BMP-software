@@ -7,7 +7,7 @@ import Status from '@/Components/Shared/Status.vue';
 import JetModal from '@/Components/Modal.vue';
 import JetLabel from '@/Components/Label.vue';
 import JetInput from '@/Components/Input.vue';
-import { reactive, computed, ref, getCurrentInstance } from 'vue';
+import { reactive, computed, ref, getCurrentInstance, watch } from 'vue';
 import Loading from 'vue3-loading-overlay';
 import { useForm, usePage, Link } from '@inertiajs/inertia-vue3';
 import Toggle from '@/Components/Shared/Toggle.vue';
@@ -74,6 +74,15 @@ const formInitial = useForm({
 const formDelete = useForm({
   id: null
 });
+const formFilter = useForm({
+  search: new URLSearchParams(window.location.search).get('search') || null,
+  category_id: Number(new URLSearchParams(window.location.search).get('category_id')) || null,
+  measure_unit_id: Number(new URLSearchParams(window.location.search).get('measure_unit_id')) || null,
+});
+
+const handleFilter = () => {
+  formFilter.get(route('article.filter', formFilter))
+}
 const selectDeleteItem = item => {
   formDelete.id = item.id;
   toggleDeleteModal();
@@ -133,6 +142,7 @@ const submitDelete = () => {
     }
   });
 };
+
 </script>
 
 <template>
@@ -264,10 +274,76 @@ const submitDelete = () => {
             Añadir
           </JetButton>
         </div>
+        <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5">
+          <div class="flex lg:flex-row flex-col space-x-4 items-end">
+            <div class="lg:w-1/2 w-full">
+              <JetLabel value="Búsqueda" />
+              <JetInput 
+                id="search" 
+                v-model="formFilter.search" 
+                placeholder="Buscar artículo..."
+                type="text"
+                class="mt-1 block w-full"
+                @input="handleFilter" 
+              />
+            </div>
+            <div class="w-full lg:w-1/2 flex flex-row space-x-4 lg:mt-0 mt-5">
+              <div class="w-1/2">
+                <JetLabel value="Categorías" />
+                <v-select
+                  v-model="formFilter.category_id"
+                  :options="categories.length ? [{ id: null, name: 'Todas' }, ...categories] : []"
+                  :reduce="(option) => option.id"
+                  label="name" 
+                  placeholder="Seleccionar una categoria"
+                  @option:selected="handleFilter"
+                  :clearable="false"
+                  class="appearance-none capitalize"
+                >
+                  <template #open-indicator="{ attributes }">
+                    <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
+                    </svg>
+                  </template>
+                  <template #option="{ name }">
+                    <span class="capitalize">{{ name }}</span>
+                  </template>
+                </v-select>
+              </div>
+              <div class="w-1/2">
+                <JetLabel value="Unidades de medidas" />
+                <v-select
+                  v-model="formFilter.measure_unit_id"
+                  :options="measures_units.length ? [{ id: null, name: 'Todas' }, ...measures_units] : []"
+                  :reduce="(option) => option.id"
+                  label="name"
+                  placeholder="Seleccionar medida" 
+                  @option:selected="handleFilter"
+                  :clearable="false"
+                  class="appearance-none capitalize"
+                >
+                  <template #open-indicator="{ attributes }">
+                    <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
+                    </svg>
+                  </template>
+                  <template #option="{ name }">
+                    <span class="capitalize">{{ name }}</span>
+                  </template>
+                </v-select>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base">
           <Table :header="header">
             <tbody class="px-5">
-              <tr v-for="item in articles.data" class="mt-2 cursor-pointer hover:bg-slate-50 transition duration-300 ease-in-out" @click="selectDetailItem(item)">
+              <tr 
+                v-if="articles.data.length"
+                v-for="item in articles.data"
+                class="mt-2 cursor-pointer hover:bg-slate-50 transition duration-300 ease-in-out"
+                @click="selectDetailItem(item)"
+              >
                 <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
                 <td class="text-center p-2 md:text-base text-xs md:block hidden">{{ item.category.name}}</td>
                 <td class="text-center p-2 md:text-base text-xs">
@@ -285,10 +361,20 @@ const submitDelete = () => {
                   </div>
                 </td>
               </tr>
+              <tr v-else >
+                <td :colspan="header.length">
+                  <div class="flex justify-center">
+                    <div>
+                      <img src="@/Assets/gifs/empty.gif" alt="" class="mx-auto">
+                      <p class="text-center">No se han encontrado resultados </p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
             </tbody>
           </Table>
         </div>
-        <div class="flex mt-8 justify-center">
+        <div v-if="totalPages > 1" class="flex mt-8 justify-center">
           <Pagination
             :total="totalPages" 
             :previous="articles.links.prev"
