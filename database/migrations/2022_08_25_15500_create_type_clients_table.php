@@ -17,8 +17,11 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name', 10)->comment('Nombre descriptivo del tipo del tipo de cliente');
             $table->string('description')->comment('Descripción del tipo de cliente');
+            $table->unsignedInteger('method_paid_id')->comment('Método de pago');
 
             $table->timestamps();
+            
+            $table->foreign('method_paid_id')->references('id')->on('method_paids')->onDelete('cascade');
         });
     }
     

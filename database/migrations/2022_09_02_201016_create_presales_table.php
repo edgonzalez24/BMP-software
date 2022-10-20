@@ -22,10 +22,12 @@ return new class extends Migration
             $table->unsignedInteger('client_id')->comment('ID del cliente');
             $table->unsignedInteger('user_presale_id')->comment('ID usuario de preventa ');
             $table->unsignedInteger('user_dispatch_id')->comment('ID de usuario que despacha la preventa');
+            $table->unsignedInteger('method_paid_id')->comment('ID de del método de pago, éste por defecto será el del tipo de cliente');
 
             $table->foreign('client_id')->references('id')->on('clients');
             $table->foreign('user_presale_id')->references('id')->on('users');
             $table->foreign('user_dispatch_id')->references('id')->on('users');
+            $table->foreign('method_paid_id')->references('id')->on('method_paids');
             $table->timestamps();
         });
     }
