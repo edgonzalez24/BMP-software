@@ -4,6 +4,8 @@ import '../scss/main.scss';
 import "vue-toastification/dist/index.css";
 import "vue-select/dist/vue-select.css";
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
@@ -36,6 +38,7 @@ createInertiaApp({
 			.use(ZiggyVue, Ziggy)
 			.use(Maska)
 			.mixin({ methods: { route } })
+			.component('Datepicker', Datepicker)
 			.component("v-select", vSelect)
 			.component('FontAwesomeIcon', FontAwesomeIcon)
 			.component('QuillEditor', QuillEditor)
