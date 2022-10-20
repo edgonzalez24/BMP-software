@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\PresaleDetail;
-use Illuminate\Http\Request;
+use App\Http\Requests\StorePresaleDetailRequest;
+use App\Http\Requests\UpdatePresaleDetailRequest;
 
 class PresaleDetailController extends Controller
 {
@@ -20,10 +21,10 @@ class PresaleDetailController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StorePresaleDetailRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePresaleDetailRequest $request)
     {
         //
     }
@@ -42,11 +43,11 @@ class PresaleDetailController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpdatePresaleDetailRequest  $request
      * @param  \App\Models\PresaleDetail  $presaleDetail
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PresaleDetail $presaleDetail)
+    public function update(UpdatePresaleDetailRequest $request, PresaleDetail $presaleDetail)
     {
         //
     }
