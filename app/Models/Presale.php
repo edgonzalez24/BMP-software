@@ -70,4 +70,14 @@ class Presale extends Model
     {
         return $this->belongsTo(MethodPaid::class);
     }
+
+    /**
+     * Get the user that owns the Presale
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function dispatch()
+    {
+        return $this->belongsTo(Dispatch::class, 'dispatch_id');
+    }
 }
