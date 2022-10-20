@@ -182,7 +182,7 @@
             Nuevo
           </JetButton>
         </div>
-        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base">
+        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50">
           <Table :header="header">
             <tbody class="px-5">
               <tr v-for="item in articleDetail.stocks" class="mt-2">

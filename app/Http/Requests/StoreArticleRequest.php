@@ -26,7 +26,7 @@ class StoreArticleRequest extends FormRequest
         return [
             'name'  => 'required|string|unique:articles', 
             'photo'  => 'string', 
-            'comment'  => 'string', 
+            'comment'  => 'string|nullable', 
             'measure_unit_id'  => 'required',
             'category_id'  => 'required',
             'active'  => 'boolean',

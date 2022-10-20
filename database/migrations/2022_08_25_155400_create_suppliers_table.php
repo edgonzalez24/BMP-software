@@ -17,7 +17,7 @@ class CreateSuppliersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('telephone')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

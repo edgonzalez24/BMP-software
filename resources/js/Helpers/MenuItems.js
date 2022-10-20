@@ -61,7 +61,7 @@ export const menuItems = [
     children: [
       {
         name: 'Pedidos',
-        slug: 'orders',
+        slug: 'presales',
         icon: 'fa-cart-shopping'
       },
       {
