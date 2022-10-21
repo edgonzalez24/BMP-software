@@ -7,9 +7,7 @@
   import moment from 'moment';
   
   const props = defineProps({
-    presales: Object,
-    clients: Array,
-    users: Array
+    presales: Object
   });
   const header = reactive([
     {
@@ -77,7 +75,7 @@
                   {{ item.client.name }}
                 </td>
                 <td class="text-center p-2 md:text-base text-xs">
-                  {{ item.dispatch }}
+                  {{ item.dispatch.name }}
                 </td>
                 <td 
                   class="text-center p-2 md:text-base text-xs"

@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Presale;
+use App\Http\Requests\StorePresaleRequest;
+use App\Http\Requests\UpdatePresaleRequest;
+use App\Http\Requests\StorePresaleDetailRequest;
+use App\Http\Requests\UpdatePresaleDetailRequest;
 use App\Models\PresaleDetail;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Dispatch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -28,19 +33,46 @@ class PresaleController extends Controller
         }
         $presales = new PresaleCollection(Presale::orderBy('id', 'desc')->paginate(25));
         return Inertia::render('Presale/Show',[ 
-            'presales' => $presales,
+            'presales' => $presales
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StorePresaleRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePresaleRequest $request)
     {
-        //
+        if ( ! Auth::user()->can('presale_create')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        $validated = $request->validated();
+        $validated_detail = new StorePresaleDetailRequest();
+        
+        try {
+            $presale = new Presale($request->all());
+            $presale->save();
+
+            // presaledetail
+            for ($i=0; $i < count($request->presale_detail); $i++) { 
+                $presaleDetail = PresaleDetail::insert([
+                    'total_articles' => $request->presale_detail[$i]->total_articles,
+                    'dischargued' => $request->presale_detail[$i]->dischargued,
+                    'total' => $request->presale_detail[$i]->total,
+                    'article_id' => $request->presale_detail[$i]->article_id,
+                    'presale_id' => $presale->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+
+        return redirect()->back()->with('success', 'Registro creado correctamente!.');
     }
 
     /**
@@ -57,11 +89,11 @@ class PresaleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpdatePresaleRequest  $request
      * @param  \App\Models\Presale  $presale
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Presale $presale)
+    public function update(UpdatePresaleRequest $request, Presale $presale)
     {
         //
     }

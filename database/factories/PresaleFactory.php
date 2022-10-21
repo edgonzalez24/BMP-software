@@ -19,7 +19,7 @@ class PresaleFactory extends Factory
         return [
             'total_paid' => $this->faker->numberBetween($min = 1, $max = 100),
             'total_pending' => $this->faker->numberBetween($min = 1, $max = 100),
-            'dispatch' => $this->faker->numberBetween($min = 0, $max = 1),
+            'dispatch_id' => $this->faker->numberBetween($min = 1, $max = 4),
             'paid' => $this->faker->numberBetween($min = 0, $max = 1),
             'client_id' => $this->faker->numberBetween($min = 1, $max = 4),
             'user_presale_id' => $this->faker->numberBetween($min = 1, $max = 3),
