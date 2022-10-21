@@ -26,8 +26,8 @@ class StoreClientRequest extends FormRequest
         return [
             'name' => 'required|string|unique:clients',
             'type_client_id' => 'required|integer', 
-            'telephone' => 'string', 
-            'comment' => 'string', 
+            'telephone' => 'string|nullable', 
+            'comment' => 'string|nullable', 
             'active' => 'boolean',
         ];
     }

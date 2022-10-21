@@ -26,7 +26,7 @@ class UpdateArticleRequest extends FormRequest
         return [            
             'name'  => 'required|string', 
             'photo'  => '', 
-            'comment'  => 'string', 
+            'comment'  => 'string|nullable', 
             'measure_unit_id'  => 'required',
             'category_id'  => 'required',
             'active'  => 'boolean',

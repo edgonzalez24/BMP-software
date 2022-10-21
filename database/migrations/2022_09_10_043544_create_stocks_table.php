@@ -22,7 +22,7 @@ return new class extends Migration
             $table->float('sale_price')->comment('Precio de venta individual del articulo ');
             $table->unsignedInteger('supplier_id')->comment('ID proveedor');
             $table->unsignedInteger('measure_unit_id')->comment('ID de la unidad de medida');
-            $table->string('comment')->comment('Aclaraciones, comentarios, observaciones del o los artículos');
+            $table->string('comment')->nullable()->comment('Aclaraciones, comentarios, observaciones del o los artículos');
 
             $table->timestamps();
             

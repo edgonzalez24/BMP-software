@@ -25,8 +25,8 @@ class UpdateSupplierRequest extends FormRequest
     {
         return [
             'name'  => 'required|string', 
-            'telephone'  => 'required|string|unique:suppliers', 
-            'email'  => 'required|email', 
+            'telephone'  => 'nullable|string|unique:suppliers', 
+            'email'  => 'email|nullable', 
             'active'  => 'required|boolean',
         ];
     }

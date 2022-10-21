@@ -275,7 +275,7 @@ const submitDelete = () => {
           </JetButton>
         </div>
         <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5">
-          <div class="flex lg:flex-row flex-col space-x-4 items-end">
+          <div class="flex lg:flex-row flex-col space-x-4 items-end border border-gray-50">
             <div class="lg:w-1/2 w-full">
               <JetLabel value="Búsqueda" />
               <JetInput 

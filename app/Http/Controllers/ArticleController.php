@@ -30,7 +30,7 @@ class ArticleController extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $article = new StockDetailArticleCollection(Article::orderBy('id', 'desc')->paginate(15));
+        $article = new StockDetailArticleCollection(Article::orderBy('id', 'desc')->paginate(25));
         $category = CategoryArticle::orderBy('id', 'desc')->get();
         $measureUnits = MeasureUnits::orderBy('id', 'desc')->get();
         $supplier = Supplier::orderBy('id', 'ASC')->get();
@@ -134,7 +134,7 @@ class ArticleController extends Controller
                 $filter->where('measure_unit_id', $measure_unit);
             }
 
-            $article = new StockDetailArticleCollection($filter->orderBy('id', 'desc')->paginate(15));
+            $article = new StockDetailArticleCollection($filter->orderBy('id', 'desc')->paginate(25));
             $category = CategoryArticle::orderBy('id', 'desc')->get();
             $measureUnits = MeasureUnits::orderBy('id', 'desc')->get();
             $supplier = Supplier::orderBy('id', 'ASC')->get();
@@ -160,7 +160,7 @@ class ArticleController extends Controller
             ->where("name", "like", "%" .$search. "%")
             ->where('active', 1)
             ->orderBy('id', 'desc')
-            ->paginate(15);
+            ->paginate(25);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }

@@ -30,19 +30,10 @@ class PresaleController extends Controller
         //
         if ( ! Auth::user()->can('presale_index')){
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
-        } 
-
-        //$presales = Presale::orderBy('id', 'desc')->paginate(15);
-        $presales = new PresaleCollection(Presale::orderBy('id', 'desc')->paginate(15));
-        $clients = Client::where('active', 1)->get();
-        $users = User::where('name', '<>', 'BMP')->get();
-        $dispatch = Dispatch::all();
-        return response()->json([$presales, $clients, $users]);
+        }
+        $presales = new PresaleCollection(Presale::orderBy('id', 'desc')->paginate(25));
         return Inertia::render('Presale/Show',[ 
             'presales' => $presales,
-            'clients' => $clients,
-            'users' => $users,
-            'dispatch' => $dispatch,
         ]);
     }
 

@@ -25,7 +25,7 @@ class MeasureUnitsController extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $measureUnits = MeasureUnits::where('name', '<>', 'Sin Asignar')->orderBy('id', 'desc')->paginate(15);
+        $measureUnits = MeasureUnits::where('name', '<>', 'Sin Asignar')->orderBy('id', 'desc')->paginate(25);
         return Inertia::render('Measure/Show',[ 
             'measureUnits' => $measureUnits,
         ]);

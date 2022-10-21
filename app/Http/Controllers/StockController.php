@@ -31,7 +31,7 @@ class StockController extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $stocks = new StockCollection(Stock::orderBy('id', 'desc')->paginate(15));
+        $stocks = new StockCollection(Stock::orderBy('id', 'desc')->paginate(25));
         return Inertia::render('Stock/Show',[ 
             'stocks' => $stocks,
         ]);
@@ -114,9 +114,9 @@ class StockController extends Controller
         try {
             if($request->get('from') && $request->get('to')){
                 $filter = Stock::whereBetween('created_at', [$from, $to]);
-                $stocks = new StockCollection($filter->orderBy('id', 'desc')->paginate(15));
+                $stocks = new StockCollection($filter->orderBy('id', 'desc')->paginate(25));
             } else {
-                $stocks = new StockCollection(Stock::orderBy('id', 'desc')->paginate(15));
+                $stocks = new StockCollection(Stock::orderBy('id', 'desc')->paginate(25));
             }
             return Inertia::render('Stock/Show',[ 
                 'stocks' => $stocks,
