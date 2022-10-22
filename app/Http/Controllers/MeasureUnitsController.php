@@ -90,7 +90,7 @@ class MeasureUnitsController extends Controller
         }
 
         try {
-            /* $articles = DB::select('UPDATE articles SET measure_unit_id = ? WHERE measure_unit_id = ?', [1, $measureUnits->id]); */
+            $articles = DB::select('UPDATE articles SET measure_unit_id = ? WHERE measure_unit_id = ?', [1, $measureUnits->id]); 
 
             $measureUnits->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');

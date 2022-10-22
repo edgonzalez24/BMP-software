@@ -85,26 +85,53 @@ class PresaleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Presale  $presale
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Presale $presale)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdatePresaleRequest  $request
      * @param  \App\Models\Presale  $presale
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePresaleRequest $request, Presale $presale)
+    public function update(UpdatePresaleRequest $request)
     {
-        //
+        if ( ! Auth::user()->can('presale_edit')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        $validated = $request->validated();
+        
+        try {
+            $presale = Presale::find($request->presale_id);
+            $presale->update($request->all());
+
+            // Edita agregando nuevos productos
+            for ($i=0; $i < count($request->new_presale_detail); $i++) { 
+                $presaleDetail = PresaleDetail::insert([
+                    'total_articles' => $request->new_presale_detail[$i]->total_articles,
+                    'dischargued' => $request->new_presale_detail[$i]->dischargued,
+                    'total' => $request->new_presale_detail[$i]->total,
+                    'article_id' => $request->new_presale_detail[$i]->article_id,
+                    'presale_id' => $presale->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            // Edita productos ya agregados
+            for ($i=0; $i < count($request->old_presale_detail); $i++) { 
+                $presaleDetail = PresaleDetail::find($request->old_presale_detail[$i]->id);
+                $presaleDetail = PresaleDetail::update([
+                    'total_articles' => $request->old_presale_detail[$i]->total_articles,
+                    'dischargued' => $request->old_presale_detail[$i]->dischargued,
+                    'total' => $request->old_presale_detail[$i]->total,
+                    'article_id' => $request->old_presale_detail[$i]->article_id,
+                    'presale_id' => $presale->id,
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+
+        return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
 
     /**
@@ -114,7 +141,16 @@ class PresaleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Presale $presale)
-    {
-        //
+    {        
+        if ( ! Auth::user()->can('presale_destroy')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+        
+        try {
+            $presaleDetail = PresaleDetail::delete()->where('presale_id', $presale->id);
+            return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
     }
 }
