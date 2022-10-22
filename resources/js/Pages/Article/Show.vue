@@ -81,7 +81,9 @@ const formFilter = useForm({
 });
 
 const handleFilter = () => {
-  formFilter.get(route('article.filter', formFilter))
+  formFilter.get(route('article.filter', formFilter, {
+    preserveState: true,
+  }))
 }
 const selectDeleteItem = item => {
   formDelete.id = item.id;
@@ -274,8 +276,8 @@ const submitDelete = () => {
             Añadir
           </JetButton>
         </div>
-        <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5">
-          <div class="flex lg:flex-row flex-col space-x-4 items-end border border-gray-50">
+        <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5 border border-gray-50">
+          <div class="flex lg:flex-row flex-col space-x-4 items-end">
             <div class="lg:w-1/2 w-full">
               <JetLabel value="Búsqueda" />
               <JetInput 
@@ -335,7 +337,7 @@ const submitDelete = () => {
             </div>
           </div>
         </div>
-        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base">
+        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50">
           <Table :header="header">
             <tbody class="px-5">
               <tr 

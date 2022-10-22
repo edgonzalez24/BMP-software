@@ -1,10 +1,10 @@
 <script setup>
   import AppLayout from '@/Layouts/AppLayout.vue';
-  import JetButton from '@/Components/Button.vue';
   import { reactive, computed, ref, getCurrentInstance } from 'vue';
   import Table from '@/Components/Table.vue';
   import Pagination from '@/Components/Shared/Pagination.vue';
   import moment from 'moment';
+  import { Link } from '@inertiajs/inertia-vue3';
   
   const props = defineProps({
     presales: Object
@@ -49,9 +49,9 @@
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
             Pedidos
           </h2>
-          <JetButton @click="true">
+          <Link :href="route('presales.create')" class="inline-flex items-center px-8 py-2 border border-transparent rounded-md font-semibold sm:text-base text-sm  tracking-widest  focus:outline-none  focus:ring disabled:opacity-25 transition bg-dark-blue-500 focus:ring-gray-300 focus:border-gray-900 hover:bg-gray-700 active:bg-gray-900 text-white">
             Crear
-          </JetButton>
+          </Link>
         </div>
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50">
           <Table :header="header">
