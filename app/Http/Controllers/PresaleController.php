@@ -7,6 +7,8 @@ use App\Http\Requests\StorePresaleRequest;
 use App\Http\Requests\UpdatePresaleRequest;
 use App\Http\Requests\StorePresaleDetailRequest;
 use App\Http\Requests\UpdatePresaleDetailRequest;
+use App\Http\Resources\Client as ResourcesClient;
+use App\Http\Resources\ClientCollection;
 use App\Models\PresaleDetail;
 use App\Models\User;
 use App\Models\Client;
@@ -17,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Resources\Presale as PresaleResources;
 use App\Http\Resources\PresaleCollection;
+use App\Models\MethodPaid;
 
 class PresaleController extends Controller
 {
@@ -48,9 +51,6 @@ class PresaleController extends Controller
         if ( ! Auth::user()->can('presale_create')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
-
-        $validated = $request->validated();
-        $validated_detail = new StorePresaleDetailRequest();
         
         try {
             $presale = new Presale($request->all());
@@ -107,5 +107,14 @@ class PresaleController extends Controller
     public function destroy(Presale $presale)
     {
         //
+    }
+
+    public function getDetail() {
+        $clients = new ClientCollection(Client::orderBy('id', 'desc')->get());
+        $methods_paids = MethodPaid::orderBy('id', 'desc')->get();
+        return Inertia::render('Presale/Create', [
+            'clients' => $clients,
+            'methods_payments' => $methods_paids
+        ]);
     }
 }
