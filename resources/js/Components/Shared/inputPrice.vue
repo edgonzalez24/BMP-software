@@ -6,7 +6,7 @@ const numbers = reactive({
   decimal: '.',
   separator: ',',
   prefix: '$ ',
-  precision: 4,
+  precision: 2,
 });
 
 
