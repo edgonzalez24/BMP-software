@@ -20,6 +20,9 @@ use Inertia\Inertia;
 use App\Http\Resources\Presale as PresaleResources;
 use App\Http\Resources\PresaleCollection;
 use App\Models\MethodPaid;
+use App\Models\Article;
+use App\Http\Resources\Article as ArticleResources;
+use App\Http\Resources\StockDetailArticleCollection;
 
 class PresaleController extends Controller
 {
@@ -109,12 +112,26 @@ class PresaleController extends Controller
         //
     }
 
-    public function getDetail() {
+    public function getDetail(Request $request) {
         $clients = new ClientCollection(Client::orderBy('id', 'desc')->get());
         $methods_paids = MethodPaid::orderBy('id', 'desc')->get();
+        try {
+            $article = null;
+            if( $request->input('search')) {
+                $search = $request->get('search');
+                if(isset($search)) {
+                    $filter = Article::where('active', '1');
+                    $filter->where("name", "like", "%" .$search. "%");
+                }
+                $article = new StockDetailArticleCollection($filter->orderBy('id', 'desc')->get());
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         return Inertia::render('Presale/Create', [
             'clients' => $clients,
-            'methods_payments' => $methods_paids
+            'payment_methods' => $methods_paids,
+            'articles' => $article,
         ]);
     }
 }

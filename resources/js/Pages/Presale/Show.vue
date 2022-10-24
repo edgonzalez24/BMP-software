@@ -20,7 +20,7 @@
     },
     {
       name: 'Cliente',
-      showInMobile: false
+      showInMobile: true
     },
     {
       name: 'Estado',

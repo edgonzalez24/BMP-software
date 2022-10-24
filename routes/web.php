@@ -46,6 +46,7 @@ Route::middleware([
     Route::get('/dashboard/stocks/filter', [StockController::class, 'filter'])->name('stock.filter');
     Route::get('/dashboard/presales', [PresaleController::class, 'index'])->name('presales');
     Route::get('/dashboard/presales/create', [PresaleController::class, 'getDetail'])->name('presales.create');
+    //Route::get('/dashboard/presales/create', [ArticleController::class, 'filterPresale'])->name('presale.filter');
 
     Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
     
@@ -96,6 +97,5 @@ Route::middleware([
 
     // Map
     Route::post('/map', [PositionController::class, 'store'])->name('map.save');
-    
 });
 
