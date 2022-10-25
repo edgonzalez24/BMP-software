@@ -25,7 +25,7 @@ import { computed } from 'vue';
   })
 </script>
 <template>
-  <div class="rounded-lg overflow-hidden shadow-card px-5 py-8 bg-white">
+  <div class="rounded-lg overflow-hidden shadow-card px-5 py-8 bg-white border border-gray-50">
     <div class="flex justify-center">
       <div class="h-8 w-8 rounded-md flex justify-center items-center" :style="{ backgroundColor: styles.bg}">
         <font-awesome-icon :icon="`fa-solid ${styles.icon}`" :style="{ color: styles.iconColor }" class="text-white" />

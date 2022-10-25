@@ -54,7 +54,6 @@ class PresaleController extends Controller
         if ( ! Auth::user()->can('presale_create')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
-        
         try {
             $presale = new Presale($request->all());
             $presale->save();
@@ -62,18 +61,17 @@ class PresaleController extends Controller
             // presaledetail
             for ($i=0; $i < count($request->presale_detail); $i++) { 
                 $presaleDetail = PresaleDetail::insert([
-                    'total_articles' => $request->presale_detail[$i]->unit,
-                    'dischargued' => $request->presale_detail[$i]->dischargued,
-                    'total' => $request->presale_detail[$i]->total,
-                    'article_id' => $request->presale_detail[$i]->id,
+                    'total_articles' => $request->presale_detail[$i]['total_articles'],
+                    'dischargued' => $request->presale_detail[$i]['dischargued'],
+                    'total' => $request->presale_detail[$i]['total'],
+                    'article_id' => $request->presale_detail[$i]['id'],
                     'presale_id' => $presale->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
             }
         } catch (\Throwable $th) {
-            die($th);
-            //return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => $th]);
         }
 
         return redirect()->back()->with('success', 'Registro creado correctamente!.');
@@ -152,6 +150,7 @@ class PresaleController extends Controller
     public function getDetail(Request $request) {
         $clients = new ClientCollection(Client::orderBy('id', 'desc')->get());
         $methods_paids = MethodPaid::orderBy('id', 'desc')->get();
+        $dispatches = Dispatch::orderBy('id', 'desc')->get();
         try {
             $article = null;
             if( $request->input('search')) {
@@ -169,6 +168,7 @@ class PresaleController extends Controller
             'clients' => $clients,
             'payment_methods' => $methods_paids,
             'articles' => $article,
+            'dispatches' => $dispatches,
         ]);
     }
 }

@@ -39,16 +39,22 @@ const date = ref(new Date());
             </div>
           </div>
         </div>
-        <div class="w-full flex justify-between md:flex-row space-x-6">
-          <div class="w-full md:w-1/3 p-5 bg-white rounded-lg overflow-hidden shadow-card flex justify-center">
-            <Datepicker 
+        <div class="w-full flex justify-between md:flex-row space-x-6 mb-8">
+          <div class="w-full md:w-1/3 p-5 bg-white rounded-lg overflow-hidden shadow-card flex justify-center border border-gray-50">
+            <!-- <Datepicker 
               v-model="date" 
               inline
               autoApply 
               :enableTimePicker="false"
               locale="es"
-            />
+            /> -->
           </div>
+          <div class="w-full md:w-2/3 p-5 bg-white rounded-lg overflow-hidden shadow-card flex justify-center border border-gray-50">
+            
+          </div>
+        </div>
+        <div class="w-full bg-white rounded-lg overflow-hidden shadow-card min-h-table border border-gray-50">
+
         </div>
       </div>
     </div>
