@@ -164,3 +164,11 @@ input:checked~.toggle__dot {
 			background: #d1d5db;
 		}
 }
+
+.vs__dropdown-toggle {
+	border-radius: 6px !important;
+}
+.vs--disabled .vs__dropdown-toggle, .vs--disabled .vs__search {
+	--tw-bg-opacity: 1 !important;
+	background-color: rgb(241 245 249 / var(--tw-bg-opacity)) !important;
+}

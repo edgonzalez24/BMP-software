@@ -2,7 +2,7 @@
 import JetLabel from '@/Components/Label.vue';
 import { reactive, computed, ref, getCurrentInstance } from 'vue';
 import Table from '@/Components/Table.vue';
-import { useForm, usePage } from '@inertiajs/inertia-vue3';
+import { useForm, usePage, Link } from '@inertiajs/inertia-vue3';
 import JetInput from '@/Components/Input.vue';
 import { Inertia } from '@inertiajs/inertia';
 import InputCounter from '@/Components/Shared/InputCounter.vue';
@@ -12,12 +12,13 @@ import _ from 'lodash';
 import { POSITION } from 'vue-toastification';
 import Loading from 'vue3-loading-overlay';
 
-defineProps({
+const props = defineProps({
   clients: Object,
   payment_methods: Array,
   articles: Object | null,
   dispatches: Array,
-  isEdit: Boolean
+  isEdit: Boolean,
+  presale: Object
 })
 const header = reactive([
   {
@@ -69,16 +70,18 @@ const headerPreview = reactive([
 ]);
 const editUnit = ref(false)
 const form = useForm({
+  presale_id: props.isEdit ? props.presale.id : null,
   client: {
-    id: null,
-    type_client: null,
-    payment_method: null
+    id: props.isEdit ? props.presale.client.id : null,
+    name: props.isEdit ? props.presale.client.name : null,
+    type_client: props.isEdit ? props.presale.client.type_client : null,
+    payment_method: props.isEdit ? props.presale.method_paid_client : null
   },
-  details: [],
-  paid: 0,
-  pending: 0,
+  details: props.isEdit ? props.presale.presale_detail.map(item => ({ ...item, ...item.article, id_detail: item.id, id_presale: props.presale.id,  kind: 'old'}))  : [],
+  paid: props.isEdit ? props.presale.total_paid : 0,
+  pending: props.isEdit ? props.presale.total_pending : 0,
   total: 0,
-  dispatch_id: { "id": 2, "name": "En proceso", "created_at": null, "updated_at": null }
+  dispatch_id: props.isEdit ? props.presale.dispatch : { "id": 2, "name": "En proceso", "created_at": null, "updated_at": null }
 });
 const isLoading = ref(false)
 const search = ref('');
@@ -86,15 +89,17 @@ const error = ref('');
 const selectedItem = ref({});
 const selectedArticleID = ref(0);
 const searchArticle = (search, loading) => {
-  Inertia.get('/dashboard/presales/create', {
+  const EP = props.isEdit ? `/dashboard/presales/${props.presale.id}/edit` : '/dashboard/presales/create'
+  Inertia.get(EP, {
     search,
   }, {
     preserveState: true
   })
 }
 const handleSelected = (selected) => {
-  selectedItem.value = { ...selected, total_articles: 0, total: 0, dischargued: 0 };
+  selectedItem.value = { ...selected, total_articles: 0, total: 0, dischargued: 0 , kind: 'new'};
   search.value = null;
+  error.value = '';
 }
 const addToCart = (item) => {
   const findArticle = form.details.length && form.details.find(i => i.id === item.id);
@@ -104,7 +109,7 @@ const addToCart = (item) => {
   } else {
     if (findArticle && Object.keys(findArticle).length) {
       findArticle.total_articles = findArticle.total_articles + item.total_articles;
-      findArticle.total = getTotalPriceArticle(item);
+      findArticle.total = getTotalPriceArticle(findArticle);
     } else {
       form.details.push({ ...item, total: getTotalPriceArticle(item) })
     }
@@ -118,6 +123,10 @@ const addToCart = (item) => {
 const validateStock = (stock, unit) => {
   return stock === 0 || unit > stock;
 }
+
+const formDelete = useForm({
+  id: null
+})
 
 const editArticle = (article) => {
   editUnit.value = !editUnit.value;
@@ -133,24 +142,49 @@ const getTotalPriceArticle = (article) => {
 }
 
 const deleteArticle = (article) => {
-  _.remove(form.details, item => item.id === article.id)
+  if(props.isEdit && article.kind === 'old') {
+    formDelete.id = article.id
+    formDelete.get(route('presale.delete_uniq', formDelete.id))
+  } else {
+    _.remove(form.details, item => item.id === article.id && item.kind === 'new')
+  }
 }
 
 const getTotalPending = computed(() => (getTotal(form.details) - form.paid).toFixed(2));
 const savePresale = () => {
+  const EP = props.isEdit ? 'presale.change' : 'presale.save';
   if(form.client.id && form.details.length > 0) {
     isLoading.value = true;
-    form.transform(data => ({
-      total_paid: data.paid,
-      total_pending: getTotalPending.value,
-      dispatch_id: data.dispatch_id.id,
-      paid: 0,
-      client_id: data.client.id,
-      user_presale_id: usePage().props.value.user.id,
-      user_dispatch_id: usePage().props.value.user.id,
-      method_paid_id: data.client.payment_method.id,
-      presale_detail: data.details
-    })).post(route('presale.save'), {
+    form.transform(data => {
+      if(props.isEdit) {
+        return {
+          presale_id: data.presale_id,
+          total_paid: data.paid,
+          total_pending: getTotalPending.value,
+          dispatch_id: data.dispatch_id.id,
+          paid: 0,
+          client_id: data.client.id,
+          user_presale_id: usePage().props.value.user.id,
+          user_dispatch_id: usePage().props.value.user.id,
+          method_paid_id: data.client.payment_method.id,
+          new_presale_detail: _.filter(data.details, { kind: 'new'}),
+          old_presale_detail: _.filter(data.details, { kind: 'old' }),
+        }
+      } else {
+        return {
+          presale_id: data.presale_id,
+          total_paid: data.paid,
+          total_pending: getTotalPending.value,
+          dispatch_id: data.dispatch_id.id,
+          paid: 0,
+          client_id: data.client.id,
+          user_presale_id: usePage().props.value.user.id,
+          user_dispatch_id: usePage().props.value.user.id,
+          method_paid_id: data.client.payment_method.id,
+          presale_detail: data.details
+        }
+      }
+    }).post(route(EP), {
       onSuccess: () => {
         toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
         setTimeout(() => {
@@ -174,6 +208,7 @@ const savePresale = () => {
   }
 }
 const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
+const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
 
 </script>
 <template>
@@ -181,11 +216,18 @@ const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
   <div class="min-h-screen">
     <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
       <div class="my-5 flex justify-between items-center">
-        <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
-          Nuevo Pedido
-        </h2>
-        <JetButton @click="savePresale">
-          Añadir
+        <div>
+          <Link href="/dashboard/presales"
+            class="inline-flex text-dark-blue-500 items-center font-bold transition hover:opacity-80">
+          <font-awesome-icon icon="fa-solid fa-arrow-left-long" class="text-base mr-2" />
+          Regresar
+          </Link>
+          <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
+            {{ isEdit ? 'Editar Pedido' : 'Nuevo Pedido' }}
+          </h2>
+        </div>
+        <JetButton v-if="isActive" @click="savePresale">
+          {{ isEdit ? 'Editar' : 'Crear' }}
         </JetButton>
       </div>
       <h6 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-2">Información del Cliente
@@ -195,9 +237,15 @@ const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
         <div class="grid md:grid-cols-3 gap-x-5 gap-y-2 items-center mb-2">
           <div>
             <JetLabel for="name" value="Seleccionar Cliente" />
-            <v-select v-model="form.client" :options="clients.data.length ? clients.data : []"
-              :reduce="(option) => option" label="name" placeholder="Seleccionar cliente"
-              class="appearance-none capitalize mt-1">
+            <v-select 
+              v-model="form.client" 
+              :options="clients.data.length ? clients.data : []"
+              :reduce="(option) => option"
+              :disabled="isEdit"
+              label="name" 
+              placeholder="Seleccionar cliente"
+              class="appearance-none capitalize mt-1"
+            >
               <template #open-indicator="{ attributes }">
                 <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
@@ -216,9 +264,15 @@ const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
           </div>
           <div v-if="form.client.id">
             <JetLabel for="method" value="Método de Pago" />
-            <v-select v-model="form.client.payment_method" :options="payment_methods.length ? payment_methods : []"
-              :reduce="(option) => option" label="name" placeholder="Seleccionar cliente"
-              class="appearance-none capitalize mt-1">
+            <v-select 
+              v-model="form.client.payment_method"
+              :options="payment_methods.length ? payment_methods : []"
+              :reduce="(option) => option"
+              :disabled="!isActive"
+              label="name"
+              placeholder="Seleccionar cliente"
+              class="appearance-none capitalize mt-1"
+            >
               <template #open-indicator="{ attributes }">
                 <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
@@ -234,7 +288,7 @@ const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
         <div v-if="form.client.id" class="grid md:grid-cols-3 gap-x-5 items-center gap-y-2 ">
           <div>
             <JetLabel for="paid" value="Total Pagado" />
-            <InputPrice id="paid" v-model:value="form.paid" class="mt-1 block w-full" />
+            <InputPrice id="paid" v-model:value="form.paid" class="mt-1 block w-full" :disabled="!isActive" />
           </div>
           <div>
             <JetLabel for="pending" value="Total Pendiente" />
@@ -242,8 +296,14 @@ const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
           </div>
           <div>
             <JetLabel value="Estado" />
-            <v-select v-model="form.dispatch_id" :options="dispatches.length ? dispatches : []"
-              :reduce="(option) => option" label="name" placeholder="Seleccionar estado" class="appearance-none capitalize mt-1">
+            <v-select 
+              v-model="form.dispatch_id" :options="dispatches.length ? dispatches : []"
+              :reduce="(option) => option"
+              :disabled="!isActive && isEdit"
+              label="name"
+              placeholder="Seleccionar estado"
+              class="appearance-none capitalize mt-1"
+            >
               <template #open-indicator="{ attributes }">
                 <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
@@ -262,9 +322,16 @@ const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
         <div class="flex justify-between flex-wrap p-5 items-center">
           <div class="md:w-1/2 w-full md:order-first order-last">
             <JetLabel value="Seleccionar producto" class="mb-2" />
-            <v-select v-model="search" :options="articles && articles.data.length ? articles.data : []"
-              :reduce="(option) => option.id" label="name" placeholder="Buscar..." class="appearance-none capitalize"
-              @search="searchArticle" @option:selected="handleSelected">
+            <v-select 
+              v-model="search"
+              :options="articles && articles.data.length ? articles.data : []"
+              :reduce="(option) => option.id"
+              :disabled="!isActive"
+              label="name"
+              placeholder="Buscar..."
+              class="appearance-none capitalize"
+              @search="searchArticle" @option:selected="handleSelected"
+            >
               <template #no-options="{ search, searching, loading }">
                 Busqueda no encontrada
               </template>
@@ -350,7 +417,7 @@ const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
                 <div class="flex justify-center">
                   <div class="flex flex-row space-x-4">
                     <a @click="editArticle(article)" class="text-blue-500 font-medium cursor-pointer">
-                      {{ editUnit ? 'Guardar' : 'Editar'}}
+                      {{ editUnit && article.id === selectedArticleID ? 'Guardar' : 'Editar'}}
                     </a>
                     <a @click="deleteArticle(article)" class="text-red-500 font-medium cursor-pointer">Eliminar</a>
                   </div>
