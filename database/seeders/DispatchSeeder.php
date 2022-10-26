@@ -28,6 +28,9 @@ class DispatchSeeder extends Seeder
             [
                 'name' => 'Entregado',
             ],
+            [
+                'name' => 'Cancelado',
+            ],
         ]);
     }
 }

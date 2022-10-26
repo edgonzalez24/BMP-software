@@ -26,8 +26,8 @@ class UpdatePresaleRequest extends FormRequest
         
         return [            
             'total_paid' => 'required',
-            'total_pending' => 'float',
-            'dispatch_id' => 'rerquired|integer',
+            'total_pending' => 'required',
+            'dispatch_id' => 'required|integer',
             'paid' => 'boolean',
             'client_id' => 'required|integer',
             'user_presale_id' => 'required|integer',

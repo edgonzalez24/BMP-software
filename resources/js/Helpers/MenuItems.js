@@ -64,11 +64,6 @@ export const menuItems = [
         slug: 'presales',
         icon: 'fa-cart-shopping'
       },
-      {
-        name: 'Entregas',
-        slug: '',
-        icon: 'fa-route'
-      },
     ]
   },
   {
