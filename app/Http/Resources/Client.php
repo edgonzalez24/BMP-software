@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class StockDetailArticle extends JsonResource
+class Client extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,12 +17,8 @@ class StockDetailArticle extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'measure_unit' => $this->measure_unit,
-            'active' => $this->active,
-            'category' => $this->category,
-            'comment' => $this->comment,
-            'stock' => $this->countTotalStock($this->stocks),
-            'price' => $this->stocks->last()
+            'type_client' => $this->type_client,
+            'payment_method' => $this->type_client->method_paid
             /* 'created' => $this->created_at->diffForHumans(),
             'updated' => $this->updated_at->diffForHumans(),
             'deleted' => $this->deleted_at->diffForHumans(),
@@ -30,10 +26,5 @@ class StockDetailArticle extends JsonResource
             'updated_at' => $this->updated_at->format('d-m-y'),
             'deleted_at' => $this->deleted_at->format('d-m-y'), */
         ];
-    }
-
-    protected function countTotalStock($stock)
-    {
-        return $stock->pluck('quantity_items')->sum();
     }
 }

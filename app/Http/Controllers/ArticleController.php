@@ -152,17 +152,4 @@ class ArticleController extends Controller
 
     }
 
-    public function search(Request $request)
-    {
-        try {
-            $search = $request->get('search');
-            return DB::table("articles")
-            ->where("name", "like", "%" .$search. "%")
-            ->where('active', 1)
-            ->orderBy('id', 'desc')
-            ->paginate(25);
-        } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
-        }
-    }
 }

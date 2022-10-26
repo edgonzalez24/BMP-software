@@ -37,6 +37,7 @@ module.exports = {
 			},
 			minHeight: {
 				'base': '500px',
+				'table': '200px',
 				'lg': '700px',
 				'xl': '900px',
 			},
