@@ -24,7 +24,7 @@ class ClientController extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $clients = Client::orderBy('id', 'desc')->paginate(15);
+        $clients = Client::orderBy('id', 'desc')->paginate(25);
         $typeClient = TypeClient::all();
         return Inertia::render('Clients/Show',[ 
             'clients' => $clients,

@@ -21,7 +21,8 @@ class StockDetailArticle extends JsonResource
             'active' => $this->active,
             'category' => $this->category,
             'comment' => $this->comment,
-            'stock' => $this->countTotalStock($this->stocks)
+            'stock' => $this->countTotalStock($this->stocks),
+            'price' => $this->stocks->last()
             /* 'created' => $this->created_at->diffForHumans(),
             'updated' => $this->updated_at->diffForHumans(),
             'deleted' => $this->deleted_at->diffForHumans(),

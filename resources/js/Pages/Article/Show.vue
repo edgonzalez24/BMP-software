@@ -14,6 +14,7 @@ import Toggle from '@/Components/Shared/Toggle.vue';
 import QuillEditor from '@/Components/Shared/QuillEditor.vue';
 import { POSITION } from 'vue-toastification';
 import DetailArticle from '@/Components/Article/Detail.vue';
+import { Inertia } from '@inertiajs/inertia';
 
 const props =  defineProps({
   articles: Object,
@@ -80,9 +81,6 @@ const formFilter = useForm({
   measure_unit_id: Number(new URLSearchParams(window.location.search).get('measure_unit_id')) || null,
 });
 
-const handleFilter = () => {
-  formFilter.get(route('article.filter', formFilter))
-}
 const selectDeleteItem = item => {
   formDelete.id = item.id;
   toggleDeleteModal();
@@ -142,6 +140,15 @@ const submitDelete = () => {
     }
   });
 };
+watch(formFilter, value => {
+  Inertia.get('/dashboard/articles/filter', {
+      search: value.search,
+      category_id: value.category_id,
+      measure_unit_id: value.measure_unit_id
+    }, {
+    preserveState: true
+  })
+})
 
 </script>
 
@@ -274,7 +281,7 @@ const submitDelete = () => {
             Añadir
           </JetButton>
         </div>
-        <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5">
+        <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5 border border-gray-50">
           <div class="flex lg:flex-row flex-col space-x-4 items-end">
             <div class="lg:w-1/2 w-full">
               <JetLabel value="Búsqueda" />
@@ -284,7 +291,6 @@ const submitDelete = () => {
                 placeholder="Buscar artículo..."
                 type="text"
                 class="mt-1 block w-full"
-                @input="handleFilter" 
               />
             </div>
             <div class="w-full lg:w-1/2 flex flex-row space-x-4 lg:mt-0 mt-5">
@@ -296,7 +302,6 @@ const submitDelete = () => {
                   :reduce="(option) => option.id"
                   label="name" 
                   placeholder="Seleccionar una categoria"
-                  @option:selected="handleFilter"
                   :clearable="false"
                   class="appearance-none capitalize"
                 >
@@ -318,7 +323,6 @@ const submitDelete = () => {
                   :reduce="(option) => option.id"
                   label="name"
                   placeholder="Seleccionar medida" 
-                  @option:selected="handleFilter"
                   :clearable="false"
                   class="appearance-none capitalize"
                 >
@@ -335,7 +339,7 @@ const submitDelete = () => {
             </div>
           </div>
         </div>
-        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base">
+        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50">
           <Table :header="header">
             <tbody class="px-5">
               <tr 

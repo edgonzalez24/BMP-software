@@ -44,6 +44,24 @@ class ClientSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [           
+                'name' => 'Pupusería Atardecer',
+                'telephone' => null,
+                'type_client_id' => 1,
+                'comment' => 'Comentario sobre el cliente',
+                'active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [           
+                'name' => 'Pupusería Lo Nuestro',
+                'telephone' => null,
+                'type_client_id' => 1,
+                'comment' => 'Comentario sobre el cliente',
+                'active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

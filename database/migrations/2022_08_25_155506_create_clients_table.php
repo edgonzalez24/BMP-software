@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name')->comment('N ombre del cliente');
             $table->string('telephone')->nullable()->comment('Número de teléfono contacto del cliente');
             $table->unsignedInteger('type_client_id')->comment('ID del tipo de cliente');
-            $table->string('comment')->comment('Aclaraciones, comentarios, observaciones del o los artículos');
+            $table->string('comment')->nullable()->comment('Aclaraciones, comentarios, observaciones del o los artículos');
             $table->boolean('active')->default(false);
 
             $table->foreign('type_client_id')->references('id')->on('type_clients');

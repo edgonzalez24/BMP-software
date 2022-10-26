@@ -53,9 +53,26 @@ const userName = computed(() => usePage().props.value.user.name)
 					<!-- Page Heading -->
 					<header class="bg-white shadow">
 						<div class="max-w-7xl mx-auto py-6 md:py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-							<h2 class="font-semibold text-xl text-gray-800 leading-tight">
-								Dashboard
-							</h2>
+							<div>
+								<JetDropdown
+									align="left"
+								>
+									<template #trigger>
+										<div class="relative inline-flex transition duration-300 ease-in-out hover:opacity-80 cursor-pointer">
+											<font-awesome-icon icon="fa-regular fa-bell" class="text-2xl text-gray-400" @click="true" />
+											<span class="flex absolute h-3 w-3 top-0 right-0 -mt-2 -mr-1">
+												<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+												<span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+											</span>
+										</div>
+									</template>
+									<template #content>
+										<div class="p-2">
+											Lorem ipsum dolor
+										</div>
+									</template>
+								</JetDropdown>
+							</div>
 							<div class="flex items-center">
 								<div class="relative">			
 									<JetDropdown>

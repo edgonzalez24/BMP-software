@@ -6,7 +6,7 @@ const numbers = reactive({
   decimal: '.',
   separator: ',',
   prefix: '$ ',
-  precision: 4,
+  precision: 2,
 });
 
 
@@ -35,7 +35,7 @@ defineExpose({ focus: () => input.value.focus() });
 <template>
   <number 
     ref="input" 
-    class="rounded-md border-gray-50 focus:border-gray-400 hover:border-gray-400 focus:ring hover:ring focus:ring-gray-300 hover:ring-gray-300 focus:ring-opacity-50 hover:ring-opacity-50  shadow-sm disabled:bg-slate-50"
+    class="rounded-md border-gray-50 focus:border-gray-400 hover:border-gray-400 focus:ring hover:ring focus:ring-gray-300 hover:ring-gray-300 focus:ring-opacity-50 hover:ring-opacity-50  shadow-sm disabled:bg-slate-100"
     v-model="proxyPrice" 
     v-bind="numbers"
   />

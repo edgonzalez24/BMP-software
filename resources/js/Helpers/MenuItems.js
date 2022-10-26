@@ -11,11 +11,6 @@ export const menuItems = [
     icon: '',
     children: [
       {
-        name: 'Stock',
-        slug: 'stocks',
-        icon: 'fa-cart-plus'
-      },
-      {
         name: 'Artículos',
         slug: 'articles',
         icon: 'fa-box-open'
@@ -34,6 +29,11 @@ export const menuItems = [
         name: 'Proveedores',
         slug: 'suppliers',
         icon: 'fa-truck-field-un'
+      },
+      {
+        name: 'Stock',
+        slug: 'stocks',
+        icon: 'fa-cart-flatbed'
       },
     ]
   },
@@ -60,9 +60,9 @@ export const menuItems = [
     icon: '',
     children: [
       {
-        name: 'Entregas',
-        slug: '',
-        icon: 'fa-route'
+        name: 'Pedidos',
+        slug: 'presales',
+        icon: 'fa-cart-shopping'
       },
     ]
   },
@@ -72,14 +72,21 @@ export const menuItems = [
     icon: '',
     children: [
       {
-        name: 'Personalizar',
-        slug: '',
-        icon: 'fa-wand-sparkles'
-      },
-      {
         name: 'Roles y Permisos',
         slug: 'users',
         icon: 'fa-lock'
+      },
+    ]
+  },
+  {
+    name: 'Centro de Ayuda',
+    slug: '',
+    icon: '',
+    children: [
+      {
+        name: 'Manual de Ayuda',
+        slug: '',
+        icon: 'fa-circle-info'
       },
     ]
   }

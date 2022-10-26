@@ -31,7 +31,7 @@ class StoreStockRequest extends FormRequest
             'sale_price' => 'numeric',
             'supplier_id' => 'required|integer',
             'measure_unit_id' => 'required|integer',
-            'comment' => 'string',
+            'comment' => 'string|nullable',
         ];
     }
 }

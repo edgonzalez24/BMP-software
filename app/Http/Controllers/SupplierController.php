@@ -23,7 +23,7 @@ class SupplierController extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $suppliers = Supplier::where('name', '<>', 'Sin Asignar')->orderBy('id', 'desc')->paginate(15);
+        $suppliers = Supplier::where('name', '<>', 'Sin Asignar')->orderBy('id', 'desc')->paginate(25);
         return Inertia::render('Suppliers/Show',[ 
             'suppliers' => $suppliers,
         ]);
