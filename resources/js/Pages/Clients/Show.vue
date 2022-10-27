@@ -65,7 +65,7 @@ const getTypeClient = id => {
 }
 const formFilter = useForm({
   search: new URLSearchParams(window.location.search).get('search') || null,
-  type_client_id: Number(new URLSearchParams(window.location.type_client_id).get('type_client_id')) || null,
+  type_client_id: Number(new URLSearchParams(window.location.search).get('type_client_id')) || null,
 });
 const handleFilter = () => {
   formFilter.get(route('client.filter', formFilter))
@@ -240,8 +240,8 @@ const submitDelete = () => {
         </div>
 
         <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5">
-          <div class="flex lg:flex-row flex-col space-x-4 items-end border border-gray-50">
-            <div class="lg:w-1/2 w-full">
+          <div class="flex lg:flex-row flex-col space-x-4 items-end justify-between">
+            <div class="md:w-1/2 w-full">
               <JetLabel value="Búsqueda" />
               <JetInput 
                 id="search" 
@@ -252,29 +252,27 @@ const submitDelete = () => {
                 @input="handleFilter" 
               />
             </div>
-            <div class="w-full lg:w-1/2 flex flex-row space-x-4 lg:mt-0 mt-5">
-              <div class="w-1/2">
-                <JetLabel value="Tipo de Cliente" />
-                <v-select
-                  v-model="formFilter.type_client_id"
-                  :options="typeClient.length ? [{ id: null, name: 'Todas' }, ...typeClient] : []"
-                  :reduce="(option) => option.id"
-                  label="name" 
-                  placeholder="Seleccionar un tipo de cliente"
-                  @option:selected="handleFilter"
-                  :clearable="false"
-                  class="appearance-none capitalize"
-                >
-                  <template #open-indicator="{ attributes }">
-                    <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
-                    </svg>
-                  </template>
-                  <template #option="{ name }">
-                    <span class="capitalize">{{ name }}</span>
-                  </template>
-                </v-select>
-              </div>
+            <div class="md:w-1/4 w-full md:mt-0 mt-5">
+              <JetLabel value="Tipo de Cliente" />
+              <v-select
+                v-model="formFilter.type_client_id"
+                :options="typeClient.length ? [{ id: null, name: 'Todas' }, ...typeClient] : []"
+                :reduce="(option) => option.id"
+                label="name" 
+                placeholder="Seleccionar un tipo de cliente"
+                @option:selected="handleFilter"
+                :clearable="false"
+                class="appearance-none capitalize"
+              >
+                <template #open-indicator="{ attributes }">
+                  <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
+                  </svg>
+                </template>
+                <template #option="{ name }">
+                  <span class="capitalize">{{ name }}</span>
+                </template>
+              </v-select>
             </div>
           </div>
         </div>
@@ -324,7 +322,7 @@ const submitDelete = () => {
             </tbody>
           </Table>
         </div>
-        <div class="flex mt-8 justify-center">
+        <div v-if="totalPages > 1" class="flex mt-8 justify-center">
           <Pagination 
             :total="totalPages"
             :previous="clients.prev_page_url" 
