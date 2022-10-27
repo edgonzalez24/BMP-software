@@ -46,6 +46,8 @@ Route::middleware([
     Route::get('/dashboard/stocks/filter', [StockController::class, 'filter'])->name('stock.filter');
     Route::get('/dashboard/presales', [PresaleController::class, 'index'])->name('presales');
     Route::get('/dashboard/clients/filter', [ClientController::class, 'filter'])->name('client.filter');
+    Route::get('/dashboard/presales/create', [PresaleController::class, 'getDetail'])->name('presales.create');
+    Route::get('/dashboard/presales/{id}/edit', [PresaleController::class, 'show'])->name('presales.details');
 
     Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
     
@@ -93,9 +95,9 @@ Route::middleware([
     Route::post('/presale/save', [PresaleController::class, 'store'])->name('presale.save');
     Route::post('/presale/change', [PresaleController::class, 'update'])->name('presale.change');
     Route::get('/presale/delete/{presale}', [PresaleController::class, 'destroy'])->name('presale.delete');
+    Route::get('/presale/delete/{presale}/uniq', [PresaleController::class, 'destroy_uniq'])->name('presale.delete_uniq');
 
     // Map
     Route::post('/map', [PositionController::class, 'store'])->name('map.save');
-    
 });
 

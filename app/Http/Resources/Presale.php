@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\PresaleDetail;
 
 class Presale extends JsonResource
 {
@@ -24,7 +25,7 @@ class Presale extends JsonResource
             'method_paid_client' => $this->client->type_client->method_paid,
             'user_presale' => $this->user_presale,
             'user_dispatch' => $this->user_dispatch,
-            'presale_detail' => $this->presale_detail,
+            'presale_detail' => PresaleDetail::collection($this->presale_detail),
             'method_paid' => $this->method_paid,
             'created_at' => $this->created_at
             /* 'updated' => $this->updated_at->diffForHumans(),
