@@ -9,6 +9,7 @@
   import JetButton from '@/Components/Button.vue';
   import Loading from 'vue3-loading-overlay';
   import { POSITION } from 'vue-toastification';
+  import DetailPresale from '@/Components/Presale/Detail.vue';
 
   const props = defineProps({
     presales: Object
@@ -45,7 +46,9 @@
   const formDelete = useForm({
     id: 0
   });
+  const selectedPresale = ref({});
   const statusModalForm = ref(false);
+  const statusModalDetail = ref(false);
   const isLoading = ref(false);
   const formatDate = date => {
     return moment(date).format("DD-MM-YYYY");
@@ -54,7 +57,10 @@
     formDelete.id = id;
     statusModalForm.value = true;
   }
-
+  const detailPresale = (article) => {
+    selectedPresale.value = article;
+    statusModalDetail.value = true;
+  }
   const submitDelete = () => {
     isLoading.value = true;
     formDelete.get(route('presale.delete', formDelete.id), {
@@ -102,6 +108,9 @@
         </div>
       </form>
     </JetModal>
+    <JetModal :show="statusModalDetail" maxWidth="lg" @close="statusModalDetail = false">
+      <DetailPresale :selectedPresale="selectedPresale" @close="statusModalDetail = false" />
+    </JetModal>
     <div class="min-h-screen">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
         <div class="flex justify-between items-center my-5">
@@ -118,7 +127,7 @@
               <tr 
                 v-for="item in presales.data" 
                 class="mt-2 cursor-pointer hover:bg-slate-50 transition duration-300 ease-in-out"
-                @click="true"
+                @click="detailPresale(item)"
               >
                 <td class="text-center p-2 md:text-base text-xs">
                   {{ formatDate(item.created_at) }}
@@ -145,7 +154,7 @@
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
                       <Link 
-                        :href="item.dispatch.id !== 5 && `/dashboard/presales/${item.id}/edit`" 
+                        :href="item.dispatch.id !== 5 ? `/dashboard/presales/${item.id}/edit` : ''" 
                         :class="item.dispatch.id === 5 ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
                       >
                         Editar
