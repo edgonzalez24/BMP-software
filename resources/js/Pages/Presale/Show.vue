@@ -81,11 +81,11 @@
     <JetModal :show="statusModalForm" maxWidth="lg" @close="statusModalForm = false">
       <form class="py-8 px-5" @submit.prevent="submitDelete">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          Eliminar Pedido
+          Cancelar Pedido
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
-            Al eliminar a este Predido se borrará permanentemente del sistema,
+            Al cancelar a este Predido, el detalle se borrará permanentemente del sistema,
             por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
           </p>
           <div class="flex justify-end mt-5">
@@ -154,7 +154,7 @@
                         @click="item.dispatch.id !== 5 && deletePresale(item.id)" 
                         :class="item.dispatch.id === 5 ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
                       >
-                        Eliminar
+                        Cancelar
                       </a>
                     </div>
                   </div>
