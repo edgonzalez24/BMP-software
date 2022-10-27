@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateClientRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
@@ -93,6 +94,49 @@ class ClientController extends Controller
         try {
             $client->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+    }
+
+    public function filter(Request $request)
+    {
+        try {
+            // Estructurando datos
+            $type_client_id = $request->get('type_client_id');
+            $search = $request->get('search');
+
+            $filter = Client::where('active', '1');
+            if(isset($search)){                
+                $filter->where("name", "like", "%" .$search. "%");
+            }
+            if (isset($type_client_id)) {
+                $filter->where('type_client_id', $type_client_id);
+            }
+
+            $clients = $filter->orderBy('id', 'desc')->paginate(25);
+            $typeClient = TypeClient::all();
+            return Inertia::render('Clients/Show',[ 
+                'clients' => $clients,
+                'typeClient' => $typeClient,
+            ]);
+
+    
+        } catch (\Throwable $th) {
+            redirect()->back()->withErrors(['error' => $th]);
+        }
+
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            $search = $request->get('search');
+            return DB::table("clients")
+            ->where("name", "like", "%" .$search. "%")
+            ->where('active', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(25);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }

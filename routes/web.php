@@ -45,6 +45,7 @@ Route::middleware([
     Route::get('/dashboard/articles/filter', [ArticleController::class, 'filter'])->name('article.filter');
     Route::get('/dashboard/stocks/filter', [StockController::class, 'filter'])->name('stock.filter');
     Route::get('/dashboard/presales', [PresaleController::class, 'index'])->name('presales');
+    Route::get('/dashboard/clients/filter', [ClientController::class, 'filter'])->name('client.filter');
     Route::get('/dashboard/presales/create', [PresaleController::class, 'getDetail'])->name('presales.create');
     Route::get('/dashboard/presales/{id}/edit', [PresaleController::class, 'show'])->name('presales.details');
 
