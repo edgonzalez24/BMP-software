@@ -2,7 +2,7 @@
 import { Head, usePage, Link } from '@inertiajs/inertia-vue3';
 import JetBanner from '@/Components/Banner.vue';
 import Sidebar from '@/Components/Shared/Sidebar.vue';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
 import { useWindowSize } from '@vueuse/core';
 import JetDropdown from '@/Components/Dropdown.vue';
 import { getInitials } from '@/Helpers/Functions.js';
@@ -18,6 +18,11 @@ const statusMenu = ref(true);
 const changeStatus = status => {
 	statusMenu.value = status;
 };
+
+window.Echo.channel('public')
+	.listen('.App\\Events\\PublicEvent', (e) => {
+		console.log(e)
+	});
 
 const handleResize = () => {
 	if (width.value > 769) {

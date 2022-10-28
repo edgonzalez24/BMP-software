@@ -48,6 +48,7 @@ Route::middleware([
     Route::get('/dashboard/clients/filter', [ClientController::class, 'filter'])->name('client.filter');
     Route::get('/dashboard/presales/create', [PresaleController::class, 'getDetail'])->name('presales.create');
     Route::get('/dashboard/presales/{id}/edit', [PresaleController::class, 'show'])->name('presales.details');
+    Route::get('/dashboard/account-history', function () { return Inertia::render('AccountHistory/Show'); })->name('account-history');
 
     Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
     
