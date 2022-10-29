@@ -79,6 +79,9 @@ class PermissionsSeeder extends Seeder
         $presale_create = Permission::create(['name' => 'presale_create', 'descriptions' => 'Crear una entrada en preventas']);
         $presale_edit = Permission::create(['name' => 'presale_edit', 'descriptions' => 'Editar editar una entrada en preventas']);
         $presale_destroy = Permission::create(['name' => 'presale_destroy', 'descriptions' => 'Eliminar una entrada en preventas']);
+
+        /* CUENTAS POR COBRAR */
+        $acountHistory_index = Permission::create(['name' => 'acountHistory_index', 'descriptions' => 'Listar todas las preventas marcadas como entregadas y que tienen saldos pendientes de cobro']);
         
 
         // ----------------------------------------
@@ -94,6 +97,7 @@ class PermissionsSeeder extends Seeder
             $article_index, $article_create, $article_edit, $article_destroy,
             $stock_index, $stock_create, $stock_edit, $stock_destroy, $stock_show, $client_index, $client_create, $client_edit, $client_destroy,            
             $presale_index, $presale_create, $presale_edit, $presale_destroy,
+            $acountHistory_index,
         ];
         
         $encargado->syncPermissions($permission_encargado);
