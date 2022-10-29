@@ -3,7 +3,9 @@ import { Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 import JetDropdownLink from '@/Components/DropdownLink.vue';
 import { menuItems } from '@/Helpers/MenuItems';
+import { usePermission } from '@/Composables/usePermission';
 
+usePermission()
 defineProps({
   statusMenu: Boolean
 });
