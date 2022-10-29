@@ -19,7 +19,7 @@ class AccountHistory extends Controller
         }
 
         $clients = Client::where('active', 1)->get();
-        $presales = new PresaleCollection(Presale::where('dispatch_id', '4')->paginate(25));
+        $presales = new PresaleCollection(Presale::where('dispatch_id', '4')->where('total_pending', '>', 0)->paginate(25));
         return Inertia::render('AccountHistory/Show',[ 
             'presales' => $presales,
             'clients' => $clients,
