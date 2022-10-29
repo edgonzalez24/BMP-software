@@ -79,6 +79,9 @@ class PermissionsSeeder extends Seeder
         $presale_create = Permission::create(['name' => 'presale_create', 'descriptions' => 'Crear una entrada en preventas']);
         $presale_edit = Permission::create(['name' => 'presale_edit', 'descriptions' => 'Editar editar una entrada en preventas']);
         $presale_destroy = Permission::create(['name' => 'presale_destroy', 'descriptions' => 'Eliminar una entrada en preventas']);
+
+        /* CUENTAS POR COBRAR */
+        $acountHistory_index = Permission::create(['name' => 'acountHistory_index', 'descriptions' => 'Listar todas las preventas marcadas como entregadas y que tienen saldos pendientes de cobro']);
         
 
         // ----------------------------------------
@@ -87,16 +90,41 @@ class PermissionsSeeder extends Seeder
         // ----------------- PERMISOS encargado -----------------
         $permission_encargado = [
             $user_list, $user_destroy, $user_edit, $send_invitation, 
-            $change_role, $category_article_index, $category_article_create,
+            $change_role, 
             $category_article_index, $category_article_create, $category_article_edit, $category_article_destroy,
             $measure_units_index, $measure_units_create, $measure_units_edit, $measure_units_destroy,
             $supplier_index, $supplier_create, $supplier_edit, $supplier_destroy,
             $article_index, $article_create, $article_edit, $article_destroy,
-            $stock_index, $stock_create, $stock_edit, $stock_destroy, $stock_show, $client_index, $client_create, $client_edit, $client_destroy,            
+            $stock_index, $stock_create, $stock_edit, $stock_destroy, $stock_show, 
+            $client_index, $client_create, $client_edit, $client_destroy,            
             $presale_index, $presale_create, $presale_edit, $presale_destroy,
-        ];
-        
+            $acountHistory_index,
+        ];        
         $encargado->syncPermissions($permission_encargado);
+
+        // ----------------- PERMISOS preventa -----------------
+        $permission_preventa = [
+            $article_index,
+            $stock_index, $stock_show, 
+            $client_index,            
+            $presale_index, $presale_create, $presale_edit, $presale_destroy,
+        ];        
+        $preventa->syncPermissions($permission_preventa);
+
+        // ----------------- PERMISOS despacho -----------------
+        $permission_despacho = [
+            $article_index,
+            $client_index,            
+            $presale_index, $presale_edit,
+        ];        
+        $despacho->syncPermissions($permission_despacho);
+
+        // ----------------- PERMISOS cuentas -----------------
+        $permission_cuentas = [
+            $client_index,
+            $acountHistory_index,
+        ];        
+        $cuentas->syncPermissions($permission_cuentas);
 
     }
 }

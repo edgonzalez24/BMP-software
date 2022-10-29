@@ -48,8 +48,8 @@ export const menuItems = [
         icon: 'fa-users'
       },
       {
-        name: 'Reportes',
-        slug: 'location',
+        name: 'Historial de Cuentas',
+        slug: 'account-history',
         icon: 'fa-chart-simple'
       },
     ]
