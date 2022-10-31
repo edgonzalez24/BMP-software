@@ -93,13 +93,13 @@ const selectDeleteItem = item => {
   toggleDeleteModal();
 };
 const selectItem = item => {
-  formInitial.client_id = item.id;
-  formInitial.name = item.name;
-  formInitial.type_client_id = item.type_client_id,
-  formInitial.telephone = item.telephone,
-  formInitial.active = item.active,
-  formInitial.comment = item.comment,
-  formInitial.comment = item.search,
+  form.client_id = item.id;
+  form.name = item.name;
+  form.type_client_id = item.type_client_id,
+  form.telephone = item.telephone,
+  form.active = item.active,
+  form.comment = item.comment,
+  form.comment = item.search,
   isEdit.value = true;
   toggleFormModal();
 };
