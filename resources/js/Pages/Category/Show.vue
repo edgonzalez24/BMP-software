@@ -10,19 +10,10 @@ import { ref, getCurrentInstance, computed, reactive, onMounted } from 'vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { POSITION } from 'vue-toastification';
 import Pagination from '@/Components/Shared/Pagination.vue';
-import { Inertia } from '@inertiajs/inertia';
 
 // Props
 const props = defineProps({
   categoryArticle: Object
-})
-
-onMounted(() => {
-
-  window.Echo.channel('public')
-    .listen('.App\\Events\\PublicEvent', (e) => {
-      console.log(e)
-    });
 })
 
 

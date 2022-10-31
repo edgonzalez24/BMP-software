@@ -1,3 +1,8 @@
+
+import { usePage } from "@inertiajs/inertia-vue3";
+import { computed } from "vue";
+import _ from 'lodash';
+
 export const getInitials = (name) => {
   if (name) {
     const names = name.split(' ')
@@ -8,3 +13,10 @@ export const getInitials = (name) => {
     return initials;
   }
 };
+
+
+export const hasPermission = (value) => {
+  const arrRoles = computed(() => usePage().props.value && usePage().props.value.user_role);
+  const roles = [..._.map(arrRoles.value, 'name'), ''];
+  return roles && roles.includes(value)
+}

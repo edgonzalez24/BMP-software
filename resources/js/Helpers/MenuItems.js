@@ -3,37 +3,44 @@ export const menuItems = [
     name: 'Home',
     slug: 'dashboard',
     icon: 'fa-house',
-    children: []
+    children: [],
+    rol: '', 
   },
   {
     name: 'Inventario',
     slug: '',
     icon: '',
+    rol: '', 
     children: [
       {
         name: 'Artículos',
         slug: 'articles',
-        icon: 'fa-box-open'
+        icon: 'fa-box-open',
+        rol: 'article_index', 
       },
       {
         name: 'Categorias',
         slug: 'categories',
-        icon: 'fa-network-wired'
+        icon: 'fa-network-wired',
+        rol: 'category_article_index', 
       },
       {
         name: 'Unidades de medida',
         slug: 'measures',
-        icon: 'fa-tag'
+        icon: 'fa-tag',
+        rol: 'measure_units_index', 
       },
       {
         name: 'Proveedores',
         slug: 'suppliers',
-        icon: 'fa-truck-field-un'
+        icon: 'fa-truck-field-un',
+        rol: 'supplier_index', 
       },
       {
         name: 'Stock',
         slug: 'stocks',
-        icon: 'fa-cart-flatbed'
+        icon: 'fa-cart-flatbed',
+        rol: 'stock_index', 
       },
     ]
   },
@@ -41,16 +48,19 @@ export const menuItems = [
     name: 'Cuentas por cobrar',
     slug: '',
     icon: '',
+    rol: '', 
     children: [
       {
         name: 'Clientes',
         slug: 'clients',
-        icon: 'fa-users'
+        icon: 'fa-users',
+        rol: 'client_index', 
       },
       {
-        name: 'Reportes',
-        slug: 'location',
-        icon: 'fa-chart-simple'
+        name: 'Historial de Cuentas',
+        slug: 'account-history',
+        icon: 'fa-chart-simple',
+        rol:'acountHistory_index', 
       },
     ]
   },
@@ -58,11 +68,13 @@ export const menuItems = [
     name: 'Logistica',
     slug: '',
     icon: '',
+    rol: '', 
     children: [
       {
         name: 'Pedidos',
         slug: 'presales',
-        icon: 'fa-cart-shopping'
+        icon: 'fa-cart-shopping',
+        rol: 'presale_index'
       },
     ]
   },
@@ -74,7 +86,8 @@ export const menuItems = [
       {
         name: 'Roles y Permisos',
         slug: 'users',
-        icon: 'fa-lock'
+        icon: 'fa-lock',
+        rol: 'user_list'
       },
     ]
   },
@@ -82,11 +95,13 @@ export const menuItems = [
     name: 'Centro de Ayuda',
     slug: '',
     icon: '',
+    rol: '',
     children: [
       {
         name: 'Manual de Ayuda',
         slug: '',
-        icon: 'fa-circle-info'
+        icon: 'fa-circle-info',
+        rol: ''
       },
     ]
   }
