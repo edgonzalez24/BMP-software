@@ -14,6 +14,7 @@ import JetInput from '@/Components/Input.vue';
 import QuillEditor from '@/Components/Shared/QuillEditor.vue';
 import { POSITION } from 'vue-toastification';
 import DetailClient from '@/Components/Client/Detail.vue'
+import { hasPermission } from '@/Helpers/Functions';
 
 const props = defineProps({
   clients: Object,
@@ -92,13 +93,13 @@ const selectDeleteItem = item => {
   toggleDeleteModal();
 };
 const selectItem = item => {
-  formInitial.client_id = item.id;
-  formInitial.name = item.name;
-  formInitial.type_client_id = item.type_client_id,
-  formInitial.telephone = item.telephone,
-  formInitial.active = item.active,
-  formInitial.comment = item.comment,
-  formInitial.comment = item.search,
+  form.client_id = item.id;
+  form.name = item.name;
+  form.type_client_id = item.type_client_id,
+  form.telephone = item.telephone,
+  form.active = item.active,
+  form.comment = item.comment,
+  form.comment = item.search,
   isEdit.value = true;
   toggleFormModal();
 };
@@ -234,7 +235,10 @@ const submitDelete = () => {
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
             Clientes
           </h2>
-          <JetButton @click="isEdit = false; form.reset(); toggleFormModal()">
+          <JetButton
+            v-if="hasPermission('client_create')"
+            @click="isEdit = false; form.reset(); toggleFormModal()"
+          >
             Añadir
           </JetButton>
         </div>
@@ -302,8 +306,9 @@ const submitDelete = () => {
                 <td class="text-center p-2 md:text-base text-xs" @click.stop>
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
-                      <a @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                      <a @click="selectDeleteItem(item)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                      <a v-if="hasPermission('client_edit')" @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                      <a v-if="hasPermission('client_destroy')" @click="selectDeleteItem(item)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                      <p v-if="!hasPermission('client_edit') && !hasPermission('client_destroy')"> - </p>
                     </div>
                   </div>
                 </td>
