@@ -45,6 +45,15 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'Test',
+                'email' => 'abc2021@gmail.com',
+                'telephone' => '0000 - 0006',
+                'email_verified_at' => now(),
+                'password' => bcrypt('12345678'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         $user1 = User::find('1');
@@ -55,6 +64,9 @@ class UserSeeder extends Seeder
 
         $user2 = User::find('3');
         $user2->assignRole('encargado');
+
+        $user4 = User::find('4');
+        $user4->assignRole('preventa');
         
         //User::factory()->count(10)->create();
     }

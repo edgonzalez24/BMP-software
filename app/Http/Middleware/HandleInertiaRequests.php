@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\Models\User as Users;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -36,6 +37,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
         return array_merge(parent::share($request), [
             'flash' => function () use ($request) {
                 return [
@@ -44,6 +46,7 @@ class HandleInertiaRequests extends Middleware
                     'errors' => $request->session()->get('error') ?? [],
                 ];
             },
+            'user_role' => $user ? Users::find($user['id'])->getAllPermissions() : null,
         ]);
     }
 }

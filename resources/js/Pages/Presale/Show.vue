@@ -10,6 +10,7 @@
   import Loading from 'vue3-loading-overlay';
   import { POSITION } from 'vue-toastification';
   import DetailPresale from '@/Components/Presale/Detail.vue';
+  import { hasPermission } from '@/Helpers/Functions';
 
   const props = defineProps({
     presales: Object
@@ -117,7 +118,7 @@
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
             Pedidos
           </h2>
-          <Link :href="route('presales.create')" class="inline-flex items-center px-8 py-2 border border-transparent rounded-md font-semibold sm:text-base text-sm  tracking-widest  focus:outline-none  focus:ring disabled:opacity-25 transition bg-dark-blue-500 focus:ring-gray-300 focus:border-gray-900 hover:bg-gray-700 active:bg-gray-900 text-white">
+          <Link v-if="hasPermission('presale_create')" :href="route('presales.create')" class="inline-flex items-center px-8 py-2 border border-transparent rounded-md font-semibold sm:text-base text-sm  tracking-widest  focus:outline-none  focus:ring disabled:opacity-25 transition bg-dark-blue-500 focus:ring-gray-300 focus:border-gray-900 hover:bg-gray-700 active:bg-gray-900 text-white">
             Crear
           </Link>
         </div>
@@ -153,18 +154,21 @@
                 <td class="text-center p-2 md:text-base text-xs" @click.stop>
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
-                      <Link 
+                      <Link
+                        v-if="hasPermission('presale_edit')"
                         :href="item.dispatch.id !== 5 ? `/dashboard/presales/${item.id}/edit` : ''" 
                         :class="item.dispatch.id === 5 ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
                       >
                         Editar
                       </Link>
                       <a 
+                        v-if="hasPermission('presale_destroy')" 
                         @click="item.dispatch.id !== 5 && deletePresale(item.id)" 
                         :class="item.dispatch.id === 5 ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
                       >
                         Cancelar
                       </a>
+                      <p v-if="!hasPermission('presale_destroy') && !hasPermission('presale_edit')"> - </p>
                     </div>
                   </div>
                 </td>

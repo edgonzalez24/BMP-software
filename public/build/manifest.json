@@ -56,7 +56,7 @@
       "resources/js/Pages/Welcome.vue"
     ],
     "css": [
-      "assets/app.00e15a0b.css"
+      "assets/app.00c5a40f.css"
     ]
   },
   "resources/js/Pages/API/Index.vue": {
@@ -861,7 +861,7 @@
     "src": "inputPrice.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app.00e15a0b.css",
+    "file": "assets/app.00c5a40f.css",
     "src": "resources/js/app.css"
   }
 }
