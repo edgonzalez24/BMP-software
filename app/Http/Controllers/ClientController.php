@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Http\Resources\Client as ClientResources;
+use App\Http\Resources\ClientCollection;
 
 class ClientController extends Controller
 {
@@ -25,6 +27,7 @@ class ClientController extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
+        // $clients = new ClientCollection(Client::orderBy('id', 'desc')->paginate(25)); si se necesita el array de la zona, descomentar esta línea y eliminar la de abajo
         $clients = Client::orderBy('id', 'desc')->paginate(25);
         $typeClient = TypeClient::all();
         return Inertia::render('Clients/Show',[ 

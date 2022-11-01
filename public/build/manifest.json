@@ -852,13 +852,13 @@
       "assets/Welcome.b0e95faf.css"
     ]
   },
-  "resources/js/app.css": {
-    "file": "assets/app.00c5a40f.css",
-    "src": "resources/js/app.css"
-  },
   "inputPrice.css": {
     "file": "assets/inputPrice.215b14e0.css",
     "src": "inputPrice.css"
+  },
+  "resources/js/app.css": {
+    "file": "assets/app.00c5a40f.css",
+    "src": "resources/js/app.css"
   },
   "resources/js/Pages/Welcome.css": {
     "file": "assets/Welcome.b0e95faf.css",
