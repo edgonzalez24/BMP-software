@@ -5,15 +5,8 @@
       type: Object,
       required: true
     },
-    typeClient: {
-      type: Array,
-      required: true
-    },
   });
   const emit = defineEmits(['close']);
-  const getTypeClient = id => {
-    return props.typeClient.find(item => item.id === id).name
-  }
 </script>
 <template>
   <div class="py-8 px-5">
@@ -22,9 +15,15 @@
     >
       {{ client.name }}
     </h3>
-    <div class="mt-5">
-      <h6 class="font-semibold text-lg text-dark-blue-500">Tipo de Cliente</h6>
-      <p> {{ getTypeClient(client.type_client_id) }}</p>
+    <div class="flex flex-row space-x-4 justify-between">
+      <div class="mt-5">
+        <h6 class="font-semibold text-lg text-dark-blue-500">Tipo de Cliente</h6>
+        <p> {{ client.type_client.name }}</p>
+      </div>
+      <div v-if="client && client.type_client.id === 2" class="mt-5">
+        <h6 class="font-semibold text-lg text-dark-blue-500">Zona</h6>
+        <p> {{ client.zone.name }}</p>
+      </div>
     </div>
     <div class="mt-5">
       <h6 class="font-semibold text-lg text-dark-blue-500">Comentario</h6>

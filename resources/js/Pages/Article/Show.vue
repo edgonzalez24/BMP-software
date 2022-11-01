@@ -15,6 +15,7 @@ import QuillEditor from '@/Components/Shared/QuillEditor.vue';
 import { POSITION } from 'vue-toastification';
 import DetailArticle from '@/Components/Article/Detail.vue';
 import { Inertia } from '@inertiajs/inertia';
+import { hasPermission } from '@/Helpers/Functions';
 
 const props =  defineProps({
   articles: Object,
@@ -253,8 +254,11 @@ watch(formFilter, value => {
           </p>
           <div class="flex justify-end mt-5">
             <div class="w-auto flex flex-row space-x-4 justify-between">
-              <JetButton background="bg-transparente text-gray-300 focus:ring-transparent focus:border-transparent"
-                type="button" @click="toggleDeleteModal">
+              <JetButton 
+                background="bg-transparente text-gray-300 focus:ring-transparent focus:border-transparent"
+                type="button" 
+                @click="toggleDeleteModal"
+              >
                 Cancelar
               </JetButton>
               <JetButton background="bg-red-600 focus:ring-transparent focus:border-transparent" type="submit">
@@ -277,7 +281,10 @@ watch(formFilter, value => {
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
             Artículos
           </h2>
-          <JetButton @click="isEdit = false; formInitial.reset();toggleFormModal();">
+          <JetButton 
+            v-if="hasPermission('create_edit')" 
+            @click="isEdit = false; formInitial.reset();toggleFormModal();"
+          >
             Añadir
           </JetButton>
         </div>
@@ -359,8 +366,9 @@ watch(formFilter, value => {
                 <td class="text-center p-2 md:text-base text-xs" @click.stop>
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
-                      <a @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                      <a @click="selectDeleteItem(item)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                      <a v-if="hasPermission('article_edit')" @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                      <a v-if="hasPermission('article_destroy')" @click="selectDeleteItem(item)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                      <p v-if="!hasPermission('article_edit') && !hasPermission('article_destroy')"> - </p>
                     </div>
                   </div>
                 </td>

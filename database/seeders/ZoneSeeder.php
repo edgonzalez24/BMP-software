@@ -24,6 +24,10 @@ class ZoneSeeder extends Seeder
                 'name' => 'El Maguito',
                 'description' => 'Pupusodromo El Maguito',
             ],
+            [
+                'name' => 'Sin Especificar',
+                'description' => 'Zona sin especificar',
+            ],
         ]);
     }
 }

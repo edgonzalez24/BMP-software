@@ -20,7 +20,7 @@ class ClientSeeder extends Seeder
             [                
                 'name' => 'Pupusería Nenita',
                 'telephone' => null,
-                'type_client_id' => 1,
+                'type_client_id' => 2,
                 'zone_id' => 1,
                 'comment' => 'Comentario sobre el cliente',
                 'active' => true,
@@ -30,8 +30,8 @@ class ClientSeeder extends Seeder
             [                
                 'name' => 'Pupusería Autopista',
                 'telephone' => null,
-                'type_client_id' => 1,
-                'zone_id' => 1,
+                'type_client_id' => 2,
+                'zone_id' => 2,
                 'comment' => 'Comentario sobre el cliente',
                 'active' => true,
                 'created_at' => now(),
@@ -40,7 +40,7 @@ class ClientSeeder extends Seeder
             [           
                 'name' => 'Pupusería Gloria',
                 'telephone' => null,
-                'type_client_id' => 1,
+                'type_client_id' => 2,
                 'zone_id' => 1,
                 'comment' => 'Comentario sobre el cliente',
                 'active' => true,
@@ -50,7 +50,7 @@ class ClientSeeder extends Seeder
             [           
                 'name' => 'Pupusería Atardecer',
                 'telephone' => null,
-                'type_client_id' => 1,
+                'type_client_id' => 2,
                 'zone_id' => 1,
                 'comment' => 'Comentario sobre el cliente',
                 'active' => true,
@@ -60,8 +60,8 @@ class ClientSeeder extends Seeder
             [           
                 'name' => 'Pupusería Lo Nuestro',
                 'telephone' => null,
-                'type_client_id' => 1,
-                'zone_id' => 1,
+                'type_client_id' => 2,
+                'zone_id' => 2,
                 'comment' => 'Comentario sobre el cliente',
                 'active' => true,
                 'created_at' => now(),

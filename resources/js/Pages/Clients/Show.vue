@@ -2,7 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Table from '@/Components/Table.vue';
 import JetButton from '@/Components/Button.vue';
-import { reactive, computed, ref, getCurrentInstance } from 'vue';
+import { reactive, computed, ref, getCurrentInstance, watch } from 'vue';
 import Pagination from '@/Components/Shared/Pagination.vue';
 import Status from '@/Components/Shared/Status.vue';
 import JetModal from '@/Components/Modal.vue';
@@ -14,10 +14,13 @@ import JetInput from '@/Components/Input.vue';
 import QuillEditor from '@/Components/Shared/QuillEditor.vue';
 import { POSITION } from 'vue-toastification';
 import DetailClient from '@/Components/Client/Detail.vue'
+import { hasPermission } from '@/Helpers/Functions';
+import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
   clients: Object,
-  typeClient: Array
+  typeClient: Array,
+  zones: Array
 })
 const header = reactive([
   {
@@ -45,6 +48,7 @@ const form = useForm({
   client_id : null,
   name: null,
   type_client_id: null,
+  zone_id: null,
   telephone: null,
   active: 1,
   comment: null,
@@ -66,10 +70,8 @@ const getTypeClient = id => {
 const formFilter = useForm({
   search: new URLSearchParams(window.location.search).get('search') || null,
   type_client_id: Number(new URLSearchParams(window.location.search).get('type_client_id')) || null,
+  zone_id: Number(new URLSearchParams(window.location.search).get('zone_id')) || null,
 });
-const handleFilter = () => {
-  formFilter.get(route('client.filter', formFilter))
-}
 const toggleFormModal = () => {
   statusModalForm.value = !statusModalForm.value
 }
@@ -80,25 +82,22 @@ const toggleDeleteModal = () => {
   statusModalDelete.value = !statusModalDelete.value;
 }
 const selectClientItem = item => {
-  clients.value = item;
-  toggleDetailModal();
-};
-const selectDetail = item => {
   selectedClient.value = item;
   toggleDetailModal();
-}
+};
 const selectDeleteItem = item => {
   formDelete.client_id = item.id;
   toggleDeleteModal();
 };
 const selectItem = item => {
-  formInitial.client_id = item.id;
-  formInitial.name = item.name;
-  formInitial.type_client_id = item.type_client_id,
-  formInitial.telephone = item.telephone,
-  formInitial.active = item.active,
-  formInitial.comment = item.comment,
-  formInitial.comment = item.search,
+  form.client_id = item.id;
+  form.name = item.name;
+  form.type_client_id = item.type_client.id,
+  form.zone_id = item.zone.id
+  form.telephone = item.telephone,
+  form.active = item.active,
+  form.comment = item.comment,
+  form.comment = item.search,
   isEdit.value = true;
   toggleFormModal();
 };
@@ -143,6 +142,22 @@ const submitDelete = () => {
     }
   });
 };
+
+watch(formFilter, value => {
+  Inertia.get('/dashboard/clients', {
+    search: value.search,
+    type_client_id: value.type_client_id,
+    zone_id: value.zone_id
+  }, {
+    preserveState: true
+  })
+})
+
+watch(form, value => {
+  if (value.type_client_id !== 2) {
+    value.zone_id = 3
+  }
+})
 </script>
 <template>
   <AppLayout>
@@ -184,6 +199,27 @@ const submitDelete = () => {
             </template>
           </v-select>
         </div>
+        <div v-if="form.type_client_id === 2"  class="mb-5">
+          <JetLabel value="Zona" />
+          <v-select
+            v-model="form.zone_id"
+            :options="zones.length ? zones : []"
+            :reduce="(option) => option.id"
+            label="name" 
+            placeholder="Seleccionar una zona"
+            :clearable="false"
+            class="appearance-none capitalize"
+          >
+            <template #open-indicator="{ attributes }">
+              <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
+              </svg>
+            </template>
+            <template #option="{ name }">
+              <span class="capitalize">{{ name }}</span>
+            </template>
+          </v-select>
+        </div>
         <div class="flex justify-end mb-5">
           <div class="w-auto flex flex-row space-x-4 justify-between">
             <JetButton background="bg-transparente text-gray-300 focus:ring-transparent focus:border-transparent"
@@ -197,10 +233,9 @@ const submitDelete = () => {
         </div>
       </form>
     </JetModal>
-    <JetModal :show="statusModalDetail" maxWidth="2xl" @close="toggleDetailModal">
+    <JetModal :show="statusModalDetail" maxWidth="lg" @close="toggleDetailModal">
       <DetailClient
         :client="selectedClient.value"
-        :typeClient="typeClient"
         @close="toggleDetailModal"
       />
     </JetModal>
@@ -234,7 +269,10 @@ const submitDelete = () => {
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
             Clientes
           </h2>
-          <JetButton @click="isEdit = false; form.reset(); toggleFormModal()">
+          <JetButton
+            v-if="hasPermission('client_create')"
+            @click="isEdit = false; form.reset(); toggleFormModal()"
+          >
             Añadir
           </JetButton>
         </div>
@@ -249,7 +287,6 @@ const submitDelete = () => {
                 placeholder="Buscar cliente..."
                 type="text"
                 class="mt-1 block w-full"
-                @input="handleFilter" 
               />
             </div>
             <div class="md:w-1/4 w-full md:mt-0 mt-5">
@@ -260,7 +297,27 @@ const submitDelete = () => {
                 :reduce="(option) => option.id"
                 label="name" 
                 placeholder="Seleccionar un tipo de cliente"
-                @option:selected="handleFilter"
+                :clearable="false"
+                class="appearance-none capitalize"
+              >
+                <template #open-indicator="{ attributes }">
+                  <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
+                  </svg>
+                </template>
+                <template #option="{ name }">
+                  <span class="capitalize">{{ name }}</span>
+                </template>
+              </v-select>
+            </div>
+            <div v-if="formFilter.type_client_id === 2" class="md:w-1/4 w-full md:mt-0 mt-5">
+              <JetLabel value="Zona" />
+              <v-select
+                v-model="formFilter.zone_id"
+                :options="zones.length ? [{ id: null, name: 'Todas' }, ...zones] : []"
+                :reduce="(option) => option.id"
+                label="name" 
+                placeholder="Seleccionar una zona"
                 :clearable="false"
                 class="appearance-none capitalize"
               >
@@ -288,7 +345,7 @@ const submitDelete = () => {
                 @click="selectClientItem(item)"
               >
                 <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs">{{ getTypeClient(item.type_client_id) }}</td>
+                <td class="text-center p-2 md:text-base text-xs">{{ item.type_client.id === 2 ? `${item.type_client.name}(${item.zone.name})` : item.type_client.name }}</td>
                 <td class="text-center p-2 md:text-base text-xs">
                   <div class="flex justify-center">
                     <Status :status="item.active" class="sm:w-1/2 md:w-1/3 w-full" />
@@ -302,8 +359,9 @@ const submitDelete = () => {
                 <td class="text-center p-2 md:text-base text-xs" @click.stop>
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
-                      <a @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
-                      <a @click="selectDeleteItem(item)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                      <a v-if="hasPermission('client_edit')" @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                      <a v-if="hasPermission('client_destroy')" @click="selectDeleteItem(item)" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
+                      <p v-if="!hasPermission('client_edit') && !hasPermission('client_destroy')"> - </p>
                     </div>
                   </div>
                 </td>
