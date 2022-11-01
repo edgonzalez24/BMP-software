@@ -31,16 +31,35 @@ class PresaleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $from = "{$request->get('from')} 00:00:00";
+        $to = "{$request->get('to')} 23:59:59";
+        $clients = Client::orderBy('id', 'desc')->get();
+        $filter = Presale::all();
+        $client_id = $request->get('client_id');
+
         if ( ! Auth::user()->can('presale_index')){
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
-        $presales = new PresaleCollection(Presale::orderBy('id', 'desc')->paginate(25));
-        return Inertia::render('Presale/Show',[ 
-            'presales' => $presales,
-        ]);
+        try {
+            
+            if (isset($from) && isset($to)){
+                $filter = Presale::whereBetween('created_at', [$from, $to]);
+            } 
+            
+            if (isset($client_id)) {
+                $filter->where('client_id', $client_id);
+            }
+            $presales = new PresaleCollection($filter->orderBy('id', 'desc')->paginate(25));
+            return Inertia::render('Presale/Show',[ 
+                'presales' => $presales,
+                'clients' => $clients,
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+        
     }
 
     /**
