@@ -83,6 +83,13 @@ class ArticleController extends Controller
         try {
             $article = Article::find($request->get('article_id'));
             $article->update($request->all());
+
+            // Cambiando precio de venta global del article
+            if ($request->get('globalPrice')) {
+                $changePrice = DB::table('stocks')
+                    ->where('article_id', $request->get('article_id'))
+                    ->update(['buy_price' => $request->get('globalPrice')]);
+            }
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
