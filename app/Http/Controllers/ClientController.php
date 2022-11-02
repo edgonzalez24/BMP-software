@@ -30,7 +30,7 @@ class ClientController extends Controller
         if ( ! Auth::user()->can('client_index')){
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
-        $filter = Client::where('active', '1');
+        $filter = Client::orderBy('id', 'desc');
         if(isset($search)){                
             $filter->where("name", "like", "%" .$search. "%");
         }
@@ -42,7 +42,7 @@ class ClientController extends Controller
         }
 
 
-        $clients =  new ClientCollection($filter->orderBy('id', 'desc')->paginate(25));
+        $clients =  new ClientCollection($filter->paginate(25));
         $typeClient = TypeClient::all();
         $zones = Zone::all();
         return Inertia::render('Clients/Show',[ 

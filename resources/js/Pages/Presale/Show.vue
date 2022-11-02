@@ -84,7 +84,10 @@
       }
     });
   };
-  const client = ref();
+  const client = ref({
+    id: null,
+    name: null
+  });
   const date = ref();
   const datepicker = ref();
 
@@ -95,9 +98,9 @@
 
   const handleFilter = () => {
     Inertia.get(route('presales', { 
-      from: formatRangeDate(date.value[0]), 
-      to: formatRangeDate(date.value[1]),
-      client_id: client.value
+      from: date.value && date.value.length ? formatRangeDate(date.value[0]) : null , 
+      to: date.value && date.value.length ?  formatRangeDate(date.value[1]) : null,
+      client_id: client.value.id
     }, {
       preserveState: true
     }))
@@ -108,11 +111,23 @@
     datepicker.value.closeMenu();
     handleFilter();
   }
+  const alertFn = () => {
+    datepicker.value.closeMenu();
+    handleFilter();
+  }
   onMounted(() => {
-    const startDate = new URLSearchParams(window.location.search).has('from') ? moment(new URLSearchParams(window.location.search).get('from')) : new Date();
-    const endDate = new URLSearchParams(window.location.search).has('to') ? moment(new URLSearchParams(window.location.search).get('to')) : new Date();
-    date.value = [startDate, endDate];
-    client.value = new URLSearchParams(window.location.search).has('client_id') ? props.clients.filter(item => item.id === Number(new URLSearchParams(window.location.search).get('client_id'))) : null;
+    const startDate = new URLSearchParams(window.location.search).has('from') && moment(new URLSearchParams(window.location.search).get('from'));
+
+    const endDate = new URLSearchParams(window.location.search).has('to') && moment(new URLSearchParams(window.location.search).get('to'));
+
+    date.value = startDate && endDate ? [startDate, endDate] : null;
+    if (new URLSearchParams(window.location.search).has('client_id')) {
+      props.clients.map(item => {
+        if (item.id === Number(new URLSearchParams(window.location.search).get('client_id'))) {
+          client.value = { id: item.id, name: item.name }
+        }
+      })
+    }
   })
 </script>
 <template>
@@ -169,8 +184,10 @@
                   cancelText="Cancelar"
                   selectText="Seleccionar"
                   :enableTimePicker="false"
+                  placeholder="Seleccionar fechas" 
                   ref="datepicker"
                   utc
+                  @cleared="alertFn"
                 >
                   <template #action-select>
                     <p class="cursor-pointer font-bold text-dark-blue-500 hover:text-opacity-70 transition duration-300 ease-in-out" @click="alertDate">Seleccionar</p>
@@ -181,7 +198,7 @@
             <div class="lg:w-1/3 w-full lg:mt-0 mt-2">
               <JetLabel value="Clientes" />
               <v-select
-                v-model="client"
+                v-model="client.id"
                 :options="clients.length ? [{ id: null, name: 'Todos' }, ...clients] : []"
                 :reduce="(option) => option.id"
                 label="name" 

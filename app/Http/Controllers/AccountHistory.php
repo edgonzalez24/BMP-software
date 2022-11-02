@@ -18,7 +18,7 @@ class AccountHistory extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
 
-        $clients = Client::where('active', 1)->get();
+        $clients = Client::orderBy('id', 'desc');
         $presales = new PresaleCollection(Presale::where('dispatch_id', '4')->where('total_pending', '>', 0)->paginate(25));
         return Inertia::render('AccountHistory/Show',[ 
             'presales' => $presales,
