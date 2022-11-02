@@ -123,7 +123,7 @@ class ArticleController extends Controller
             $measure_unit = $request->get('measure_unit_id');
             $search = $request->get('search');
 
-            $filter = Article::where('active', '1');
+            $filter = Article::orderBy('id', 'desc');
             if(isset($search)){                
                 $filter->where("name", "like", "%" .$search. "%");
             }
@@ -134,7 +134,7 @@ class ArticleController extends Controller
                 $filter->where('measure_unit_id', $measure_unit);
             }
 
-            $article = new StockDetailArticleCollection($filter->orderBy('id', 'desc')->paginate(25));
+            $article = new StockDetailArticleCollection($filter->paginate(25));
             $category = CategoryArticle::orderBy('id', 'desc')->get();
             $measureUnits = MeasureUnits::orderBy('id', 'desc')->get();
             $supplier = Supplier::orderBy('id', 'ASC')->get();

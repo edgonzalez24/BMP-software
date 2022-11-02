@@ -36,7 +36,7 @@ class PresaleController extends Controller
         $from = "{$request->get('from')} 00:00:00";
         $to = "{$request->get('to')} 23:59:59";
         $clients = Client::orderBy('id', 'desc')->get();
-        $filter = Presale::all();
+        $filter = Presale::orderBy('id', 'desc');
         $client_id = $request->get('client_id');
 
         if ( ! Auth::user()->can('presale_index')){
@@ -44,14 +44,14 @@ class PresaleController extends Controller
         }
         try {
             
-            if (isset($from) && isset($to)){
+            if ($request->get('from') && $request->get('to')){
                 $filter = Presale::whereBetween('created_at', [$from, $to]);
             } 
             
             if (isset($client_id)) {
                 $filter->where('client_id', $client_id);
             }
-            $presales = new PresaleCollection($filter->orderBy('id', 'desc')->paginate(25));
+            $presales = new PresaleCollection($filter->paginate(25));
             return Inertia::render('Presale/Show',[ 
                 'presales' => $presales,
                 'clients' => $clients,

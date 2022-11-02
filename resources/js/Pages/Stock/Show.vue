@@ -56,16 +56,23 @@ const formatRangeDate = date => {
 const date = ref();
 const datepicker = ref()
 onMounted(() => {
-  const startDate = new URLSearchParams(window.location.search).has('from') ? moment(new URLSearchParams(window.location.search).get('from')) : new Date();
-  const endDate = new URLSearchParams(window.location.search).has('to') ? moment(new URLSearchParams(window.location.search).get('to')) : new Date();
-  date.value = [startDate, endDate];
+  const startDate = new URLSearchParams(window.location.search).has('from') && moment(new URLSearchParams(window.location.search).get('from'));
+  const endDate = new URLSearchParams(window.location.search).has('to') && moment(new URLSearchParams(window.location.search).get('to'));
+  date.value = startDate && endDate ? [startDate, endDate] : null;
 })
 const handleFilter = () => {
-  Inertia.get(route('stock.filter', { from: formatRangeDate(date.value[0]), to: formatRangeDate(date.value[1]) }))
+  Inertia.get(route('stock.filter', { 
+    from: date.value && date.value.length ? formatRangeDate(date.value[0]) : null,
+    to: date.value && date.value.length ? formatRangeDate(date.value[1]) : null,
+  }))
 }
 
 const alertDate = () => {
   datepicker.value.selectDate();
+  datepicker.value.closeMenu();
+  handleFilter();
+}
+const alertFn = () => {
   datepicker.value.closeMenu();
   handleFilter();
 }
@@ -75,7 +82,7 @@ const alertDate = () => {
     <!-- Loading -->
     <Loading :active.sync="isLoading" ></Loading>
     <div class="min-h-screen">
-      <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
         <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight my-5">
           Stock
         </h2>
@@ -93,8 +100,10 @@ const alertDate = () => {
                   cancelText="Cancelar"
                   selectText="Seleccionar"
                   :enableTimePicker="false"
+                  placeholder="Seleccionar fechas" 
                   ref="datepicker"
                   utc
+                  @cleared="alertFn"
                 >
                   <template #action-select>
                     <p class="cursor-pointer font-bold text-dark-blue-500 hover:text-opacity-70 transition duration-300 ease-in-out" @click="alertDate">Seleccionar</p>

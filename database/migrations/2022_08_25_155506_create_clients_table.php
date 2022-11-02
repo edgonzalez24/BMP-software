@@ -18,10 +18,12 @@ return new class extends Migration
             $table->string('name')->comment('N ombre del cliente');
             $table->string('telephone')->nullable()->comment('Número de teléfono contacto del cliente');
             $table->unsignedInteger('type_client_id')->comment('ID del tipo de cliente');
+            $table->unsignedInteger('zone_id')->comment('ID de la zona del cliente');
             $table->string('comment')->nullable()->comment('Aclaraciones, comentarios, observaciones del o los artículos');
             $table->boolean('active')->default(false);
 
             $table->foreign('type_client_id')->references('id')->on('type_clients');
+            $table->foreign('zone_id')->references('id')->on('zones');
             $table->timestamps();
 
         });
