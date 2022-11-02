@@ -20,7 +20,8 @@ import { Inertia } from '@inertiajs/inertia';
 const props = defineProps({
   clients: Object,
   typeClient: Array,
-  zones: Array
+  zones: Array,
+  payment_methods: Array
 })
 const header = reactive([
   {
@@ -49,6 +50,7 @@ const form = useForm({
   name: null,
   type_client_id: null,
   zone_id: null,
+  method_paid_id: null,
   telephone: null,
   active: 1,
   comment: null,
@@ -64,9 +66,7 @@ const statusModalDelete = ref(false);
 const selectedClient = reactive({});
 const totalPages = computed(() => Math.ceil(props.clients.total / props.clients.per_page));
 const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
-const getTypeClient = id => {
-  return props.typeClient.find(item => item.id === id).name
-}
+
 const formFilter = useForm({
   search: new URLSearchParams(window.location.search).get('search') || null,
   type_client_id: Number(new URLSearchParams(window.location.search).get('type_client_id')) || null,
@@ -94,6 +94,7 @@ const selectItem = item => {
   form.name = item.name;
   form.type_client_id = item.type_client.id,
   form.zone_id = item.zone.id
+  form.method_paid_id = item.payment_method.id,
   form.telephone = item.telephone,
   form.active = item.active,
   form.comment = item.comment,
@@ -207,6 +208,27 @@ watch(form, value => {
             :reduce="(option) => option.id"
             label="name" 
             placeholder="Seleccionar una zona"
+            :clearable="false"
+            class="appearance-none capitalize"
+          >
+            <template #open-indicator="{ attributes }">
+              <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
+              </svg>
+            </template>
+            <template #option="{ name }">
+              <span class="capitalize">{{ name }}</span>
+            </template>
+          </v-select>
+        </div>
+        <div class="mb-5">
+          <JetLabel value="Método de Pago" />
+          <v-select
+            v-model="form.method_paid_id"
+            :options="payment_methods.length ? payment_methods : []"
+            :reduce="(option) => option.id"
+            label="name" 
+            placeholder="Seleccionar método de pago"
             :clearable="false"
             class="appearance-none capitalize"
           >

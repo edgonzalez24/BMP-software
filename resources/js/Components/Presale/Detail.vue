@@ -22,6 +22,10 @@
       Cliente:
       <span class="font-normal">{{ selectedPresale.client.name }}</span>
     </p>
+    <p v-if="selectedPresale.client.type_client.id === 2" class="mb-1 font-medium md:text-base text-sm">
+      Zona:
+      <span class="font-normal">{{ selectedPresale.client.zone.name }}</span>
+    </p>
     <p class="mb-1 font-medium md:text-base text-sm">
       Método de pago:
       <span class="font-normal">{{ selectedPresale.method_paid.name }}</span>
