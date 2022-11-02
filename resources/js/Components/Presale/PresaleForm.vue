@@ -75,7 +75,7 @@ const form = useForm({
     id: props.isEdit ? props.presale.client.id : null,
     name: props.isEdit ? props.presale.client.name : null,
     type_client: props.isEdit ? props.presale.client.type_client : null,
-    payment_method: props.isEdit ? props.presale.method_paid_client : null
+    payment_method: props.isEdit ? props.presale.method_paid : null
   },
   details: props.isEdit ? props.presale.presale_detail.map(item => ({ ...item, ...item.article, id_detail: item.id, id_presale: props.presale.id,  kind: 'old'}))  : [],
   paid: props.isEdit ? props.presale.total_paid : 0,

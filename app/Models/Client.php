@@ -10,7 +10,7 @@ class Client extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'type_client_id', 'zone_id', 'telephone', 'comment', 'active'
+        'name', 'type_client_id', 'zone_id',  'method_paid_id', 'telephone', 'comment', 'active'
     ];
 
     /**
@@ -31,5 +31,15 @@ class Client extends Model
     public function zone()
     {
         return $this->belongsTo(Zone::class);
+    }
+    
+    /**
+     * Get the method paid that owns the Client
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function method_paid()
+    {
+        return $this->belongsTo(MethodPaid::class);
     }
 }

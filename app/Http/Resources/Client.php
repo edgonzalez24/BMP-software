@@ -18,7 +18,7 @@ class Client extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'type_client' => $this->type_client,
-            'payment_method' => $this->type_client->method_paid,
+            'payment_method' => $this->method_paid,
             'zone' => $this->zone,
             'active' => $this->active,
             'comment' => $this->comment,
