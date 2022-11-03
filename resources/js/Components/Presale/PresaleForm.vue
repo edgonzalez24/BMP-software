@@ -75,7 +75,8 @@ const form = useForm({
     id: props.isEdit ? props.presale.client.id : null,
     name: props.isEdit ? props.presale.client.name : null,
     type_client: props.isEdit ? props.presale.client.type_client : null,
-    payment_method: props.isEdit ? props.presale.method_paid : null
+    payment_method: props.isEdit ? props.presale.method_paid : null,
+    zone: props.isEdit ? props.presale.client.zone : null,
   },
   details: props.isEdit ? props.presale.presale_detail.map(item => ({ ...item, ...item.article, id_detail: item.id, id_presale: props.presale.id,  kind: 'old'}))  : [],
   paid: props.isEdit ? props.presale.total_paid : 0,
@@ -259,7 +260,11 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
           </div>
           <div v-if="form.client.id">
             <JetLabel for="name" value="Tipo de Cliente" />
-            <JetInput id="name" v-model="form.client.type_client.name" type="text" class="mt-1 block w-full"
+            <JetInput id="name" 
+              :value="form.client.type_client.id === 2 ?
+              `${form.client.type_client.name}(${form.client.zone.name})` : form.client.type_client.name" 
+              type="text"
+              class="mt-1 block w-full"
               onlyRead />
           </div>
           <div v-if="form.client.id">

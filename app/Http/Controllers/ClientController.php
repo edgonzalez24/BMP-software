@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Client as ClientResources;
 use App\Http\Resources\ClientCollection;
 use App\Models\Zone;
+use App\Models\MethodPaid;
 
 class ClientController extends Controller
 {
@@ -45,10 +46,12 @@ class ClientController extends Controller
         $clients =  new ClientCollection($filter->paginate(25));
         $typeClient = TypeClient::all();
         $zones = Zone::all();
+        $payment_methods = MethodPaid::all();
         return Inertia::render('Clients/Show',[ 
             'clients' => $clients,
             'typeClient' => $typeClient,
             'zones' => $zones,
+            'payment_methods' => $payment_methods
         ]);
         
     }
@@ -88,8 +91,6 @@ class ClientController extends Controller
         if ( ! Auth::user()->can('client_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         } 
-
-        $validated = $request->validated($request->all());
         try {
             $client = Client::find($request->get('client_id'));
             $client->update($request->all());

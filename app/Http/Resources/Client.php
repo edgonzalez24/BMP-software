@@ -22,6 +22,7 @@ class Client extends JsonResource
             'zone' => $this->zone,
             'active' => $this->active,
             'comment' => $this->comment,
+            'telephone' => $this->telephone,
             /* 'created' => $this->created_at->diffForHumans(),
             'updated' => $this->updated_at->diffForHumans(),
             'deleted' => $this->deleted_at->diffForHumans(),

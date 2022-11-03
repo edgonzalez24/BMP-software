@@ -27,6 +27,7 @@ class UpdateClientRequest extends FormRequest
             'name' => 'required|string',
             'type_client_id' => 'required|integer', 
             'zone_id' => 'required|integer', 
+            'method_paid_id' => 'required|integer',
             'telephone' => 'string|nullable', 
             'comment' => 'string|nullable', 
             'active' => 'boolean',
