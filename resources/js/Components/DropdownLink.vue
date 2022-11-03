@@ -10,7 +10,7 @@ defineProps({
 <template>
 	<div>
 		<button v-if="as === 'button'" type="submit"
-			class="block w-full text-sm xl:text-base leading-5 text-gray-400 text-left focus:outline-none transition">
+			class="block w-full text-sm xl:text-base leading-5 text-gray-400 text-left focus:outline-none transition hover:text-white">
 			<slot />
 		</button>
 
