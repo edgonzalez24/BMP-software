@@ -85,10 +85,10 @@ class ArticleController extends Controller
             $article->update($request->all());
 
             // Cambiando precio de venta global del article
-            if ($request->get('globalPrice')) {
-                $changePrice = DB::table('stocks')
+            if ($request->get('global_price')) {
+                DB::table('stocks')
                     ->where('article_id', $request->get('article_id'))
-                    ->update(['buy_price' => $request->get('globalPrice')]);
+                    ->update(['sale_price' => $request->get('global_price')]);
             }
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
