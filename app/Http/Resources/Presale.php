@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\PresaleDetail;
+use App\Http\Resources\Client;
 
 class Presale extends JsonResource
 {
@@ -21,8 +22,8 @@ class Presale extends JsonResource
             'total_paid' => $this->total_paid,
             'total_pending' => $this->total_pending,
             'dispatch' => $this->dispatch,
-            'client' => $this->client,
-            'method_paid_client' => $this->client->type_client->method_paid,
+            'client' =>  Client::collection(array($this->client))[0],
+            'method_paid_client' => $this->client->method_paid,
             'user_presale' => $this->user_presale,
             'user_dispatch' => $this->user_dispatch,
             'presale_detail' => PresaleDetail::collection($this->presale_detail),

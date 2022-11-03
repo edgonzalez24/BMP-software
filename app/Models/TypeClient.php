@@ -10,16 +10,6 @@ class TypeClient extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'method_paid_id'
+        'name', 'description'
     ];
-
-    /**
-     * Get the method_paid that owns the TypeClient
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function method_paid()
-    {
-        return $this->belongsTo(MethodPaid::class);
-    }
 }
