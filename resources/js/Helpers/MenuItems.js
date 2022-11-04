@@ -62,6 +62,12 @@ export const menuItems = [
         icon: 'fa-chart-simple',
         rol:'acountHistory_index', 
       },
+      {
+        name: 'Venta Express',
+        slug: '',
+        icon: 'fa-tag',
+        rol: '',
+      },
     ]
   },
   {
