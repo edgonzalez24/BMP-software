@@ -302,7 +302,7 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
           <div>
             <JetLabel value="Estado" />
             <v-select 
-              v-model="form.dispatch_id" :options="dispatches.length ? dispatches : []"
+              v-model="form.dispatch_id" :options="dispatches.length ? dispatches.filter(item => item.id !== 5) : []"
               :reduce="(option) => option"
               :disabled="!isActive && isEdit"
               label="name"
