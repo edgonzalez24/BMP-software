@@ -1,5 +1,6 @@
 <script setup>
-import { computed } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
+  import { gsap } from 'gsap';
 
   const props = defineProps({
     value: Object
@@ -22,8 +23,22 @@ import { computed } from 'vue';
       val.bg = '#93C5FD'
     }
     return val
+  });
+  const animation = () => {
+    const initialCounter = { counter: 0 }
+    gsap.to(initialCounter, props.value.value, {
+      onUpdate: function () {
+        total.value = Math.ceil(initialCounter.counter);
+        if (total.value === initialCounter.counter) { return false }
+      },
+      ease: 'Circ.easeOut',
+    })
+  }
+  const total = ref(0)
+  onMounted(() => {
+    animation()
   })
-</script>
+</script> 
 <template>
   <div class="rounded-lg overflow-hidden shadow-card px-5 py-8 bg-white border border-gray-50">
     <div class="flex justify-center">
@@ -32,7 +47,7 @@ import { computed } from 'vue';
       </div>
     </div>
     <h6 class="text-center my-3 font-semibold md:text-2xl text-lg text-dark-blue-500">
-      {{ value.value }}
+      {{ total }}
     </h6>
     <p class="text-center font-normal md:text-xl text-base text-dark-blue-500">
       {{ value.description }}

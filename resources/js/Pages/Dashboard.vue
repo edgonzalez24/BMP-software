@@ -1,8 +1,13 @@
 <script setup>
   import AppLayout from '@/Layouts/AppLayout.vue';
-import { usePage } from '@inertiajs/inertia-vue3';
-import { computed, ref } from 'vue';
-import CardPreview from '@/Components/Dashboard/CardPreview.vue';
+  import { usePage } from '@inertiajs/inertia-vue3';
+  import { computed, ref } from 'vue';
+  import CardPreview from '@/Components/Dashboard/CardPreview.vue';
+  import BarChart from '@/Components/Charts/BarChart.vue';
+  import LineChart from '@/Components/Charts/LineChart.vue';
+  import moment from 'moment';
+  import 'moment/dist/locale/es';
+  import Table from '@/Components/Table.vue';
 
   const user = computed(() => usePage().props.value.user.name);
   const dummy = [
@@ -19,19 +24,20 @@ import CardPreview from '@/Components/Dashboard/CardPreview.vue';
     {
       kind: 'presales',
       description: 'Total de Ventas',
-      value: '$50.00'
+      value: 50
     }
   ]
-const date = ref(new Date());
+  const date = moment().locale("es").format('dddd, D [de] MMMM [del] YYYY');
 </script>
 
 <template>
   <AppLayout title="Dashboard">
-    <div class="py-12">
+    <div class="pt-6 pb-12">
       <div class="max-w-7xl mx-auto px-5 lg:px-8">
-        <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight my-5">
-          Bienvenido {{ user }}
+        <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight mt-5">
+          Bienvenido {{ user }}!
         </h2>
+        <p class="mb-5">{{ date }}</p>
         <div class="w-full mb-8">
           <div class="grid md:grid-cols-3 xl:gap-x-24 gap-x-20 md:gap-y-0 gap-y-5">
             <div v-for="item in dummy">
@@ -39,22 +45,19 @@ const date = ref(new Date());
             </div>
           </div>
         </div>
-        <div class="w-full flex justify-between md:flex-row space-x-6 mb-8">
-          <div class="w-full md:w-1/3 p-5 bg-white rounded-lg overflow-hidden shadow-card flex justify-center border border-gray-50">
-            <!-- <Datepicker 
-              v-model="date" 
-              inline
-              autoApply 
-              :enableTimePicker="false"
-              locale="es"
-            /> -->
+        <div class="w-full flex justify-between md:flex-row flex-col md:space-x-6 md:space-y-0 space-y-4 mb-8">
+          <div class="w-full md:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50">
+            <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight">Reporte de venta mensual</h4>
+            <LineChart />
           </div>
-          <div class="w-full md:w-2/3 p-5 bg-white rounded-lg overflow-hidden shadow-card flex justify-center border border-gray-50">
-            
+          <div class="w-full md:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50">
+            <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight">Reporte de ventas anual</h4>
+            <BarChart />
           </div>
         </div>
-        <div class="w-full bg-white rounded-lg overflow-hidden shadow-card min-h-table border border-gray-50">
-
+        <div class="w-full bg-white rounded-lg overflow-hidden shadow-card min-h-table border border-gray-50 py-5">
+          <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight px-5">Productos más vendidos</h4>
+          
         </div>
       </div>
     </div>
