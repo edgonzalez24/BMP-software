@@ -95,10 +95,10 @@ const submit = () => {
 		<Loading :active.sync="isLoading" ></Loading>
 		<form @submit.prevent="submit" class="min-h-screen">
 			<div class="max-w-7xl mx-auto py-10 px-5 sm:px-6 lg:px-8">
-				<h1 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight mb-5">
+				<h1 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight mb-5 animated zoomIn">
           Perfil
         </h1>
-				<div class="bg-white overflow-hidden shadow-xl rounded-lg min-h-base px-5 py-10 border border-gray-50">
+				<div class="bg-white overflow-hidden shadow-xl rounded-lg min-h-base px-5 py-10 border border-gray-50 animated fadeIn">
 					<div class="flex justify-center">
 						<div class="md:w-40 md:h-40 w-24 h-24 bg-dark-blue-500 rounded-full flex justify-center items-center">
 							<p class="text-poppins text-white sm:text-3xl text-xl font-bold">{{ getInitials(form.name) }}</p>
