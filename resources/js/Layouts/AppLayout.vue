@@ -19,11 +19,6 @@ const changeStatus = status => {
 	statusMenu.value = status;
 };
 
-window.Echo.channel('public')
-	.listen('.App\\Events\\PublicEvent', (e) => {
-		console.log(e)
-	});
-
 const handleResize = () => {
 	if (width.value > 769) {
 		statusMenu.value = true;
