@@ -22,6 +22,10 @@
       Cliente:
       <span class="font-normal">{{ selectedPresale.client.name }}</span>
     </p>
+    <p v-if="selectedPresale.client.type_client.id === 2" class="mb-1 font-medium md:text-base text-sm">
+      Zona:
+      <span class="font-normal">{{ selectedPresale.client.zone.name }}</span>
+    </p>
     <p class="mb-1 font-medium md:text-base text-sm">
       Método de pago:
       <span class="font-normal">{{ selectedPresale.method_paid.name }}</span>
@@ -40,7 +44,7 @@
           </div>
           <div>
             <h6 class="text-dark-blue-500 font-semibold md:text-base text-sm">{{ detail.article.name }}</h6>
-            <p class="md:text-sm text-xs py-2">{{ detail.article.comment }}</p>
+            <p class="md:text-sm text-xs py-2" v-html="detail.article.comment"></p>
             <div class="flex flex-row space-x-5 items-center">
               <p class="md:text-sm text-xs">Cantidad: {{ detail.total_articles }}</p>
               <span class="h-5 w-0.5 bg-gray-300"></span>

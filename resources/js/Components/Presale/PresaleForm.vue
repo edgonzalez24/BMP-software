@@ -75,7 +75,8 @@ const form = useForm({
     id: props.isEdit ? props.presale.client.id : null,
     name: props.isEdit ? props.presale.client.name : null,
     type_client: props.isEdit ? props.presale.client.type_client : null,
-    payment_method: props.isEdit ? props.presale.method_paid_client : null
+    payment_method: props.isEdit ? props.presale.method_paid : null,
+    zone: props.isEdit ? props.presale.client.zone : null,
   },
   details: props.isEdit ? props.presale.presale_detail.map(item => ({ ...item, ...item.article, id_detail: item.id, id_presale: props.presale.id,  kind: 'old'}))  : [],
   paid: props.isEdit ? props.presale.total_paid : 0,
@@ -208,7 +209,7 @@ const savePresale = () => {
   }
 }
 const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
-const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
+const isActive = computed(() => (props.presale && ![4,5].includes(props.presale.dispatch.id)));
 
 </script>
 <template>
@@ -222,18 +223,18 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
           <font-awesome-icon icon="fa-solid fa-arrow-left-long" class="text-base mr-2" />
           Regresar
           </Link>
-          <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
+          <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
             {{ isEdit ? 'Editar Pedido' : 'Nuevo Pedido' }}
           </h2>
         </div>
-        <JetButton v-if="isActive" @click="savePresale">
+        <JetButton v-if="(isActive && isEdit) || !isEdit" @click="savePresale">
           {{ isEdit ? 'Editar' : 'Crear' }}
         </JetButton>
       </div>
-      <h6 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-2">Información del Cliente
+      <h6 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-2 animated fadeIn">Información del Cliente
       </h6>
       <!-- Detalles del cliente -->
-      <div class="bg-white w-full shadow-xl rounded-lg mb-5 border border-gray-50 p-5">
+      <div class="bg-white w-full shadow-xl rounded-lg mb-5 border border-gray-50 p-5 animated fadeIn">
         <div class="grid md:grid-cols-3 gap-x-5 gap-y-2 items-center mb-2">
           <div>
             <JetLabel for="name" value="Seleccionar Cliente" />
@@ -259,7 +260,11 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
           </div>
           <div v-if="form.client.id">
             <JetLabel for="name" value="Tipo de Cliente" />
-            <JetInput id="name" v-model="form.client.type_client.name" type="text" class="mt-1 block w-full"
+            <JetInput id="name" 
+              :value="form.client.type_client.id === 2 ?
+              `${form.client.type_client.name}(${form.client.zone.name})` : form.client.type_client.name" 
+              type="text"
+              class="mt-1 block w-full"
               onlyRead />
           </div>
           <div v-if="form.client.id">
@@ -268,7 +273,7 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
               v-model="form.client.payment_method"
               :options="payment_methods.length ? payment_methods : []"
               :reduce="(option) => option"
-              :disabled="!isActive"
+              :disabled="!isActive && isEdit"
               label="name"
               placeholder="Seleccionar cliente"
               class="appearance-none capitalize mt-1"
@@ -288,7 +293,7 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
         <div v-if="form.client.id" class="grid md:grid-cols-3 gap-x-5 items-center gap-y-2 ">
           <div>
             <JetLabel for="paid" value="Total Pagado" />
-            <InputPrice id="paid" v-model:value="form.paid" class="mt-1 block w-full" :disabled="!isActive" />
+            <InputPrice id="paid" v-model:value="form.paid" class="mt-1 block w-full" :disabled="!isActive && isEdit" />
           </div>
           <div>
             <JetLabel for="pending" value="Total Pendiente" />
@@ -316,9 +321,9 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
           </div>
         </div>
       </div>
-      <h6 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-2">Detalle del pedido</h6>
+      <h6 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-2 animated fadeIn">Detalle del pedido</h6>
       <!-- Detalle de articulos -->
-      <div class="bg-white w-full shadow-xl rounded-lg md:min-h-table border border-gray-50 mb-5">
+      <div class="bg-white w-full shadow-xl rounded-lg md:min-h-table border border-gray-50 mb-5 animated fadeIn">
         <div class="flex justify-between flex-wrap p-5 items-center">
           <div class="md:w-1/2 w-full md:order-first order-last">
             <JetLabel value="Seleccionar producto" class="mb-2" />
@@ -326,7 +331,7 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
               v-model="search"
               :options="articles && articles.data.length ? articles.data : []"
               :reduce="(option) => option.id"
-              :disabled="!isActive"
+              :disabled="!isActive && isEdit"
               label="name"
               placeholder="Buscar..."
               class="appearance-none capitalize"
@@ -390,7 +395,7 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
         </div>
       </div>
       <div
-        class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg border border-gray-5 min-h-table">
+        class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg border border-gray-5 min-h-table animated fadeIn">
         <Table :header="header">
           <tbody>
             <tr v-for="article in form.details">
@@ -415,7 +420,8 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
               </td>
               <td class="text-center p-2 md:text-base text-xs">
                 <div class="flex justify-center">
-                  <div class="flex flex-row space-x-4">
+                  <div v-if="presale && [4, 5].includes(presale.dispatch.id)">-</div>
+                  <div v-else class="flex flex-row space-x-4">
                     <a @click="editArticle(article)" class="text-blue-500 font-medium cursor-pointer">
                       {{ editUnit && article.id === selectedArticleID ? 'Guardar' : 'Editar'}}
                     </a>

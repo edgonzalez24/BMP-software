@@ -12,7 +12,7 @@
 <template>
   <div class="py-8 px-5">
     <h3 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">{{ article.name }}</h3>
-    <div class="grid grid-cols-2 gap-x-4 sm:gap-x-8">
+    <div class="grid grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-2">
       <div class="text-center">
         <p class="text-dark-blue-500 font-bold sm:text-lg">
           {{ article.measure_unit.name }}
@@ -27,6 +27,14 @@
         </p>
         <p class="border-t border-gray-300">
           Total de Stock
+        </p>
+      </div>
+      <div class="text-center">
+        <p class="text-dark-blue-500 font-bold sm:text-lg">
+          ${{ article.price ? article.price.sale_price : 0 }}
+        </p>
+        <p class="border-t border-gray-300">
+          Precio
         </p>
       </div>
     </div>

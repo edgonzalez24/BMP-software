@@ -172,14 +172,14 @@
       </form>
     </JetModal>
     <div class="min-h-screen">
-      <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
         <div class="flex justify-between items-center my-5">
           <div>
             <Link href="/dashboard/stocks" class="inline-flex text-dark-blue-500 items-center font-bold transition hover:opacity-80">
               <font-awesome-icon icon="fa-solid fa-arrow-left-long" class="text-base mr-2" />
               Regresar
             </Link>
-            <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
+            <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
               {{ articleDetail.name }}
             </h2>
           </div>
@@ -187,7 +187,7 @@
             Nuevo
           </JetButton>
         </div>
-        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50">
+        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
           <Table :header="header">
             <tbody class="px-5">
               <tr v-for="item in articleDetail.stocks" class="mt-2">

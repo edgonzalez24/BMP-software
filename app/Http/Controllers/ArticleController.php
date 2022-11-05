@@ -83,6 +83,13 @@ class ArticleController extends Controller
         try {
             $article = Article::find($request->get('article_id'));
             $article->update($request->all());
+
+            // Cambiando precio de venta global del article
+            if ($request->get('global_price')) {
+                DB::table('stocks')
+                    ->where('article_id', $request->get('article_id'))
+                    ->update(['sale_price' => $request->get('global_price')]);
+            }
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
@@ -123,7 +130,7 @@ class ArticleController extends Controller
             $measure_unit = $request->get('measure_unit_id');
             $search = $request->get('search');
 
-            $filter = Article::where('active', '1');
+            $filter = Article::orderBy('id', 'desc');
             if(isset($search)){                
                 $filter->where("name", "like", "%" .$search. "%");
             }
@@ -134,7 +141,7 @@ class ArticleController extends Controller
                 $filter->where('measure_unit_id', $measure_unit);
             }
 
-            $article = new StockDetailArticleCollection($filter->orderBy('id', 'desc')->paginate(25));
+            $article = new StockDetailArticleCollection($filter->paginate(25));
             $category = CategoryArticle::orderBy('id', 'desc')->get();
             $measureUnits = MeasureUnits::orderBy('id', 'desc')->get();
             $supplier = Supplier::orderBy('id', 'ASC')->get();

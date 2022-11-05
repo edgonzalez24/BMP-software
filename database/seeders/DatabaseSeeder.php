@@ -15,6 +15,7 @@ use Database\Seeders\ClientSeeder;
 use Database\Seeders\PresaleSeeder;
 use Database\Seeders\PresaleDetailSeeder;
 use Database\Seeders\DispatchSeeder;
+use Database\Seeders\ZoneSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -47,6 +48,7 @@ class DatabaseSeeder extends Seeder
             'presales',
             'presale_details',
             'dispatches',
+            'zones',
         ]);
         
         $this->call(PermissionsSeeder::class);
@@ -58,6 +60,7 @@ class DatabaseSeeder extends Seeder
         $this->call(StockSeeder::class);
         $this->call(MethodPaidSeeder::class);
         $this->call(TypeClientSeeder::class);
+        $this->call(ZoneSeeder::class);
         $this->call(ClientSeeder::class);
         $this->call(DispatchSeeder::class);
         $this->call(PresaleSeeder::class);

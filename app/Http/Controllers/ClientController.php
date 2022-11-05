@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Http\Resources\Client as ClientResources;
+use App\Http\Resources\ClientCollection;
+use App\Models\Zone;
+use App\Models\MethodPaid;
 
 class ClientController extends Controller
 {
@@ -18,18 +22,36 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $type_client_id = $request->get('type_client_id');
+        $search = $request->get('search');
+        $zone_id = $request->get('zone_id');
+
         if ( ! Auth::user()->can('client_index')){
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
+        $filter = Client::orderBy('id', 'desc');
+        if(isset($search)){                
+            $filter->where("name", "like", "%" .$search. "%");
+        }
+        if (isset($type_client_id)) {
+            $filter->where('type_client_id', $type_client_id);
+        }
+        if (isset($zone_id)) {
+            $filter->where('zone_id', $zone_id);
+        }
 
-        $clients = Client::orderBy('id', 'desc')->paginate(25);
+
+        $clients =  new ClientCollection($filter->paginate(25));
         $typeClient = TypeClient::all();
+        $zones = Zone::all();
+        $payment_methods = MethodPaid::all();
         return Inertia::render('Clients/Show',[ 
             'clients' => $clients,
             'typeClient' => $typeClient,
+            'zones' => $zones,
+            'payment_methods' => $payment_methods
         ]);
         
     }
@@ -50,6 +72,7 @@ class ClientController extends Controller
             $client = new Client($request->all());
             $client->save();
         } catch (\Throwable $th) {
+            die($th);
             return redirect()->back()->withErrors(['error' => $th]);
         }
 
@@ -68,8 +91,6 @@ class ClientController extends Controller
         if ( ! Auth::user()->can('client_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         } 
-
-        $validated = $request->validated($request->all());
         try {
             $client = Client::find($request->get('client_id'));
             $client->update($request->all());
@@ -94,49 +115,6 @@ class ClientController extends Controller
         try {
             $client->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
-        } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
-        }
-    }
-
-    public function filter(Request $request)
-    {
-        try {
-            // Estructurando datos
-            $type_client_id = $request->get('type_client_id');
-            $search = $request->get('search');
-
-            $filter = Client::where('active', '1');
-            if(isset($search)){                
-                $filter->where("name", "like", "%" .$search. "%");
-            }
-            if (isset($type_client_id)) {
-                $filter->where('type_client_id', $type_client_id);
-            }
-
-            $clients = $filter->orderBy('id', 'desc')->paginate(25);
-            $typeClient = TypeClient::all();
-            return Inertia::render('Clients/Show',[ 
-                'clients' => $clients,
-                'typeClient' => $typeClient,
-            ]);
-
-    
-        } catch (\Throwable $th) {
-            redirect()->back()->withErrors(['error' => $th]);
-        }
-
-    }
-
-    public function search(Request $request)
-    {
-        try {
-            $search = $request->get('search');
-            return DB::table("clients")
-            ->where("name", "like", "%" .$search. "%")
-            ->where('active', 1)
-            ->orderBy('id', 'desc')
-            ->paginate(25);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }

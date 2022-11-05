@@ -21,21 +21,18 @@ class TypeClientSeeder extends Seeder
                 [
                     'name' => 'Plancheros',
                     'description' => '',
-                    'method_paid_id' => 1,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
                     'name' => 'Pupuserias',
                     'description' => '',
-                    'method_paid_id' => 2,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],
                 [
                     'name' => 'Tienda',
                     'description' => '',
-                    'method_paid_id' => 3,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ],

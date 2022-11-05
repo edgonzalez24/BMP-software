@@ -16,6 +16,7 @@ import { POSITION } from 'vue-toastification';
 import DetailArticle from '@/Components/Article/Detail.vue';
 import { Inertia } from '@inertiajs/inertia';
 import { hasPermission } from '@/Helpers/Functions';
+import InputPrice from '@/Components/Shared/inputPrice.vue';
 
 const props =  defineProps({
   articles: Object,
@@ -71,7 +72,8 @@ const formInitial = useForm({
   comment: null,
   measure_unit_id: null,
   category_id: null,
-  active: 1
+  active: 1,
+  global_price: null
 });
 const formDelete = useForm({
   id: null
@@ -93,6 +95,7 @@ const selectItem = item => {
   formInitial.active = item.active;
   formInitial.measure_unit_id = item.measure_unit.id;
   formInitial.category_id = item.category.id;
+  formInitial.global_price = item.price ? item.price.sale_price: 0
   isEdit.value = true;
   toggleFormModal();
 };
@@ -168,6 +171,14 @@ watch(formFilter, value => {
         <div class="mb-5">
           <JetLabel for="name" value="Nombre" />
           <JetInput id="name" v-model="formInitial.name" type="text" class="mt-1 block w-full" required autofocus />
+        </div>
+        <div v-if="isEdit" class="mb-5">
+          <JetLabel for="price" value="Precio" />
+          <p class="text-xs">
+            <font-awesome-icon icon="fa-solid fa-triangle-exclamation" class="text-yellow-500 mr-1" />
+            El precio será actualizado si hay registro en stock
+          </p>
+          <InputPrice id="price" v-model:value="formInitial.global_price" type="text" class="mt-1 block w-full" />
         </div>
         <div class="mb-5">
           <JetLabel for="comment" value="Comentario" />
@@ -276,19 +287,19 @@ watch(formFilter, value => {
       />
     </JetModal>
     <div class="min-h-screen">
-      <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
         <div class="flex justify-between items-center my-5">
-          <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight">
+          <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
             Artículos
           </h2>
           <JetButton 
-            v-if="hasPermission('create_edit')" 
+            v-if="hasPermission('article_create')" 
             @click="isEdit = false; formInitial.reset();toggleFormModal();"
           >
             Añadir
           </JetButton>
         </div>
-        <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5 border border-gray-50">
+        <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5 border border-gray-50 animated fadeIn">
           <div class="flex lg:flex-row flex-col space-x-4 items-end">
             <div class="lg:w-1/2 w-full">
               <JetLabel value="Búsqueda" />
@@ -346,7 +357,7 @@ watch(formFilter, value => {
             </div>
           </div>
         </div>
-        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50">
+        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
           <Table :header="header">
             <tbody class="px-5">
               <tr 
