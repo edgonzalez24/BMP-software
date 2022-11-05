@@ -44,7 +44,7 @@
           </div>
           <div>
             <h6 class="text-dark-blue-500 font-semibold md:text-base text-sm">{{ detail.article.name }}</h6>
-            <p class="md:text-sm text-xs py-2">{{ detail.article.comment }}</p>
+            <p class="md:text-sm text-xs py-2" v-html="detail.article.comment"></p>
             <div class="flex flex-row space-x-5 items-center">
               <p class="md:text-sm text-xs">Cantidad: {{ detail.total_articles }}</p>
               <span class="h-5 w-0.5 bg-gray-300"></span>

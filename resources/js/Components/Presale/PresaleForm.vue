@@ -209,7 +209,7 @@ const savePresale = () => {
   }
 }
 const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
-const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
+const isActive = computed(() => (props.presale && ![4,5].includes(props.presale.dispatch.id)));
 
 </script>
 <template>
@@ -227,7 +227,7 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
             {{ isEdit ? 'Editar Pedido' : 'Nuevo Pedido' }}
           </h2>
         </div>
-        <JetButton v-if="isActive" @click="savePresale">
+        <JetButton v-if="(isActive && isEdit) || !isEdit" @click="savePresale">
           {{ isEdit ? 'Editar' : 'Crear' }}
         </JetButton>
       </div>
@@ -273,7 +273,7 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
               v-model="form.client.payment_method"
               :options="payment_methods.length ? payment_methods : []"
               :reduce="(option) => option"
-              :disabled="!isActive"
+              :disabled="!isActive && isEdit"
               label="name"
               placeholder="Seleccionar cliente"
               class="appearance-none capitalize mt-1"
@@ -293,7 +293,7 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
         <div v-if="form.client.id" class="grid md:grid-cols-3 gap-x-5 items-center gap-y-2 ">
           <div>
             <JetLabel for="paid" value="Total Pagado" />
-            <InputPrice id="paid" v-model:value="form.paid" class="mt-1 block w-full" :disabled="!isActive" />
+            <InputPrice id="paid" v-model:value="form.paid" class="mt-1 block w-full" :disabled="!isActive && isEdit" />
           </div>
           <div>
             <JetLabel for="pending" value="Total Pendiente" />
@@ -302,7 +302,7 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
           <div>
             <JetLabel value="Estado" />
             <v-select 
-              v-model="form.dispatch_id" :options="dispatches.length ? dispatches.filter(item => item.id !== 5) : []"
+              v-model="form.dispatch_id" :options="dispatches.length ? dispatches : []"
               :reduce="(option) => option"
               :disabled="!isActive && isEdit"
               label="name"
@@ -331,7 +331,7 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
               v-model="search"
               :options="articles && articles.data.length ? articles.data : []"
               :reduce="(option) => option.id"
-              :disabled="!isActive"
+              :disabled="!isActive && isEdit"
               label="name"
               placeholder="Buscar..."
               class="appearance-none capitalize"
@@ -420,7 +420,8 @@ const isActive = computed(() => form.dispatch_id && form.dispatch_id.id !== 5);
               </td>
               <td class="text-center p-2 md:text-base text-xs">
                 <div class="flex justify-center">
-                  <div class="flex flex-row space-x-4">
+                  <div v-if="presale && [4, 5].includes(presale.dispatch.id)">-</div>
+                  <div v-else class="flex flex-row space-x-4">
                     <a @click="editArticle(article)" class="text-blue-500 font-medium cursor-pointer">
                       {{ editUnit && article.id === selectedArticleID ? 'Guardar' : 'Editar'}}
                     </a>

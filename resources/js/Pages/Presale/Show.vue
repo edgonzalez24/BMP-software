@@ -254,15 +254,15 @@
                     <div class="flex flex-row space-x-4">
                       <Link
                         v-if="hasPermission('presale_edit')"
-                        :href="item.dispatch.id !== 5 ? `/dashboard/presales/${item.id}/edit` : ''" 
-                        :class="item.dispatch.id === 5 ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
+                        :href="![4, 5].includes(item.dispatch.id) ? `/dashboard/presales/${item.id}/edit` : ''" 
+                        :class="[4, 5].includes(item.dispatch.id) ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
                       >
                         Editar
                       </Link>
                       <a 
                         v-if="hasPermission('presale_destroy')" 
-                        @click="item.dispatch.id !== 5 && deletePresale(item.id)" 
-                        :class="item.dispatch.id === 5 ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
+                        @click="![4, 5].includes(item.dispatch.id) && deletePresale(item.id)" 
+                        :class="[4, 5].includes(item.dispatch.id) ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
                       >
                         Cancelar
                       </a>
