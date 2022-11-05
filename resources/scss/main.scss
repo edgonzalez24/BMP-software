@@ -1,3 +1,5 @@
+@import "animate.css/animate.compat.css";
+
 body {
 	overflow: auto !important;
 }
@@ -185,4 +187,8 @@ input:checked~.toggle__dot {
 			--tw-border-opacity: 1;
 			border-color: rgb(156 163 175 / var(--tw-border-opacity)) !important;
 		}
+}
+
+.animated {
+	animation-fill-mode: backwards !important;
 }

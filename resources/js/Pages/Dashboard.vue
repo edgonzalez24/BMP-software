@@ -34,7 +34,7 @@
   <AppLayout title="Dashboard">
     <div class="pt-6 pb-12">
       <div class="max-w-7xl mx-auto px-5 lg:px-8">
-        <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight mt-5">
+        <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight mt-5 animated zoomIn">
           Bienvenido {{ user }}!
         </h2>
         <p class="mb-5">{{ date }}</p>
@@ -47,16 +47,16 @@
         </div>
         <div class="w-full flex justify-between md:flex-row flex-col md:space-x-6 md:space-y-0 space-y-4 mb-8">
           <div class="w-full md:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50">
-            <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight">Reporte de venta mensual</h4>
+            <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Reporte de venta mensual</h4>
             <LineChart />
           </div>
           <div class="w-full md:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50">
-            <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight">Reporte de ventas anual</h4>
+            <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Reporte de ventas anual</h4>
             <BarChart />
           </div>
         </div>
-        <div class="w-full bg-white rounded-lg overflow-hidden shadow-card min-h-table border border-gray-50 py-5">
-          <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight px-5">Productos más vendidos</h4>
+        <div class="w-full bg-white rounded-lg overflow-hidden shadow-card min-h-table border border-gray-50 p-5">
+          <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Productos más vendidos</h4>
           
         </div>
       </div>

@@ -26,15 +26,6 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(fas, fab, far)
 
-import * as ScrollMagic from 'scrollmagic';
-import gsap from 'gsap';
-import { ScrollMagicPluginGsap } from 'scrollmagic-plugin-gsap';
-ScrollMagicPluginGsap(ScrollMagic, gsap)
-gsap.config({
-	nullTargetWarn: false,
-});
-
-
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 const toast = useToast();
 createInertiaApp({
@@ -43,7 +34,6 @@ createInertiaApp({
 	setup({ el, app, props, plugin }) {
 		const myApp = createApp({ render: () => h(app, props) })
 		myApp.config.globalProperties.$toast = toast;
-		myApp.config.globalProperties.$scrollmagic = { value: ScrollMagic };
 			myApp.use(plugin)
 			.use(Toast)
 			.use(ZiggyVue, Ziggy)
