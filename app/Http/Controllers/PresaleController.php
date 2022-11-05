@@ -37,7 +37,7 @@ class PresaleController extends Controller
         $from = "{$request->get('from')} 00:00:00";
         $to = "{$request->get('to')} 23:59:59";
         $clients = Client::orderBy('id', 'desc')->get();
-        $filter = Presale::where('dispatch_id', '<>', 4)->orderBy('id', 'desc');
+        $filter = Presale::orderBy('id', 'desc');
         $client_id = $request->get('client_id');
 
         if ( ! Auth::user()->can('presale_index')){
@@ -90,6 +90,7 @@ class PresaleController extends Controller
                     'updated_at' => now(),
                 ]);
             }
+            $this->takeOutStock($presale);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
@@ -139,7 +140,6 @@ class PresaleController extends Controller
             }
             $this->takeOutStock($presale);
         } catch (\Throwable $th) {
-            die($th);
             return redirect()->back()->withErrors(['error' => $th]);
         }
 
@@ -232,38 +232,37 @@ class PresaleController extends Controller
     // Saca los productos de estock en relación al estado
     public function takeOutStock(Presale $presale)
     {
-      if (intval($presale->dispatch_id) == 4) {
-        $details = PresaleDetail::where('presale_id', $presale->id)->get(); // Artículos de la preventa
-        // por cada articulo optener la existencia de estock y restal el total de articulos vendidos
-        foreach ($details as $key) {
-          $articulos_sacar = $key->total_articles;
-          // las entradas de estock coincidentes con el articulo
-          $stock = Stock::where('article_id', $key->id)->where('units_for_unit', '>', 0)->get();
-          // Restando con la primer coincidencia en stock
-          foreach ($stock as $value) {
-            // Resta existencia en stock y articulos vendidos
-            $resta = $value->units_for_unit - $articulos_sacar;
+        if (intval($presale->dispatch_id) == 4) {
+            $details = PresaleDetail::where('presale_id', $presale->id)->get(); // Artículos de la preventa
+            // por cada articulo optener la existencia de estock y restal el total de articulos vendidos
+            foreach ($details as $key) {
+                $articulos_sacar = $key->total_articles;
+                // las entradas de estock coincidentes con el articulo
+                $stock = Stock::where('article_id', $key->article_id)->where('units_for_unit', '>', 0)->get();
+                // Restando con la primer coincidencia en stock
+                foreach ($stock as $value) {
+                    // Resta existencia en stock y articulos vendidos
+                    $resta = $value->units_for_unit - $articulos_sacar;
 
-            // si las existencias en stock de esta entrada cubren las salidas
-            if ($resta < 0) {
-              // dejamos a cero la entrada en stock
-              $value->units_for_unit = 0;
-              $value->update();
-              // paso a positivo el remanente no sacado de estock
-              $key->total_articles = ($resta) * (-1);
-              $key->update();
-            }else{
-              // si la resta es positiva, entonces paramos el bucle y actualizamos el stock con la nueva existencia
-              $value->units_for_unit = $resta;
-              $value->update();
-              break;
+                    // si las existencias en stock de esta entrada cubren las salidas
+                    if ($resta < 0) {
+                    // dejamos a cero la entrada en stock
+                    $value->units_for_unit = 0;
+                    $value->update();
+                    // paso a positivo el remanente no sacado de estock
+                    $key->total_articles = ($resta) * (-1);
+                    $key->update();
+                    }else{
+                    // si la resta es positiva, entonces paramos el bucle y actualizamos el stock con la nueva existencia
+                    $value->units_for_unit = $resta;
+                    $value->update();
+                    break;
+                    }
+                }
             }
-
-          }
+            // eliminamos todas las entradas de stock que no tienen existencias
+            $stock = Stock::where('units_for_unit', '<', 1)->delete();
         }
-        // eliminamos todas las entradas de stock que no tienen existencias
-        $stock = Stock::where('units_for_unit', '<', 1)->delete();
-      }
 
     }
 }

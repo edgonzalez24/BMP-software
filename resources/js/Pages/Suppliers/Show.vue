@@ -129,7 +129,7 @@ const submitDelete = () => {
           {{ isEdit ? 'Editar proveedor' : 'Añadir proveedor' }}
         </h2>
         <div class="mb-5">
-          <JetLabel for="name" value="Status" />
+          <JetLabel for="name" value="Estado" />
           <Toggle v-model:checked="formInitial.active" />
         </div>
         <div class="mb-5">

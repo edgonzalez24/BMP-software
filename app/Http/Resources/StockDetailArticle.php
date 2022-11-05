@@ -34,6 +34,6 @@ class StockDetailArticle extends JsonResource
 
     protected function countTotalStock($stock)
     {
-        return $stock->pluck('quantity_items')->sum();
+        return $stock->pluck('units_for_unit')->sum();
     }
 }
