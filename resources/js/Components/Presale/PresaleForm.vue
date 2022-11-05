@@ -231,7 +231,7 @@ const isActive = computed(() => (props.presale && ![4,5].includes(props.presale.
           {{ isEdit ? 'Editar' : 'Crear' }}
         </JetButton>
       </div>
-      <h6 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-2">Información del Cliente
+      <h6 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-2 animated fadeIn">Información del Cliente
       </h6>
       <!-- Detalles del cliente -->
       <div class="bg-white w-full shadow-xl rounded-lg mb-5 border border-gray-50 p-5 animated fadeIn">
@@ -323,7 +323,7 @@ const isActive = computed(() => (props.presale && ![4,5].includes(props.presale.
       </div>
       <h6 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-2 animated fadeIn">Detalle del pedido</h6>
       <!-- Detalle de articulos -->
-      <div class="bg-white w-full shadow-xl rounded-lg md:min-h-table border border-gray-50 mb-5">
+      <div class="bg-white w-full shadow-xl rounded-lg md:min-h-table border border-gray-50 mb-5 animated fadeIn">
         <div class="flex justify-between flex-wrap p-5 items-center">
           <div class="md:w-1/2 w-full md:order-first order-last">
             <JetLabel value="Seleccionar producto" class="mb-2" />
@@ -395,7 +395,7 @@ const isActive = computed(() => (props.presale && ![4,5].includes(props.presale.
         </div>
       </div>
       <div
-        class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg border border-gray-5 min-h-table">
+        class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg border border-gray-5 min-h-table animated fadeIn">
         <Table :header="header">
           <tbody>
             <tr v-for="article in form.details">
