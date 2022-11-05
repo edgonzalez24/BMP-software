@@ -77,9 +77,11 @@ const redirectDetail = ({ article }) => {
     <Loading :active.sync="isLoading" ></Loading>
     <div class="min-h-screen">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
-        <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight my-5 animated zoomIn">
-          Stock
-        </h2>
+        <div class="flex justify-between items-center my-5">
+          <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
+            Stock
+          </h2>
+        </div>
         <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5 border border-gray-50 animated fadeIn">
           <div class="flex lg:flex-row flex-col space-x-4">
             <div class="lg:w-1/2 w-full">
