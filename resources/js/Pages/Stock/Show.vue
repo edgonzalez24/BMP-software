@@ -2,13 +2,12 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Table from '@/Components/Table.vue';
 import JetLabel from '@/Components/Label.vue';
-import JetInput from '@/Components/Input.vue';
 import Loading from 'vue3-loading-overlay';
 import { ref, computed, reactive, onMounted } from 'vue';
 import Pagination from '@/Components/Shared/Pagination.vue';
 import moment from 'moment';
-import { useForm } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
+import JetModal from '@/Components/Modal.vue';
 
 // Props
 const props = defineProps({
@@ -30,15 +29,7 @@ const header = reactive([
     showInMobile: true
   },
   {
-    name: 'Precio de Compra',
-    showInMobile: true
-  },
-  {
-    name: 'Cantidad',
-    showInMobile: true
-  },
-  {
-    name: 'Precio de Venta',
+    name: 'Unidades',
     showInMobile: true
   },
 ]);
@@ -75,6 +66,9 @@ const alertDate = () => {
 const alertFn = () => {
   datepicker.value.closeMenu();
   handleFilter();
+}
+const redirectDetail = ({ article }) => {
+  Inertia.get(`stocks/${article.id}/detail`);
 }
 </script>
 <template>
@@ -119,14 +113,13 @@ const alertFn = () => {
               <tr
                 v-if="stocks.data.length"
                 v-for="item in stocks.data"
-                class="mt-2"
+                class="mt-2 cursor-pointer hover:bg-slate-50 transition duration-300 ease-in-out"
+                @click="redirectDetail(item)"
               >
                 <td class="text-center p-2 md:text-base text-xs">{{ formatDate(item.created_at) }}</td>
                 <td class="text-center p-2 md:text-base text-xs">{{ item.article.name }}</td>
                 <td class="text-center p-2 md:text-base text-xs">{{ item.supplier.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs">${{ item.buy_price }}</td>
-                <td class="text-center p-2 md:text-base text-xs">{{ item.quantity_items }}</td>
-                <td class="text-center p-2 md:text-base text-xs">${{ item.sale_price }}</td>
+                <td class="text-center p-2 md:text-base text-xs">{{ item.units_for_unit }}</td>
               </tr>
               <tr v-else>
                 <td :colspan="header.length">

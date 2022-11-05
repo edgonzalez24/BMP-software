@@ -13,6 +13,7 @@ use App\Models\PresaleDetail;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Dispatch;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -43,23 +44,23 @@ class PresaleController extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
         try {
-            
+
             if ($request->get('from') && $request->get('to')){
                 $filter = Presale::whereBetween('created_at', [$from, $to]);
-            } 
-            
+            }
+
             if (isset($client_id)) {
                 $filter->where('client_id', $client_id);
             }
             $presales = new PresaleCollection($filter->paginate(25));
-            return Inertia::render('Presale/Show',[ 
+            return Inertia::render('Presale/Show',[
                 'presales' => $presales,
                 'clients' => $clients,
             ]);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
-        
+
     }
 
     /**
@@ -78,7 +79,7 @@ class PresaleController extends Controller
             $presale->save();
 
             // presaledetail
-            for ($i=0; $i < count($request->presale_detail); $i++) { 
+            for ($i=0; $i < count($request->presale_detail); $i++) {
                 $presaleDetail = PresaleDetail::insert([
                     'total_articles' => $request->presale_detail[$i]['total_articles'],
                     'dischargued' => $request->presale_detail[$i]['dischargued'],
@@ -89,6 +90,7 @@ class PresaleController extends Controller
                     'updated_at' => now(),
                 ]);
             }
+            $this->takeOutStock($presale);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
@@ -108,13 +110,13 @@ class PresaleController extends Controller
         if ( ! Auth::user()->can('presale_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
-        
+
         try {
             $presale = Presale::find($request->presale_id);
             $presale->update($request->all());
 
             // Edita agregando nuevos productos
-            for ($i=0; $i < count($request->new_presale_detail); $i++) { 
+            for ($i=0; $i < count($request->new_presale_detail); $i++) {
                 $presaleDetail = PresaleDetail::insert([
                     'total_articles' => $request->new_presale_detail[$i]['total_articles'],
                     'dischargued' => $request->new_presale_detail[$i]['dischargued'],
@@ -127,7 +129,7 @@ class PresaleController extends Controller
             }
 
             // Edita productos ya agregados
-            for ($i=0; $i < count($request->old_presale_detail); $i++) { 
+            for ($i=0; $i < count($request->old_presale_detail); $i++) {
                 PresaleDetail::find($request->old_presale_detail[$i]['id_detail'])->update([
                     'total_articles' => $request->old_presale_detail[$i]['total_articles'],
                     'dischargued' => $request->old_presale_detail[$i]['dischargued'],
@@ -136,8 +138,8 @@ class PresaleController extends Controller
                     'presale_id' => $request->old_presale_detail[$i]['id_presale'],
                 ]);
             }
+            $this->takeOutStock($presale);
         } catch (\Throwable $th) {
-            die($th);
             return redirect()->back()->withErrors(['error' => $th]);
         }
 
@@ -151,7 +153,7 @@ class PresaleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Presale $presale)
-    {        
+    {
         if ( ! Auth::user()->can('presale_destroy')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
@@ -218,12 +220,49 @@ class PresaleController extends Controller
     }
 
     public function destroy_uniq(Request $request)
-    {   
+    {
         try {
             PresaleDetail::where('article_id', $request->id)->delete();
             return redirect()->back();
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
+    }
+
+    // Saca los productos de estock en relación al estado
+    public function takeOutStock(Presale $presale)
+    {
+        if (intval($presale->dispatch_id) == 4) {
+            $details = PresaleDetail::where('presale_id', $presale->id)->get(); // Artículos de la preventa
+            // por cada articulo optener la existencia de estock y restal el total de articulos vendidos
+            foreach ($details as $key) {
+                $articulos_sacar = $key->total_articles;
+                // las entradas de estock coincidentes con el articulo
+                $stock = Stock::where('article_id', $key->article_id)->where('units_for_unit', '>', 0)->get();
+                // Restando con la primer coincidencia en stock
+                foreach ($stock as $value) {
+                    // Resta existencia en stock y articulos vendidos
+                    $resta = $value->units_for_unit - $articulos_sacar;
+
+                    // si las existencias en stock de esta entrada cubren las salidas
+                    if ($resta < 0) {
+                    // dejamos a cero la entrada en stock
+                    $value->units_for_unit = 0;
+                    $value->update();
+                    // paso a positivo el remanente no sacado de estock
+                    $key->total_articles = ($resta) * (-1);
+                    $key->update();
+                    }else{
+                    // si la resta es positiva, entonces paramos el bucle y actualizamos el stock con la nueva existencia
+                    $value->units_for_unit = $resta;
+                    $value->update();
+                    break;
+                    }
+                }
+            }
+            // eliminamos todas las entradas de stock que no tienen existencias
+            $stock = Stock::where('units_for_unit', '<', 1)->delete();
+        }
+
     }
 }
