@@ -16,6 +16,6 @@ class PresaleSeeder extends Seeder
      */
     public function run()
     {
-        Presale::factory()->count(1000)->create();
+        Presale::factory()->count(75)->create();
     }
 }
