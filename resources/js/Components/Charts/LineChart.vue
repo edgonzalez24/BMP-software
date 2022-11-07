@@ -46,30 +46,17 @@
       default: () => []
     }
   });
-const dummy = {
-  "2022-11-01": 0,
-  "2022-11-02": 0,
-  "2022-11-03": 0
-}
   const chartData = {
-    labels: Object.keys(dummy),
+    labels: ['cliente 1', 'cliente 2', 'cliente 3', 'cliente 4', 'cliente 5'],
     datasets: [
       {
-        label: 'Mes Actual',
+        label: 'Número de pedidos',
         backgroundColor: '#404E67',
-        borderColor: '#404E67',
+        borderColor: '#d1d5db',
         fill: false,
         lineTension: 0,
-        data: [40, 0]
+        data: [50, 30, 22, 20, 20]
       },
-      {
-        label: 'Mes Anterior',
-        fill: false,
-        borderColor: '#c4c4c4',
-        backgroundColor: '#c4c4c4',
-        lineTension: 0,
-        data: [500, 0]
-      }
     ]
   }
 

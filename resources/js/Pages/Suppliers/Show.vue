@@ -185,7 +185,7 @@ const submitDelete = () => {
     <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal" >
       <form class="py-8 px-5" @submit.prevent="submitDelete">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          Eliminar Proveedor
+          ¿Deseas eliminar a este proveedor?
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
@@ -252,11 +252,10 @@ const submitDelete = () => {
             </tbody>
           </Table>
         </div>
-        <div class="flex mt-8 justify-center">
+        <div v-if="totalPages > 1" class="flex mt-8 justify-center">
           <Pagination
             :total="totalPages"
-            :previous="suppliers.prev_page_url"
-            :next="suppliers.next_page_url"
+            :perPage="suppliers.per_page"
             page="suppliers"
           />
         </div>

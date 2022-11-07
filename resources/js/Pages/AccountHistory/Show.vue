@@ -96,7 +96,7 @@
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
         <div class="flex justify-between items-center my-5">
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-            Historial de Cuentas
+            Historial de Cuentas Pendientes
           </h2>
         </div>
         <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5 border border-gray-50 animated fadeIn">
@@ -194,8 +194,7 @@
         >
           <Pagination
             :total="totalPages"
-            :previous="presales.links.prev"
-            :next="presales.links.next"
+            :perPage="presales.meta.per_page"
             page="presales"
           />
         </div>
