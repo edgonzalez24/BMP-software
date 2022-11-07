@@ -17,6 +17,8 @@ import vSelect from "vue-select";
 import { useToast } from "vue-toastification";
 import { QuillEditor } from '@vueup/vue-quill';
 import Maska from 'maska';
+import Pagination from 'v-pagination-3';
+
 
 // FontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -43,6 +45,7 @@ createInertiaApp({
 			.component("v-select", vSelect)
 			.component('FontAwesomeIcon', FontAwesomeIcon)
 			.component('QuillEditor', QuillEditor)
+			.component('pagination', Pagination)
 			.mount(el);
 		return myApp;
 	},

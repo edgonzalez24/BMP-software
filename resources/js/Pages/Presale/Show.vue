@@ -136,12 +136,12 @@
     <JetModal :show="statusModalForm" maxWidth="lg" @close="statusModalForm = false">
       <form class="py-8 px-5" @submit.prevent="submitDelete">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          Cancelar Pedido
+          ¿Deseas cancelar este Pedido?
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
-            Al cancelar a este Predido, el detalle se borrará permanentemente del sistema,
-            por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
+            Al cancelar a este Pedido, el detalle se borrará permanentemente del sistema, y los productos regresarán al stock
+            por favor confirmar la acción haciendo click en el botón de 'Cancelar'.
           </p>
           <div class="flex justify-end mt-5">
             <div class="w-auto flex flex-row space-x-4 justify-between">
@@ -150,7 +150,7 @@
                 Cancelar
               </JetButton>
               <JetButton background="bg-red-600 focus:ring-transparent focus:border-transparent" type="submit">
-                Eliminar
+                Cancelar
               </JetButton>
             </div>
           </div>
@@ -289,9 +289,8 @@
           class="flex mt-8 justify-center"
         >
           <Pagination
-            :total="totalPages"
-            :previous="presales.links.prev"
-            :next="presales.links.next"
+            :total="presales.meta.total"
+            :perPage="presales.meta.per_page"
             page="presales"
           />
         </div>

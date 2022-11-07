@@ -57,7 +57,7 @@ export const menuItems = [
         rol: 'client_index', 
       },
       {
-        name: 'Historial de Cuentas',
+        name: 'Historial de Cuentas Pendientes',
         slug: 'account-history',
         icon: 'fa-chart-simple',
         rol:'acountHistory_index', 
