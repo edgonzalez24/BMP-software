@@ -80,11 +80,12 @@ const form = useForm({
     zone: props.isEdit ? props.presale.client.zone : null,
   },
   details: props.isEdit ? props.presale.presale_detail.map(item => ({ ...item, ...item.article, id_detail: item.id, id_presale: props.presale.id,  kind: 'old'}))  : [],
-  paid: props.isEdit ? props.presale.total_paid : 0,
+  paid: props.isEdit ? props.presale.paid : 0,
   pending: props.isEdit ? props.presale.total_pending : 0,
   total: 0,
-  dispatch_id: props.isEdit ? props.presale.dispatch : { "id": 2, "name": "En proceso", "created_at": null, "updated_at": null },
-  added: 0
+  dispatch_id: props.isEdit ? props.presale.dispatch : { "id": 4, "name": "Entregado", "created_at": null, "updated_at": null },
+  added: props.isEdit ? props.presale.added :0,
+  total_paid: props.isEdit ? props.presale.total_paid : 0,
 });
 const isLoading = ref(false)
 const search = ref('');
@@ -153,7 +154,7 @@ const deleteArticle = (article) => {
   }
 }
 
-const getTotalPending = computed(() => (getTotal(form.details) - form.paid).toFixed(2));
+const getTotalPending = computed(() => (getTotal(form.details) - form.total_paid).toFixed(2));
 const savePresale = () => {
   const EP = props.isEdit ? 'presale.change' : 'presale.save';
   if(form.client.id) {
@@ -162,10 +163,10 @@ const savePresale = () => {
       if(props.isEdit) {
         return {
           presale_id: data.presale_id,
-          total_paid: data.paid,
-          total_pending: getTotalPending.value,
-          dispatch_id: data.dispatch_id.id,
-          paid: 0,
+          total_paid: data.paid === 1 ? data.added ? data.pending : getTotalPending.value : data.total_paid,
+          total_pending: data.paid === 0 ? data.added ? data.pending : getTotalPending.value : 0,
+          dispatch_id: data.paid === 1 ? 4 : data.dispatch_id.id,
+          paid: data.paid,
           added: data.added,
           client_id: data.client.id,
           user_presale_id: usePage().props.value.user.id,
@@ -177,10 +178,10 @@ const savePresale = () => {
       } else {
         return {
           presale_id: data.presale_id,
-          total_paid: data.paid,
-          total_pending: data.added ? data.pending : getTotalPending.value,
-          dispatch_id: data.dispatch_id.id,
-          paid: 0,
+          total_paid: data.paid === 1 ? data.added ? data.pending : getTotalPending.value : data.total_paid,
+          total_pending: data.paid === 0 ? data.added ? data.pending : getTotalPending.value: 0,
+          dispatch_id: data.paid === 1 ? 4 :data.dispatch_id.id,
+          paid: data.paid,
           added: data.added,
           client_id: data.client.id,
           user_presale_id: usePage().props.value.user.id,
@@ -213,11 +214,16 @@ const savePresale = () => {
   }
 }
 const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
-const isActive = computed(() => (props.presale && ![4,5].includes(props.presale.dispatch.id)));
+const isCanceled = computed(() => props.presale && [5].includes(props.presale.dispatch.id));
+const isPaid = computed(() => props.presale && props.presale.paid === 1)
 
 watch(form, value => {
   if (value.added === 1) {
-    value.dispatch_id = { id: 4, name: "Entregado" }
+    value.dispatch_id = { "id": 4, "name": "Entregado", "created_at": null, "updated_at": null }
+  }
+
+  if ( value.paid === 1) {
+    value.total_paid = 0
   }
 })
 
@@ -237,7 +243,7 @@ watch(form, value => {
             {{ isEdit ? 'Editar Preventa' : 'Nueva Preventa' }}
           </h2>
         </div>
-        <JetButton v-if="(isActive && isEdit) || !isEdit" @click="savePresale">
+        <JetButton v-if="!isPaid && !isCanceled" @click="savePresale">
           {{ isEdit ? 'Editar' : 'Crear' }}
         </JetButton>
       </div>
@@ -245,10 +251,14 @@ watch(form, value => {
       </h6>
       <!-- Detalles del cliente -->
       <div class="bg-white w-full shadow-xl rounded-lg mb-5 border border-gray-50 p-5 animated fadeIn">
-        <div class="grid md:grid-cols-3 gap-x-5 gap-y-2 items-center mb-2">
-          <div>
+        <div class="flex justify-between items-center mb-2">
+          <div class="">
             <JetLabel value="Agregar monto directo" />
-            <Toggle v-model:checked="form.added" label />
+            <Toggle v-model:checked="form.added" label :activeControl="isEdit" />
+          </div>
+          <div class="">
+            <JetLabel value="Pagado" />
+            <Toggle v-model:checked="form.paid" label :activeControl="presale && isPaid"  />
           </div>
         </div>
         <div class="grid md:grid-cols-3 gap-x-5 gap-y-2 items-center mb-2">
@@ -289,7 +299,7 @@ watch(form, value => {
               v-model="form.client.payment_method"
               :options="payment_methods.length ? payment_methods : []"
               :reduce="(option) => option"
-              :disabled="!isActive && isEdit"
+              :disabled="isPaid || isCanceled"
               label="name"
               placeholder="Seleccionar cliente"
               class="appearance-none capitalize mt-1"
@@ -309,11 +319,11 @@ watch(form, value => {
         <div v-if="form.client.id" class="grid md:grid-cols-3 gap-x-5 items-center gap-y-2 ">
           <div>
             <JetLabel for="paid" value="Total Pagado" />
-            <InputPrice id="paid" v-model:value="form.paid" class="mt-1 block w-full" :disabled="!!form.added || (!isActive && isEdit)" />
+            <InputPrice id="paid" v-model:value="form.total_paid" class="mt-1 block w-full" :disabled="isPaid || isCanceled || form.added === 1 || form.paid === 1" />
           </div>
           <div>
             <JetLabel for="pending" value="Total Pendiente" />
-            <InputPrice  v-if="!!form.added" id="pending" v-model:value="form.pending" class="mt-1 block w-full" />
+            <InputPrice  v-if="form.added === 1" id="pending" v-model:value="form.pending" class="mt-1 block w-full" :disabled="isPaid"  />
             <JetInput v-else id="pending" :value="`$ ${getTotalPending}`" type="text" class="mt-1 block w-full" onlyRead />
           </div>
           <div>
@@ -321,7 +331,7 @@ watch(form, value => {
             <v-select 
               v-model="form.dispatch_id" :options="dispatches.length ? dispatches : []"
               :reduce="(option) => option"
-              :disabled="!!form.added || (!isActive && isEdit)"
+              :disabled="isPaid || isCanceled || form.added === 1"
               label="name"
               placeholder="Seleccionar estado"
               class="appearance-none capitalize mt-1"
@@ -338,7 +348,7 @@ watch(form, value => {
           </div>
         </div>
       </div>
-      <template v-if="!form.added">
+      <template v-if="form.added === 0">
         <h6 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-2 animated fadeIn">Detalle de la preventa
         </h6>
         <!-- Detalle de articulos -->
@@ -347,7 +357,7 @@ watch(form, value => {
             <div class="md:w-1/2 w-full md:order-first order-last">
               <JetLabel value="Seleccionar producto" class="mb-2" />
               <v-select v-model="search" :options="articles && articles.data.length ? articles.data : []"
-                :reduce="(option) => option.id" :disabled="!isActive && isEdit" label="name" placeholder="Buscar..."
+                :reduce="(option) => option.id" :disabled="isPaid || isCanceled" label="name" placeholder="Buscar..."
                 class="appearance-none capitalize" @search="searchArticle" @option:selected="handleSelected">
                 <template #no-options="{ search, searching, loading }">
                   Busqueda no encontrada
@@ -431,7 +441,7 @@ watch(form, value => {
                 </td>
                 <td class="text-center p-2 md:text-base text-xs">
                   <div class="flex justify-center">
-                    <div v-if="presale && [4, 5].includes(presale.dispatch.id)">-</div>
+                    <div v-if="isPaid || (presale && [4, 5].includes(presale.dispatch.id))">-</div>
                     <div v-else class="flex flex-row space-x-4">
                       <a @click="editArticle(article)" class="text-blue-500 font-medium cursor-pointer">
                         {{ editUnit && article.id === selectedArticleID ? 'Guardar' : 'Editar'}}
