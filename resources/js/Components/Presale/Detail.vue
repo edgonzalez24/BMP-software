@@ -2,7 +2,7 @@
   import Toggle from '@/Components/Shared/Toggle.vue';
   import _ from 'lodash';
   import { useForm, usePage } from '@inertiajs/inertia-vue3';
-  import { ref, watch, computed, getCurrentInstance } from 'vue';
+  import { ref, watch, getCurrentInstance } from 'vue';
   import { POSITION } from 'vue-toastification';
   import Loading from 'vue3-loading-overlay';
 
@@ -19,19 +19,18 @@
   paidStatus.value = props.selectedPresale.paid;
   const isLoading = ref(false);
 
-  const getTotalPending = computed(() => (getTotal(form.details) - form.paid).toFixed(2));
   const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
 
 
   watch(paidStatus, value =>  {
-    if(value) {
+    if (value && form.dispatch.id !== 5) {
       isLoading.value = true;
       form.transform(data => {
         if (data.added === 1) {
           return {
             presale_id: data.id,
-            total_paid: data.paid,
-            total_pending: getTotalPending.value,
+            total_paid: data.total_pending,
+            total_pending: 0,
             dispatch_id: value ? 4 : data.dispatch.id,
             paid: value,
             added: data.added,
@@ -43,8 +42,8 @@
         } else {
           return {
             presale_id: data.id,
-            total_paid: data.paid,
-            total_pending: getTotalPending.value,
+            total_paid: getTotal(data.presale_detail),
+            total_pending: 0,
             dispatch_id: value ? 4 : data.dispatch.id,
             paid: value,
             added: data.added,
@@ -114,7 +113,7 @@
       <p class="font-medium md:text-base text-sm mr-2">
         Pagado:
       </p>
-      <Toggle v-model:checked="paidStatus" label :activeControl="selectedPresale.paid === 1" />
+      <Toggle v-model:checked="paidStatus" label :activeControl="(selectedPresale.paid === 1 || selectedPresale.dispatch.id === 5)" />
     </div>
     <div>
       <div v-for="detail in selectedPresale.presale_detail" class="border-t border-gray-300 min-h-list flex items-center">

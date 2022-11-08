@@ -36,10 +36,6 @@
       showInMobile: true
     },
     {
-      name: 'Tipo de Pago',
-      showInMobile: true
-    },
-    {
       name: 'Acciones',
       showInMobile: true
     }
@@ -141,7 +137,7 @@
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
             Al cancelar a este Preventa, el detalle se borrará permanentemente del sistema, y los productos regresarán al stock
-            por favor confirmar la acción haciendo click en el botón de 'Cancelar'.
+            por favor confirmar la acción haciendo click en el botón de 'Confirmar'.
           </p>
           <div class="flex justify-end mt-5">
             <div class="w-auto flex flex-row space-x-4 justify-between">
@@ -150,7 +146,7 @@
                 Cancelar
               </JetButton>
               <JetButton background="bg-red-600 focus:ring-transparent focus:border-transparent" type="submit">
-                Cancelar
+                Confirmar
               </JetButton>
             </div>
           </div>
@@ -244,25 +240,20 @@
                 <td class="text-center p-2 md:text-base text-xs">
                   {{ item.dispatch.name }}
                 </td>
-                <td 
-                  class="text-center p-2 md:text-base text-xs"
-                >
-                  {{  item.method_paid.name }}
-                </td>
                 <td class="text-center p-2 md:text-base text-xs" @click.stop>
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
                       <Link
                         v-if="hasPermission('presale_edit')"
-                        :href="![4, 5].includes(item.dispatch.id) ? `/dashboard/presales/${item.id}/edit` : ''" 
-                        :class="[4, 5].includes(item.dispatch.id) ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
+                        :href="item.paid === 0 && ![5].includes(item.dispatch.id) ? `/dashboard/presales/${item.id}/edit` : ''" 
+                        :class="item.paid === 1 || [5].includes(item.dispatch.id) ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
                       >
                         Editar
                       </Link>
                       <a 
                         v-if="hasPermission('presale_destroy')" 
-                        @click="![4, 5].includes(item.dispatch.id) && deletePresale(item.id)" 
-                        :class="[4, 5].includes(item.dispatch.id) ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
+                        @click="![5].includes(item.dispatch.id) && item.paid === 0 && deletePresale(item.id)" 
+                        :class="[5].includes(item.dispatch.id) || item.paid === 1 ? 'text-gray-400 cursor-default' :  'text-blue-500 font-medium cursor-pointer'"
                       >
                         Cancelar
                       </a>
