@@ -73,7 +73,6 @@ class ClientController extends Controller
             $client = new Client($request->all());
             $client->save();
         } catch (\Throwable $th) {
-            die($th);
             return redirect()->back()->withErrors(['error' => $th]);
         }
 
@@ -95,10 +94,6 @@ class ClientController extends Controller
         try {
             $client = Client::find($request->get('client_id'));
             $client->update($request->all());
-
-            if ($request->get('mount')) {
-              $this->cta($request->get('mount'), $request->get('client_id'));
-            }
 
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
@@ -124,21 +119,5 @@ class ClientController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
-    }
-
-    public function cta($mount, $client_id)
-    {
-      $presale = Presale::insert([
-        'total_paid' => 0,
-        'total_pending' => $mount,
-        'dispatch_id' => 0,
-        'paid' => 4,
-        'client_id' => $client_id,
-        'user_presale_id' => Auth::user()->id,
-        'user_dispatch_id' => Auth::user()->id,
-        'method_paid_id' => 3,
-        'created_at' => now(),
-        'updated_at' => now(),
-      ]);
     }
 }

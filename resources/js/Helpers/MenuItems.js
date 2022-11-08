@@ -77,7 +77,7 @@ export const menuItems = [
     rol: '', 
     children: [
       {
-        name: 'Pedidos',
+        name: 'Preventa',
         slug: 'presales',
         icon: 'fa-cart-shopping',
         rol: 'presale_index'
@@ -107,6 +107,12 @@ export const menuItems = [
         name: 'Manual de Ayuda',
         slug: '',
         icon: 'fa-circle-info',
+        rol: ''
+      },
+      {
+        name: 'Videos Tutoriales',
+        slug: '',
+        icon: 'fa-video',
         rol: ''
       },
     ]

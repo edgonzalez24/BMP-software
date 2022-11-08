@@ -30,7 +30,7 @@ const handleAction = (value) => {
     :per-page="props.perPage"
     @paginate="handleAction"
     :options="{
-      chunksNavigation: 'scroll',
+      chunksNavigation: 'fixed',
       chunk: 5,
       edgeNavigation: true,
       texts: {

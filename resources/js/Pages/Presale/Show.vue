@@ -136,11 +136,11 @@
     <JetModal :show="statusModalForm" maxWidth="lg" @close="statusModalForm = false">
       <form class="py-8 px-5" @submit.prevent="submitDelete">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          ¿Deseas cancelar este Pedido?
+          ¿Deseas cancelar estea Preventa?
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
-            Al cancelar a este Pedido, el detalle se borrará permanentemente del sistema, y los productos regresarán al stock
+            Al cancelar a este Preventa, el detalle se borrará permanentemente del sistema, y los productos regresarán al stock
             por favor confirmar la acción haciendo click en el botón de 'Cancelar'.
           </p>
           <div class="flex justify-end mt-5">
@@ -164,7 +164,7 @@
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
         <div class="flex justify-between items-center my-5">
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-            Pedidos
+            Preventa
           </h2>
           <Link v-if="hasPermission('presale_create')" :href="route('presales.create')" class="inline-flex items-center px-8 py-2 border border-transparent rounded-md font-semibold sm:text-base text-sm  tracking-widest  focus:outline-none  focus:ring disabled:opacity-25 transition bg-dark-blue-500 focus:ring-gray-300 focus:border-gray-900 hover:bg-gray-700 active:bg-gray-900 text-white">
             Crear
