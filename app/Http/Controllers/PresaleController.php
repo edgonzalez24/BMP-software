@@ -144,7 +144,6 @@ class PresaleController extends Controller
                 $this->takeOutStock($presale);
             }
         } catch (\Throwable $th) {
-            die($th);
             return redirect()->back()->withErrors(['error' => $th]);
         }
 
