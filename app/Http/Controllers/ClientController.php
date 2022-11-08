@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\TypeClient;
+use App\Models\Presale;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,7 @@ class ClientController extends Controller
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
         $filter = Client::orderBy('id', 'desc');
-        if(isset($search)){                
+        if(isset($search)){
             $filter->where("name", "like", "%" .$search. "%");
         }
         if (isset($type_client_id)) {
@@ -47,13 +48,13 @@ class ClientController extends Controller
         $typeClient = TypeClient::all();
         $zones = Zone::all();
         $payment_methods = MethodPaid::all();
-        return Inertia::render('Clients/Show',[ 
+        return Inertia::render('Clients/Show',[
             'clients' => $clients,
             'typeClient' => $typeClient,
             'zones' => $zones,
             'payment_methods' => $payment_methods
         ]);
-        
+
     }
 
     /**
@@ -67,7 +68,7 @@ class ClientController extends Controller
         if ( ! Auth::user()->can('client_create')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
-    
+
         try {
             $client = new Client($request->all());
             $client->save();
@@ -87,13 +88,18 @@ class ClientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateClientRequest $request)
-    {        
+    {
         if ( ! Auth::user()->can('client_edit')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
-        } 
+        }
         try {
             $client = Client::find($request->get('client_id'));
             $client->update($request->all());
+
+            if ($request->get('mount')) {
+              $this->cta($request->get('mount'), $request->get('client_id'));
+            }
+
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
@@ -111,12 +117,28 @@ class ClientController extends Controller
         if ( ! Auth::user()->can('client_destroy')){
             return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
-        
+
         try {
             $client->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
+    }
+
+    public function cta($mount, $client_id)
+    {
+      $presale = Presale::insert([
+        'total_paid' => 0,
+        'total_pending' => $mount,
+        'dispatch_id' => 0,
+        'paid' => 4,
+        'client_id' => $client_id,
+        'user_presale_id' => Auth::user()->id,
+        'user_dispatch_id' => Auth::user()->id,
+        'method_paid_id' => 3,
+        'created_at' => now(),
+        'updated_at' => now(),
+      ]);
     }
 }
