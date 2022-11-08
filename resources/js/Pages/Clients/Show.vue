@@ -264,12 +264,12 @@ watch(form, value => {
     <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
       <form class="py-8 px-5" @submit.prevent="submitDelete">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          Eliminar Cliente
+          ¿Deseas eliminar a este cliente?
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
-            Al eliminar a este cliente se borrará permanentemente del sistema,
-            por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
+            Al eliminar a este cliente se borrará permanentemente del sistema, incluyendo su historial de cuenta, pedidos, entre otros.
+            Por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
           </p>
           <div class="flex justify-end mt-5">
             <div class="w-auto flex flex-row space-x-4 justify-between">
@@ -405,8 +405,7 @@ watch(form, value => {
         <div v-if="totalPages > 1" class="flex mt-8 justify-center">
           <Pagination 
             :total="totalPages"
-            :previous="clients.prev_page_url" 
-            :next="clients.next_page_url" 
+            :perPage="clients.per_page"
             page="clients"
           />
         </div>

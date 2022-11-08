@@ -256,7 +256,7 @@ watch(formFilter, value => {
     <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
       <form class="py-8 px-5" @submit.prevent="submitDelete">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          Eliminar Artículo
+          ¿Deseas eliminar este artículo?
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
@@ -399,9 +399,7 @@ watch(formFilter, value => {
         </div>
         <div v-if="totalPages > 1" class="flex mt-8 justify-center">
           <Pagination
-            :total="totalPages" 
-            :previous="articles.links.prev"
-            :next="articles.links.next"
+            :previous="articles.meta.per_page"
             page="articles" />
         </div>
       </div>

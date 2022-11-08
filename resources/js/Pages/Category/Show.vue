@@ -150,11 +150,11 @@ const submitDelete = () => {
     <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal" >
       <form class="py-8 px-5" @submit.prevent="submitDelete">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          Eliminar Categoria
+          ¿Deseas eliminar esta categoría?
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
-            Al  eliminar a esta categoria se borrará permanentemente del sistema,
+            Al  eliminar a esta categoría se borrará permanentemente del sistema,
             por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
           </p>
           <div class="flex justify-end mt-5">
@@ -207,11 +207,10 @@ const submitDelete = () => {
             </tbody>
           </Table>
         </div>
-        <div class="flex mt-8 justify-center">
+        <div v-if="totalPages > 1" class="flex mt-8 justify-center">
           <Pagination
             :total="totalPages"
-            :previous="categoryArticle.prev_page_url"
-            :next="categoryArticle.next_page_url"
+            :perPage="categoryArticle.per_page"
             page="categories"
           />
         </div>
