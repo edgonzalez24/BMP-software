@@ -3,7 +3,11 @@ import { computed } from 'vue';
 
 const props = defineProps({
   checked: Number,
-  label: Boolean
+  label: Boolean,
+  activeControl: {
+    type: Boolean,
+    default: false
+  },
 });
 const emit = defineEmits(['update:checked']);
 
@@ -31,6 +35,7 @@ const proxyChecked = computed({
           v-model="proxyChecked"
           type="checkbox"
           class="hidden"
+          :disabled="activeControl"
         />
         <div
           class="toggle__line w-10 h-4 rounded-full shadow-inner bg-gray-100"

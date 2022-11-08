@@ -50,7 +50,7 @@
     labels: ['cliente 1', 'cliente 2', 'cliente 3', 'cliente 4', 'cliente 5'],
     datasets: [
       {
-        label: 'Número de pedidos',
+        label: 'Número de preventas',
         backgroundColor: '#404E67',
         borderColor: '#d1d5db',
         fill: false,

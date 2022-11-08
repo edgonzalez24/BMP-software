@@ -18,6 +18,7 @@ return new class extends Migration
             $table->float('total_paid')->nullable()->comment('Total de monto pagado de esta venta');
             $table->float('total_pending')->nullable()->comment('Total de monto pendiente de pago de esta venta');
             $table->boolean('paid')->comment('Marca como pagada la preventa')->default(false);
+            $table->boolean('added')->comment('Marca como agregado a la preventa')->default(false);
             $table->unsignedInteger('dispatch_id')->nullable()->comment('Estado del despacho')->default(false);
             $table->unsignedInteger('client_id')->comment('ID del cliente');
             $table->unsignedInteger('user_presale_id')->comment('ID usuario de preventa ');

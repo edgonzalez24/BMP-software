@@ -77,7 +77,7 @@ export const menuItems = [
     rol: '', 
     children: [
       {
-        name: 'Pedidos',
+        name: 'Preventa',
         slug: 'presales',
         icon: 'fa-cart-shopping',
         rol: 'presale_index'

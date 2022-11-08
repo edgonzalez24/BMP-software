@@ -16,7 +16,6 @@ import { POSITION } from 'vue-toastification';
 import DetailClient from '@/Components/Client/Detail.vue'
 import { hasPermission } from '@/Helpers/Functions';
 import { Inertia } from '@inertiajs/inertia';
-import InputPrice from '@/Components/Shared/inputPrice.vue'
 
 const props = defineProps({
   clients: Object,
@@ -54,8 +53,7 @@ const form = useForm({
   method_paid_id: null,
   telephone: null,
   active: 1,
-  comment: null,
-  total_pending: 0
+  comment: null
 });
 const formDelete = useForm({
   client_id: null,
@@ -160,7 +158,8 @@ watch(form, value => {
   if (value.type_client_id !== 2) {
     value.zone_id = 3
   }
-})
+});
+
 </script>
 <template>
   <AppLayout>
@@ -244,10 +243,6 @@ watch(form, value => {
             </template>
           </v-select>
         </div>
-        <div class="mb-3">
-          <JetLabel value="Agregar total pendiente" />
-          <InputPrice  v-model:value="form.total_pending" class="mt-1 block w-full" />
-        </div>
         <div class="flex justify-end mb-5">
           <div class="w-auto flex flex-row space-x-4 justify-between">
             <JetButton background="bg-transparente text-gray-300 focus:ring-transparent focus:border-transparent"
@@ -274,7 +269,7 @@ watch(form, value => {
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
-            Al eliminar a este cliente se borrará permanentemente del sistema, incluyendo su historial de cuenta, pedidos, entre otros.
+            Al eliminar a este cliente se borrará permanentemente del sistema, incluyendo su historial de cuenta, preventas, entre otros.
             Por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
           </p>
           <div class="flex justify-end mt-5">

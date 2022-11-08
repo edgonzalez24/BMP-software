@@ -1,6 +1,6 @@
 <script setup>
 import JetLabel from '@/Components/Label.vue';
-import { reactive, computed, ref, getCurrentInstance } from 'vue';
+import { reactive, computed, ref, getCurrentInstance, watch } from 'vue';
 import Table from '@/Components/Table.vue';
 import { useForm, usePage, Link } from '@inertiajs/inertia-vue3';
 import JetInput from '@/Components/Input.vue';
@@ -11,6 +11,7 @@ import InputPrice from '@/Components/Shared/inputPrice.vue';
 import _ from 'lodash';
 import { POSITION } from 'vue-toastification';
 import Loading from 'vue3-loading-overlay';
+import Toggle from '@/Components/Shared/Toggle.vue';
 
 const props = defineProps({
   clients: Object,
@@ -82,7 +83,8 @@ const form = useForm({
   paid: props.isEdit ? props.presale.total_paid : 0,
   pending: props.isEdit ? props.presale.total_pending : 0,
   total: 0,
-  dispatch_id: props.isEdit ? props.presale.dispatch : { "id": 2, "name": "En proceso", "created_at": null, "updated_at": null }
+  dispatch_id: props.isEdit ? props.presale.dispatch : { "id": 2, "name": "En proceso", "created_at": null, "updated_at": null },
+  added: 0
 });
 const isLoading = ref(false)
 const search = ref('');
@@ -154,7 +156,7 @@ const deleteArticle = (article) => {
 const getTotalPending = computed(() => (getTotal(form.details) - form.paid).toFixed(2));
 const savePresale = () => {
   const EP = props.isEdit ? 'presale.change' : 'presale.save';
-  if(form.client.id && form.details.length > 0) {
+  if(form.client.id) {
     isLoading.value = true;
     form.transform(data => {
       if(props.isEdit) {
@@ -164,6 +166,7 @@ const savePresale = () => {
           total_pending: getTotalPending.value,
           dispatch_id: data.dispatch_id.id,
           paid: 0,
+          added: data.added,
           client_id: data.client.id,
           user_presale_id: usePage().props.value.user.id,
           user_dispatch_id: usePage().props.value.user.id,
@@ -175,9 +178,10 @@ const savePresale = () => {
         return {
           presale_id: data.presale_id,
           total_paid: data.paid,
-          total_pending: getTotalPending.value,
+          total_pending: data.added ? data.pending : getTotalPending.value,
           dispatch_id: data.dispatch_id.id,
           paid: 0,
+          added: data.added,
           client_id: data.client.id,
           user_presale_id: usePage().props.value.user.id,
           user_dispatch_id: usePage().props.value.user.id,
@@ -211,6 +215,12 @@ const savePresale = () => {
 const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
 const isActive = computed(() => (props.presale && ![4,5].includes(props.presale.dispatch.id)));
 
+watch(form, value => {
+  if (value.added === 1) {
+    value.dispatch_id = { id: 4, name: "Entregado" }
+  }
+})
+
 </script>
 <template>
   <Loading :active.sync="isLoading"></Loading>
@@ -224,7 +234,7 @@ const isActive = computed(() => (props.presale && ![4,5].includes(props.presale.
           Regresar
           </Link>
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-            {{ isEdit ? 'Editar Pedido' : 'Nuevo Pedido' }}
+            {{ isEdit ? 'Editar Preventa' : 'Nueva Preventa' }}
           </h2>
         </div>
         <JetButton v-if="(isActive && isEdit) || !isEdit" @click="savePresale">
@@ -235,6 +245,12 @@ const isActive = computed(() => (props.presale && ![4,5].includes(props.presale.
       </h6>
       <!-- Detalles del cliente -->
       <div class="bg-white w-full shadow-xl rounded-lg mb-5 border border-gray-50 p-5 animated fadeIn">
+        <div class="grid md:grid-cols-3 gap-x-5 gap-y-2 items-center mb-2">
+          <div>
+            <JetLabel value="Agregar monto directo" />
+            <Toggle v-model:checked="form.added" label />
+          </div>
+        </div>
         <div class="grid md:grid-cols-3 gap-x-5 gap-y-2 items-center mb-2">
           <div>
             <JetLabel for="name" value="Seleccionar Cliente" />
@@ -293,18 +309,19 @@ const isActive = computed(() => (props.presale && ![4,5].includes(props.presale.
         <div v-if="form.client.id" class="grid md:grid-cols-3 gap-x-5 items-center gap-y-2 ">
           <div>
             <JetLabel for="paid" value="Total Pagado" />
-            <InputPrice id="paid" v-model:value="form.paid" class="mt-1 block w-full" :disabled="!isActive && isEdit" />
+            <InputPrice id="paid" v-model:value="form.paid" class="mt-1 block w-full" :disabled="!!form.added || (!isActive && isEdit)" />
           </div>
           <div>
             <JetLabel for="pending" value="Total Pendiente" />
-            <JetInput id="pending" :value="`$ ${getTotalPending}`" type="text" class="mt-1 block w-full" onlyRead />
+            <InputPrice  v-if="!!form.added" id="pending" v-model:value="form.pending" class="mt-1 block w-full" />
+            <JetInput v-else id="pending" :value="`$ ${getTotalPending}`" type="text" class="mt-1 block w-full" onlyRead />
           </div>
           <div>
             <JetLabel value="Estado" />
             <v-select 
               v-model="form.dispatch_id" :options="dispatches.length ? dispatches : []"
               :reduce="(option) => option"
-              :disabled="!isActive && isEdit"
+              :disabled="!!form.added || (!isActive && isEdit)"
               label="name"
               placeholder="Seleccionar estado"
               class="appearance-none capitalize mt-1"
@@ -321,118 +338,113 @@ const isActive = computed(() => (props.presale && ![4,5].includes(props.presale.
           </div>
         </div>
       </div>
-      <h6 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-2 animated fadeIn">Detalle del pedido</h6>
-      <!-- Detalle de articulos -->
-      <div class="bg-white w-full shadow-xl rounded-lg md:min-h-table border border-gray-50 mb-5 animated fadeIn">
-        <div class="flex justify-between flex-wrap p-5 items-center">
-          <div class="md:w-1/2 w-full md:order-first order-last">
-            <JetLabel value="Seleccionar producto" class="mb-2" />
-            <v-select 
-              v-model="search"
-              :options="articles && articles.data.length ? articles.data : []"
-              :reduce="(option) => option.id"
-              :disabled="!isActive && isEdit"
-              label="name"
-              placeholder="Buscar..."
-              class="appearance-none capitalize"
-              @search="searchArticle" @option:selected="handleSelected"
-            >
-              <template #no-options="{ search, searching, loading }">
-                Busqueda no encontrada
-              </template>
-              <template #open-indicator="{ attributes }">
-                <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
-                </svg>
-              </template>
-              <template #option="{ name }">
-                <span class="capitalize">{{ name }}</span>
-              </template>
-            </v-select>
+      <template v-if="!form.added">
+        <h6 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight mb-2 animated fadeIn">Detalle de la preventa
+        </h6>
+        <!-- Detalle de articulos -->
+        <div class="bg-white w-full shadow-xl rounded-lg md:min-h-table border border-gray-50 mb-5 animated fadeIn">
+          <div class="flex justify-between flex-wrap p-5 items-center">
+            <div class="md:w-1/2 w-full md:order-first order-last">
+              <JetLabel value="Seleccionar producto" class="mb-2" />
+              <v-select v-model="search" :options="articles && articles.data.length ? articles.data : []"
+                :reduce="(option) => option.id" :disabled="!isActive && isEdit" label="name" placeholder="Buscar..."
+                class="appearance-none capitalize" @search="searchArticle" @option:selected="handleSelected">
+                <template #no-options="{ search, searching, loading }">
+                  Busqueda no encontrada
+                </template>
+                <template #open-indicator="{ attributes }">
+                  <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.95 6.3L0 1.3L1.283 0L4.95 3.706L8.617 0L9.9 1.3L4.95 6.3Z" fill="#A4AFB7" />
+                  </svg>
+                </template>
+                <template #option="{ name }">
+                  <span class="capitalize">{{ name }}</span>
+                </template>
+              </v-select>
+            </div>
+            <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0">
+              <h6 class="text-dark-blue-500 font-semibold text-base md:text-xl">
+                Total ${{ getTotal(form.details) }}
+              </h6>
+            </div>
           </div>
-          <div class="md:w-auto w-full md:order-last order-first mb-2 md:mb-0">
-            <h6 class="text-dark-blue-500 font-semibold text-base md:text-xl">
-              Total ${{ getTotal(form.details) }}
-            </h6>
+          <div :class="{ 'pb-10': Object.keys(selectedItem).length === 0}" class="sm:overflow-x-hidden overflow-x-auto ">
+            <Table :header="headerPreview">
+              <tbody v-if="Object.keys(selectedItem).length" class="px-5">
+                <tr>
+                  <td class="text-center p-2 md:text-base text-xs">
+                    {{ selectedItem.name }}
+                  </td>
+                  <td class="text-center p-2 md:text-base text-xs">
+                    $ {{ selectedItem.price ? selectedItem.price.sale_price : 0 }}
+                  </td>
+                  <td class="text-center p-2 md:text-base text-xs">
+                    {{ selectedItem.measure_unit.name }}
+                  </td>
+                  <td class="text-center p-2 md:text-base text-xs">
+                    <div class="md:w-full w-28">
+                      <InputCounter v-model:value="selectedItem.total_articles" hasLimit :limit="selectedItem.stock" />
+                    </div>
+                  </td>
+                  <td class="text-center p-2 md:text-base text-xs">
+                    {{ selectedItem.stock }}
+                  </td>
+                  <td class="text-center p-2 md:text-base text-xs">
+                    <JetButton @click="addToCart(selectedItem)">
+                      Agregar
+                    </JetButton>
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
+          <div v-if="error" class="w-full flex justify-center px-5 py-2">
+            <span class="text-red-500 text-xs font-bold">
+              {{ error }}
+            </span>
           </div>
         </div>
-        <div :class="{ 'pb-10': Object.keys(selectedItem).length === 0}"
-          class="sm:overflow-x-hidden overflow-x-auto ">
-          <Table :header="headerPreview">
-            <tbody v-if="Object.keys(selectedItem).length" class="px-5">
-              <tr>
+        <div
+          class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg border border-gray-5 min-h-table animated fadeIn">
+          <Table :header="header">
+            <tbody>
+              <tr v-for="article in form.details">
                 <td class="text-center p-2 md:text-base text-xs">
-                  {{ selectedItem.name }}
+                  {{ article.name }}
                 </td>
                 <td class="text-center p-2 md:text-base text-xs">
-                  $ {{ selectedItem.price ? selectedItem.price.sale_price : 0 }}
+                  $ {{ getTotalPriceArticle(article) }}
                 </td>
                 <td class="text-center p-2 md:text-base text-xs">
-                  {{ selectedItem.measure_unit.name }}
+                  {{ article.measure_unit.name }}
                 </td>
                 <td class="text-center p-2 md:text-base text-xs">
-                  <div class="md:w-full w-28">
-                    <InputCounter v-model:value="selectedItem.total_articles" hasLimit :limit="selectedItem.stock" />
+                  <template v-if="editUnit && article.id === selectedArticleID">
+                    <div class="md:w-full w-28">
+                      <InputCounter v-model:value="article.total_articles" hasLimit :limit="article.stock" />
+                    </div>
+                  </template>
+                  <template v-else>
+                    {{ article.total_articles }}
+                  </template>
+                </td>
+                <td class="text-center p-2 md:text-base text-xs">
+                  <div class="flex justify-center">
+                    <div v-if="presale && [4, 5].includes(presale.dispatch.id)">-</div>
+                    <div v-else class="flex flex-row space-x-4">
+                      <a @click="editArticle(article)" class="text-blue-500 font-medium cursor-pointer">
+                        {{ editUnit && article.id === selectedArticleID ? 'Guardar' : 'Editar'}}
+                      </a>
+                      <a @click="deleteArticle(article)" class="text-red-500 font-medium cursor-pointer">Eliminar</a>
+                    </div>
                   </div>
-                </td>
-                <td class="text-center p-2 md:text-base text-xs">
-                  {{ selectedItem.stock }}
-                </td>
-                <td class="text-center p-2 md:text-base text-xs">
-                  <JetButton @click="addToCart(selectedItem)">
-                    Agregar
-                  </JetButton>
                 </td>
               </tr>
             </tbody>
           </Table>
         </div>
-        <div v-if="error" class="w-full flex justify-center px-5 py-2">
-          <span class="text-red-500 text-xs font-bold">
-            {{ error }}
-          </span>
-        </div>
-      </div>
-      <div
-        class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg border border-gray-5 min-h-table animated fadeIn">
-        <Table :header="header">
-          <tbody>
-            <tr v-for="article in form.details">
-              <td class="text-center p-2 md:text-base text-xs">
-                {{ article.name }}
-              </td>
-              <td class="text-center p-2 md:text-base text-xs">
-                $ {{ getTotalPriceArticle(article) }}
-              </td>
-              <td class="text-center p-2 md:text-base text-xs">
-                {{ article.measure_unit.name }}
-              </td>
-              <td class="text-center p-2 md:text-base text-xs">
-                <template v-if="editUnit && article.id === selectedArticleID">
-                  <div class="md:w-full w-28">
-                    <InputCounter v-model:value="article.total_articles" hasLimit :limit="article.stock" />
-                  </div>
-                </template>
-                <template v-else>
-                  {{ article.total_articles }}
-                </template>
-              </td>
-              <td class="text-center p-2 md:text-base text-xs">
-                <div class="flex justify-center">
-                  <div v-if="presale && [4, 5].includes(presale.dispatch.id)">-</div>
-                  <div v-else class="flex flex-row space-x-4">
-                    <a @click="editArticle(article)" class="text-blue-500 font-medium cursor-pointer">
-                      {{ editUnit && article.id === selectedArticleID ? 'Guardar' : 'Editar'}}
-                    </a>
-                    <a @click="deleteArticle(article)" class="text-red-500 font-medium cursor-pointer">Eliminar</a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </Table>
-      </div>
+      </template>
     </div>
   </div>
 </template>

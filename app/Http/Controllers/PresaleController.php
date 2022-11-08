@@ -77,20 +77,22 @@ class PresaleController extends Controller
         try {
             $presale = new Presale($request->all());
             $presale->save();
-
-            // presaledetail
-            for ($i=0; $i < count($request->presale_detail); $i++) {
-                $presaleDetail = PresaleDetail::insert([
-                    'total_articles' => $request->presale_detail[$i]['total_articles'],
-                    'dischargued' => $request->presale_detail[$i]['dischargued'],
-                    'total' => $request->presale_detail[$i]['total'],
-                    'article_id' => $request->presale_detail[$i]['id'],
-                    'presale_id' => $presale->id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+            if($request->get('added') == 0) {
+                // presaledetail
+                for ($i=0; $i < count($request->presale_detail); $i++) {
+                    $presaleDetail = PresaleDetail::insert([
+                        'total_articles' => $request->presale_detail[$i]['total_articles'],
+                        'dischargued' => $request->presale_detail[$i]['dischargued'],
+                        'total' => $request->presale_detail[$i]['total'],
+                        'article_id' => $request->presale_detail[$i]['id'],
+                        'presale_id' => $presale->id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+                $this->takeOutStock($presale);
             }
-            $this->takeOutStock($presale);
+            
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
@@ -115,31 +117,34 @@ class PresaleController extends Controller
             $presale = Presale::find($request->presale_id);
             $presale->update($request->all());
 
+            if($request->get('added') == 0) {
             // Edita agregando nuevos productos
-            for ($i=0; $i < count($request->new_presale_detail); $i++) {
-                $presaleDetail = PresaleDetail::insert([
-                    'total_articles' => $request->new_presale_detail[$i]['total_articles'],
-                    'dischargued' => $request->new_presale_detail[$i]['dischargued'],
-                    'total' => $request->new_presale_detail[$i]['total'],
-                    'article_id' => $request->new_presale_detail[$i]['id'],
-                    'presale_id' => $presale->id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
+                for ($i=0; $i < count($request->new_presale_detail); $i++) {
+                    $presaleDetail = PresaleDetail::insert([
+                        'total_articles' => $request->new_presale_detail[$i]['total_articles'],
+                        'dischargued' => $request->new_presale_detail[$i]['dischargued'],
+                        'total' => $request->new_presale_detail[$i]['total'],
+                        'article_id' => $request->new_presale_detail[$i]['id'],
+                        'presale_id' => $presale->id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
 
-            // Edita productos ya agregados
-            for ($i=0; $i < count($request->old_presale_detail); $i++) {
-                PresaleDetail::find($request->old_presale_detail[$i]['id_detail'])->update([
-                    'total_articles' => $request->old_presale_detail[$i]['total_articles'],
-                    'dischargued' => $request->old_presale_detail[$i]['dischargued'],
-                    'total' => $request->old_presale_detail[$i]['total'],
-                    'article_id' => $request->old_presale_detail[$i]['id'],
-                    'presale_id' => $request->old_presale_detail[$i]['id_presale'],
-                ]);
+                // Edita productos ya agregados
+                for ($i=0; $i < count($request->old_presale_detail); $i++) {
+                    PresaleDetail::find($request->old_presale_detail[$i]['id_detail'])->update([
+                        'total_articles' => $request->old_presale_detail[$i]['total_articles'],
+                        'dischargued' => $request->old_presale_detail[$i]['dischargued'],
+                        'total' => $request->old_presale_detail[$i]['total'],
+                        'article_id' => $request->old_presale_detail[$i]['id'],
+                        'presale_id' => $request->old_presale_detail[$i]['id_presale'],
+                    ]);
+                }
+                $this->takeOutStock($presale);
             }
-            $this->takeOutStock($presale);
         } catch (\Throwable $th) {
+            die($th);
             return redirect()->back()->withErrors(['error' => $th]);
         }
 

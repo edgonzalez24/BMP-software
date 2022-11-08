@@ -10,7 +10,7 @@
 				</div>
 				<div class="w-full md:w-3/5 px-6 md:py-16 pb-5 pt-7 flex items-center h-full">
 					<div>
-						<h2 class="font-poppins font-bold text-dark-blue-500 md:text-3xl text-lg md:mb-10 mb-5 md:text-left text-center">
+						<h2 class="font-poppins font-bold text-dark-blue-500 md:text-3xl text-lg pb-5 md:text-left text-center">
 							Sistema de Gestión de Procesos de Negocios
 						</h2>
 						<slot />

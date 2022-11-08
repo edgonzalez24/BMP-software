@@ -18,6 +18,7 @@ class Presale extends Model
         'user_presale_id',
         'user_dispatch_id',
         'method_paid_id',
+        'added'
     ];
 
     /**

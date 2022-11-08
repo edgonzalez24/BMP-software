@@ -35,7 +35,7 @@
       showInMobile: true
     },
     {
-      name: 'Total del Pedido',
+      name: 'Total de la preventa',
       showInMobile: true
     }
   ]);
