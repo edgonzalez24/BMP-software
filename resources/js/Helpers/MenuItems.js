@@ -109,6 +109,12 @@ export const menuItems = [
         icon: 'fa-circle-info',
         rol: ''
       },
+      {
+        name: 'Videos Tutoriales',
+        slug: '',
+        icon: 'fa-video',
+        rol: ''
+      },
     ]
   }
 ];
