@@ -265,4 +265,46 @@ class PresaleController extends Controller
         }
 
     }
+
+    // Ventas expres
+    public function expressPresale()
+    {
+      if ( ! Auth::user()->can('presale_create')){
+        return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+      }
+      try {
+          $presale = Presale::insert(
+            [
+              'total_paid' => $request->total_paid,
+              'total_pending' => 0,
+              'dispatch_id' => 1,
+              'paid' => 1,
+              'client_id' => 1,
+              'user_presale_id' => 1,
+              'user_dispatch_id' => 1,
+              'method_paid_id' => 2,
+              'created_at' => now(),
+              'updated_at' => now(),
+            ],
+          );
+
+          // presaledetail
+          for ($i=0; $i < count($request->presale_detail); $i++) {
+              $presaleDetail = PresaleDetail::insert([
+                  'total_articles' => $request->presale_detail[$i]['total_articles'],
+                  'dischargued' => $request->presale_detail[$i]['dischargued'],
+                  'total' => $request->presale_detail[$i]['total'],
+                  'article_id' => $request->presale_detail[$i]['id'],
+                  'presale_id' => $presale->id,
+                  'created_at' => now(),
+                  'updated_at' => now(),
+              ]);
+          }
+          $this->takeOutStock($presale);
+      } catch (\Throwable $th) {
+        return redirect()->back()->withErrors(['error' => $th]);
+      }
+
+      return redirect()->back()->with('success', 'Registro creado correctamente!.');
+    }
 }
