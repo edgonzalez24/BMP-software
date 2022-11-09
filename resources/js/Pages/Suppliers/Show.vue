@@ -225,7 +225,7 @@ const submitDelete = () => {
           </JetButton>
         </div>
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-          <Table :header="header">
+          <Table :header="header" :items="suppliers.data.length">
             <tbody class="px-5">
               <tr v-for="item in suppliers.data" class="mt-2">
                 <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>

@@ -50,8 +50,8 @@ Route::middleware([
     Route::get('/dashboard/presales/create', [PresaleController::class, 'getDetail'])->name('presales.create');
     Route::get('/dashboard/presales/{id}/edit', [PresaleController::class, 'show'])->name('presales.details');
     Route::get('/dashboard/account-history', [AccountHistory::class, 'index'])->name('account-history');
-
-    Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
+    Route::get('/dashboard/express', [PresaleController::class, 'indexExpressPresale'])->name('express');
+    Route::get('/dashboard/express/create', [PresaleController::class, 'searchProducts'])->name('express.create');
     
     
     // Routes only to request data(not views)
@@ -98,8 +98,6 @@ Route::middleware([
     Route::post('/presale/change', [PresaleController::class, 'update'])->name('presale.change');
     Route::get('/presale/delete/{presale}', [PresaleController::class, 'destroy'])->name('presale.delete');
     Route::get('/presale/delete/{presale}/uniq', [PresaleController::class, 'destroy_uniq'])->name('presale.delete_uniq');
-
-    // Map
-    Route::post('/map', [PositionController::class, 'store'])->name('map.save');
+    Route::post('/presale/express/save', [PresaleController::class, 'expressPresale'])->name('express.save');
 });
 

@@ -37,7 +37,7 @@ class PresaleController extends Controller
         $from = "{$request->get('from')} 00:00:00";
         $to = "{$request->get('to')} 23:59:59";
         $clients = Client::orderBy('id', 'desc')->get();
-        $filter = Presale::orderBy('id', 'desc');
+        $filter = Presale::orderBy('id', 'desc')->where('dispatch_id', '!=' , '4');
         $client_id = $request->get('client_id');
 
         if ( ! Auth::user()->can('presale_index')){
@@ -269,46 +269,93 @@ class PresaleController extends Controller
         }
 
     }
+    public function indexExpressPresale(Request $request) {
+        if ( ! Auth::user()->can('presale_index')){
+            return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+        $from = "{$request->get('from')} 00:00:00";
+        $to = "{$request->get('to')} 23:59:59";
 
+        $filter = Presale::orderBy('id', 'desc');
+        try {
+
+            if ($request->get('from') && $request->get('to')){
+                $filter = Presale::whereBetween('created_at', [$from, $to]);
+            }
+
+            $presales = new PresaleCollection($filter->where('client_id', '1')->paginate(25));
+            return Inertia::render('Express/Show',[
+                'presales' => $presales
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+    }
+    
+    public function searchProducts(Request $request) {
+        if ( ! Auth::user()->can('presale_create')){
+            return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+
+        try {
+            $article = null;
+            if( $request->input('search')) {
+                $search = $request->get('search');
+                if(isset($search)) {
+                    $filter = Article::where('active', '1');
+                    $filter->where("name", "like", "%" .$search. "%");
+                }
+                $article = new StockDetailArticleCollection($filter->orderBy('id', 'desc')->get());
+            }
+            return Inertia::render('Express/Create',[
+                'articles' => $article
+            ]);
+        } 
+        catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+    }
     // Ventas expres
-    public function expressPresale()
+    public function expressPresale(Request $request)
     {
-      if ( ! Auth::user()->can('presale_create')){
-        return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
-      }
-      try {
-          $presale = Presale::insert(
-            [
-              'total_paid' => $request->total_paid,
-              'total_pending' => 0,
-              'dispatch_id' => 1,
-              'paid' => 1,
-              'client_id' => 1,
-              'user_presale_id' => 1,
-              'user_dispatch_id' => 1,
-              'method_paid_id' => 2,
-              'created_at' => now(),
-              'updated_at' => now(),
-            ],
-          );
+        if ( ! Auth::user()->can('presale_create')){
+            return redirect()->back()->withErrors(['warning' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
+        }
+        try {
 
-          // presaledetail
-          for ($i=0; $i < count($request->presale_detail); $i++) {
-              $presaleDetail = PresaleDetail::insert([
-                  'total_articles' => $request->presale_detail[$i]['total_articles'],
-                  'dischargued' => $request->presale_detail[$i]['dischargued'],
-                  'total' => $request->presale_detail[$i]['total'],
-                  'article_id' => $request->presale_detail[$i]['id'],
-                  'presale_id' => $presale->id,
-                  'created_at' => now(),
-                  'updated_at' => now(),
-              ]);
-          }
-          $this->takeOutStock($presale);
-      } catch (\Throwable $th) {
-        return redirect()->back()->withErrors(['error' => $th]);
-      }
+            $presale = new Presale([
+                'total_paid' => $request->total_paid,
+                'total_pending' => 0,
+                'dispatch_id' => 4,
+                'paid' => 1,
+                'added'=> 0,
+                'client_id' => 1,
+                'user_presale_id' => $request->user_presale_id,
+                'user_dispatch_id' => $request->user_dispatch_id,
+                'method_paid_id' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            $presale->save();
 
-      return redirect()->back()->with('success', 'Registro creado correctamente!.');
+            // presaledetail
+            for ($i=0; $i < count($request->presale_detail); $i++) {
+                $presaleDetail = PresaleDetail::insert([
+                    'total_articles' => $request->presale_detail[$i]['total_articles'],
+                    'dischargued' => $request->presale_detail[$i]['dischargued'],
+                    'total' => $request->presale_detail[$i]['total'],
+                    'article_id' => $request->presale_detail[$i]['id'],
+                    'presale_id' => $presale->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            $this->takeOutStock($presale);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors(['error' => $th]);
+        }
+
+        return redirect()->back()->with('success', 'Registro creado correctamente!.');
     }
 }

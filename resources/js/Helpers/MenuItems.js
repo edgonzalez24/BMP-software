@@ -63,10 +63,10 @@ export const menuItems = [
         rol:'acountHistory_index', 
       },
       {
-        name: 'Venta Express',
-        slug: '',
+        name: 'Ventas Express',
+        slug: 'express',
         icon: 'fa-tag',
-        rol: '',
+        rol: 'presale_index',
       },
     ]
   },
@@ -77,7 +77,7 @@ export const menuItems = [
     rol: '', 
     children: [
       {
-        name: 'Preventa',
+        name: 'Preventas',
         slug: 'presales',
         icon: 'fa-cart-shopping',
         rol: 'presale_index'
