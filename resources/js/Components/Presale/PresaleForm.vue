@@ -193,9 +193,7 @@ const savePresale = () => {
     }).post(route(EP), {
       onSuccess: () => {
         toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        setTimeout(() => {
-          window.location.href = window.route('presales');
-        }, 2000)
+        Inertia.get('/dashboard/presales');
       },
       onError: () => {
         const errors = usePage().props.value.errors;
@@ -417,7 +415,7 @@ watch(form, value => {
         </div>
         <div
           class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg border border-gray-5 min-h-table animated fadeIn">
-          <Table :header="header">
+          <Table :header="header" :items="form.details.length">
             <tbody>
               <tr v-for="article in form.details">
                 <td class="text-center p-2 md:text-base text-xs">

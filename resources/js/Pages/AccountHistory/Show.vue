@@ -7,6 +7,8 @@
   import { Inertia } from '@inertiajs/inertia';
   import JetLabel from '@/Components/Label.vue';
   import _ from 'lodash';
+  import JetModal from '@/Components/Modal.vue';
+  import DetailPresale from '@/Components/Presale/Detail.vue';
 
   const props = defineProps({
     clients: Array,
@@ -88,10 +90,19 @@
         }
       })
     }
-  })
+  });
+  const statusModalDetail = ref(false);
+  const selectedPresale = ref({});
+  const detailPresale = (presale) => {
+    selectedPresale.value = presale;
+    statusModalDetail.value = true;
+  }
 </script>
 <template>
   <AppLayout>
+    <JetModal :show="statusModalDetail" maxWidth="lg" @close="statusModalDetail = false">
+      <DetailPresale :selectedPresale="selectedPresale" @close="statusModalDetail = false" />
+    </JetModal>
     <div class="min-h-screen">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
         <div class="flex justify-between items-center my-5">
@@ -149,12 +160,13 @@
           </div>
         </div>
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-          <Table :header="header">
+          <Table :header="header" :items="presales.data.length">
             <tbody class="px-5">
               <tr
                 v-if="presales.data.length"
                 v-for="item in presales.data"
-                class="mt-2 hover:bg-slate-50 transition duration-300 ease-in-out"
+                class="mt-2 hover:bg-slate-50 transition duration-300 ease-in-out cursor-pointer"
+                @click="detailPresale(item)"
               >
                 <td class="text-center p-2 md:text-base text-xs">
                   Orden #{{ item.id }}
@@ -172,7 +184,7 @@
                   ${{ item.total_paid }}
                 </td>
                 <td class="text-center p-2 md:text-base text-xs">
-                  ${{ getTotal(item.presale_detail) }}
+                  ${{ item.added === 1 ? item.total_pending : getTotal(item.presale_detail) }}
                 </td>
               </tr>
               <tr v-else>

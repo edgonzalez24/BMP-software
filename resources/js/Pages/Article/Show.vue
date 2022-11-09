@@ -358,7 +358,7 @@ watch(formFilter, value => {
           </div>
         </div>
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-          <Table :header="header">
+          <Table :header="header" :items="articles.data.length">
             <tbody class="px-5">
               <tr 
                 v-if="articles.data.length"

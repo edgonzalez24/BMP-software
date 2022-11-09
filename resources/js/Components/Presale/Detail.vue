@@ -7,7 +7,11 @@
   import Loading from 'vue3-loading-overlay';
 
   const props = defineProps({
-    selectedPresale: Object
+    selectedPresale: Object,
+    isExpress: {
+      type: Boolean,
+      default: false
+    }
   });
   const emit = defineEmits(['close'])
   const getTotal = (arr) => {
@@ -87,36 +91,39 @@
     <Loading :active.sync="isLoading"></Loading>
     <div class="flex justify-between items-center">
       <h3 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-left mb-2">
-        {{ `Preventa #${selectedPresale.id}` }}
+        {{ isExpress ? `Venta #${selectedPresale.id}` : `Preventa #${selectedPresale.id}` }}
       </h3>
       <a @click="emit('close')" class="cursor-pointer">
         <font-awesome-icon icon="fa-solid fa-xmark" class="text-2xl text-gray-300" />
       </a>
     </div>
-    <p class="mb-1 font-medium md:text-base text-sm">
-      Cliente:
-      <span class="font-normal">{{ selectedPresale.client.name }}</span>
-    </p>
-    <p v-if="selectedPresale.client.type_client.id === 2" class="mb-1 font-medium md:text-base text-sm">
-      Zona:
-      <span class="font-normal">{{ selectedPresale.client.zone.name }}</span>
-    </p>
-    <p class="mb-1 font-medium md:text-base text-sm">
-      Método de pago:
-      <span class="font-normal">{{ selectedPresale.method_paid.name }}</span>
-    </p>
-    <p class="mb-1 font-medium md:text-base text-sm">
-      Estado:
-      <span class="font-normal">{{ selectedPresale.dispatch.name }}</span>
-    </p>
-    <div class="mb-3 inline-flex items-center">
-      <p class="font-medium md:text-base text-sm mr-2">
-        Pagado:
+    <template v-if="!isExpress">
+      <p class="mb-1 font-medium md:text-base text-sm">
+        Cliente:
+        <span class="font-normal">{{ selectedPresale.client.name }}</span>
       </p>
-      <Toggle v-model:checked="paidStatus" label :activeControl="(selectedPresale.paid === 1 || selectedPresale.dispatch.id === 5)" />
-    </div>
+      <p v-if="selectedPresale.client.type_client.id === 2" class="mb-1 font-medium md:text-base text-sm">
+        Zona:
+        <span class="font-normal">{{ selectedPresale.client.zone.name }}</span>
+      </p>
+      <p class="mb-1 font-medium md:text-base text-sm">
+        Método de pago:
+        <span class="font-normal">{{ selectedPresale.method_paid.name }}</span>
+      </p>
+      <p class="mb-1 font-medium md:text-base text-sm">
+        Estado:
+        <span class="font-normal">{{ selectedPresale.dispatch.name }}</span>
+      </p>
+      <div class="mb-3 inline-flex items-center">
+        <p class="font-medium md:text-base text-sm mr-2">
+          Pagado:
+          <span class="font-normal">{{ selectedPresale.paid === 1 ? 'Si' : 'No'}}</span>
+        </p>
+        <!-- <Toggle v-model:checked="paidStatus" label :activeControl="(selectedPresale.paid === 1 || selectedPresale.dispatch.id === 5)" /> -->
+      </div>
+    </template>
     <div>
-      <div v-for="detail in selectedPresale.presale_detail" class="border-t border-gray-300 min-h-list flex items-center">
+      <div v-for="detail in selectedPresale.presale_detail" class="min-h-list flex items-center" :class="{'border-t border-gray-300': !isExpress}">
         <div class="flex flex-row md:space-x-5 space-x-3 py-3 w-full items-center">
           <div class="md:h-10 h-8 md:w-10 w-8 ">
             <div class="md:h-10 h-8 md:w-10 w-8 bg-gray-400 flex justify-center items-center md:rounded-lg rounded-md">
