@@ -17,7 +17,18 @@ class ClientSeeder extends Seeder
     {
         //
         Client::insert([
-            [                
+          [
+              'name' => 'Express',
+              'telephone' => null,
+              'type_client_id' => 3,
+              'zone_id' => 3,
+              'method_paid_id' => 2,
+              'comment' => 'Cliente en tienda',
+              'active' => true,
+              'created_at' => now(),
+              'updated_at' => now(),
+          ],
+            [
                 'name' => 'Pupusería Nenita',
                 'telephone' => null,
                 'type_client_id' => 2,
@@ -28,7 +39,7 @@ class ClientSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [                
+            [
                 'name' => 'Pupusería Autopista',
                 'telephone' => null,
                 'type_client_id' => 2,
@@ -39,7 +50,7 @@ class ClientSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [           
+            [
                 'name' => 'Pupusería Gloria',
                 'telephone' => null,
                 'type_client_id' => 2,
@@ -50,7 +61,7 @@ class ClientSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [           
+            [
                 'name' => 'Pupusería Atardecer',
                 'telephone' => null,
                 'type_client_id' => 2,
@@ -61,7 +72,7 @@ class ClientSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [           
+            [
                 'name' => 'Pupusería Lo Nuestro',
                 'telephone' => null,
                 'type_client_id' => 2,
