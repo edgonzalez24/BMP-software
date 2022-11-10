@@ -1,12 +1,16 @@
 <script setup>
   defineProps({
     header: Array,
+    items: {
+      type: Number,
+      default: 0
+    }
   })
 </script>
 
 
 <template>
-  <div class="sm:w-auto w-max">
+  <div class="sm:w-auto" :class="items > 0 ? 'w-max' : 'w-full'">
     <table class="sm:table-fixed table-auto overflow-x-scroll w-full">
       <thead class="border-b border-gray-300">
         <tr>

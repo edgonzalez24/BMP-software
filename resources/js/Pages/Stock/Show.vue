@@ -110,7 +110,7 @@ const redirectDetail = ({ article }) => {
           </div>
         </div>
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto  shadow-xl rounded-lg min-h-base animated fadeIn">
-          <Table :header="header">
+          <Table :header="header" :items="stocks.data.length">
             <tbody class="px-5">
               <tr
                 v-if="stocks.data.length"

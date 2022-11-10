@@ -187,7 +187,7 @@ const submitDelete = () => {
           </JetButton>
         </div>
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base animated fadeIn">
-          <Table :header="header">
+          <Table :header="header" :items="measureUnits.data.length">
             <tbody class="px-5">
               <tr v-for="item in measureUnits.data" class="mt-2">
                 <td class="text-center p-2 md:text-base text-xs">{{ item.id }}</td>

@@ -57,8 +57,8 @@
     formDelete.id = id;
     statusModalForm.value = true;
   }
-  const detailPresale = (article) => {
-    selectedPresale.value = article;
+  const detailPresale = (presale) => {
+    selectedPresale.value = presale;
     statusModalDetail.value = true;
   }
   const submitDelete = () => {
@@ -216,7 +216,7 @@
           </div>
         </div>
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-          <Table :header="header">
+          <Table :header="header" :items="presales.data.length">
             <tbody class="px-5">
               <tr
                 v-if="presales.data.length"
@@ -230,7 +230,7 @@
                 <td 
                   class="text-center p-2 md:text-base text-xs"
                 >
-                  Orden #{{ item.id }}
+                  Preventa #{{ item.id }}
               </td>
                 <td 
                   class="text-center p-2 md:text-base text-xs"
