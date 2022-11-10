@@ -53,12 +53,11 @@ Route::middleware([
     Route::get('/dashboard/express', [PresaleController::class, 'indexExpressPresale'])->name('express');
     Route::get('/dashboard/express/create', [PresaleController::class, 'searchProducts'])->name('express.create');
     
-    
     // Routes only to request data(not views)
 
     // Users
     Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
-    
+
     // Roles and permissions
     Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('invite.user');
     Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');
@@ -67,7 +66,7 @@ Route::middleware([
     Route::post('/category/save', [CategoryArticleController::class, 'store'])->name('category.save');
     Route::post('/category/change', [CategoryArticleController::class, 'update'])->name('category.change');
     Route::get('/category/delete/{categoryArticle}', [CategoryArticleController::class, 'destroy'])->name('category.delete');
-    
+
     // Measures
     Route::post('/measureUnits/save', [MeasureUnitsController::class, 'store'])->name('measureUnits.save');
     Route::post('/measureUnits/change', [MeasureUnitsController::class, 'update'])->name('measureUnits.change');
@@ -77,7 +76,7 @@ Route::middleware([
     Route::post('/supplier/save', [SupplierController::class, 'store'])->name('supplier.save');
     Route::post('/supplier/change', [SupplierController::class, 'update'])->name('supplier.change');
     Route::get('/supplier/delete/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.delete');
-    
+
     // Articles
     Route::post('/article/save', [ArticleController::class, 'store'])->name('article.save');
     Route::post('/article/change', [ArticleController::class, 'update'])->name('article.change');
@@ -98,6 +97,9 @@ Route::middleware([
     Route::post('/presale/change', [PresaleController::class, 'update'])->name('presale.change');
     Route::get('/presale/delete/{presale}', [PresaleController::class, 'destroy'])->name('presale.delete');
     Route::get('/presale/delete/{presale}/uniq', [PresaleController::class, 'destroy_uniq'])->name('presale.delete_uniq');
+
+    // History payment
+    Route::get('/dashboard/history-payment', [AccountHistory::class, 'payment'])->name('history-payment');
     Route::post('/presale/express/save', [PresaleController::class, 'expressPresale'])->name('express.save');
 });
 
