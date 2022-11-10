@@ -220,13 +220,14 @@ const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
 const isCanceled = computed(() => props.presale && [5].includes(props.presale.dispatch.id));
 const isPaid = computed(() => props.presale && props.presale.paid === 1)
 
-watch(form, value => {
-  if (value.added === 1) {
-    value.dispatch_id = { "id": 4, "name": "Entregado", "created_at": null, "updated_at": null }
+const defaultDispatch = { "id": 4, "name": "Entregado", "created_at": null, "updated_at": null };
+watch(() =>_.cloneDeep(form), (newVal, oldVal) => {
+  if (newVal.added === 1) {
+    form.dispatch_id = defaultDispatch;
   }
 
-  if ( value.paid === 1) {
-    value.total_paid = 0
+  if ( newVal.paid === 1) {
+    form.total_paid = 0;
   }
 })
 

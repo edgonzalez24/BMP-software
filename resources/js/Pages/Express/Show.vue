@@ -1,7 +1,7 @@
 <script setup>
   import AppLayout from '@/Layouts/AppLayout.vue';
   import Table from '@/Components/Table.vue';
-  import { reactive, ref, onMounted } from 'vue';
+  import { reactive, ref, onMounted, computed } from 'vue';
   import { Link } from '@inertiajs/inertia-vue3';
   import { hasPermission } from '@/Helpers/Functions';
   import moment from 'moment';
@@ -9,6 +9,7 @@
   import DetailPresale from '@/Components/Presale/Detail.vue';
   import Pagination from '@/Components/Shared/Pagination.vue';
   import { Inertia } from '@inertiajs/inertia';
+  import JetLabel from '@/Components/Label.vue';
 
   const props = defineProps({
     presales: Object
@@ -65,7 +66,7 @@
       preserveState: true
     }))
   }
-
+  const totalPages = computed(() => Math.ceil(props.presales.total / props.presales.per_page));
   onMounted(() => {
     const startDate = new URLSearchParams(window.location.search).has('from') && moment(new URLSearchParams(window.location.search).get('from'));
 
