@@ -147,7 +147,7 @@ input:checked~.toggle__dot {
 	font-size: 1rem !important;
 }
 
-.sidebar {
+.sidebar, .scroll-container {
 	&::-webkit-scrollbar {
 			width: 7px;
 		}

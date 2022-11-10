@@ -5,10 +5,15 @@
   import { ref, watch, getCurrentInstance } from 'vue';
   import { POSITION } from 'vue-toastification';
   import Loading from 'vue3-loading-overlay';
+  import InputPrice from '@/Components/Shared/inputPrice.vue';
 
   const props = defineProps({
     selectedPresale: Object,
     isExpress: {
+      type: Boolean,
+      default: false
+    },
+    isPending: {
       type: Boolean,
       default: false
     }
@@ -24,6 +29,8 @@
   const isLoading = ref(false);
 
   const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
+
+  const debit = ref(0)
 
 
   watch(paidStatus, value =>  {
@@ -87,10 +94,10 @@
   })
 </script>
 <template>
-  <div class="py-8 px-5">
+  <div class="py-4 px-5">
     <Loading :active.sync="isLoading"></Loading>
-    <div class="flex justify-between items-center">
-      <h3 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-left mb-2">
+    <div class="flex justify-between items-center mb-2">
+      <h3 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-left">
         {{ isExpress ? `Venta #${selectedPresale.id}` : `Preventa #${selectedPresale.id}` }}
       </h3>
       <a @click="emit('close')" class="cursor-pointer">
@@ -114,16 +121,20 @@
         Estado:
         <span class="font-normal">{{ selectedPresale.dispatch.name }}</span>
       </p>
-      <div class="mb-3 inline-flex items-center">
-        <p class="font-medium md:text-base text-sm mr-2">
-          Pagado:
-          <span class="font-normal">{{ selectedPresale.paid === 1 ? 'Si' : 'No'}}</span>
-        </p>
-        <!-- <Toggle v-model:checked="paidStatus" label :activeControl="(selectedPresale.paid === 1 || selectedPresale.dispatch.id === 5)" /> -->
-      </div>
+      <p v-if="!isExpress && !isPending" class="font-medium md:text-base text-sm mr-2">
+        Pagado:
+        <span class="font-normal">{{ selectedPresale.paid === 1 ? 'Si' : 'No'}}</span>
+      </p>
+      <template v-if="isPending">
+        <div class="pb-5">
+          <p class="font-medium md:text-base text-sm">Abono a Cuenta</p>
+          <InputPrice v-model:value="debit" class="mt-1 block w-full"/>
+        </div>
+      </template>
     </template>
-    <div>
-      <div v-for="detail in selectedPresale.presale_detail" class="min-h-list flex items-center" :class="{'border-t border-gray-300': !isExpress}">
+    <div class="overflow-y-auto scroll-container" :class="selectedPresale.presale_detail.length > 5 ? 'h-96' : 'h-auto'">
+      <div v-for="detail in selectedPresale.presale_detail" class="min-h-list flex items-center"
+        :class="{'border-t border-gray-300': !isExpress}">
         <div class="flex flex-row md:space-x-5 space-x-3 py-3 w-full items-center">
           <div class="md:h-10 h-8 md:w-10 w-8 ">
             <div class="md:h-10 h-8 md:w-10 w-8 bg-gray-400 flex justify-center items-center md:rounded-lg rounded-md">
@@ -132,7 +143,6 @@
           </div>
           <div>
             <h6 class="text-dark-blue-500 font-semibold md:text-base text-sm">{{ detail.article.name }}</h6>
-            <p class="md:text-sm text-xs py-2" v-html="detail.article.comment"></p>
             <div class="flex flex-row space-x-5 items-center">
               <p class="md:text-sm text-xs">Cantidad: {{ detail.total_articles }}</p>
               <span class="h-5 w-0.5 bg-gray-300"></span>
@@ -143,6 +153,8 @@
           </div>
         </div>
       </div>
+    </div>
+    <div>
       <div class="border-t border-gray-300 flex justify-end">
         <div class="pt-3 md:w-3/6 w-full">
           <div class="flex justify-between mb-1 md:text-base text-sm">

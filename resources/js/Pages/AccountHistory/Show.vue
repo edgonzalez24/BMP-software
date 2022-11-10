@@ -101,7 +101,11 @@
 <template>
   <AppLayout>
     <JetModal :show="statusModalDetail" maxWidth="lg" @close="statusModalDetail = false">
-      <DetailPresale :selectedPresale="selectedPresale" @close="statusModalDetail = false" />
+      <DetailPresale 
+        isPending
+        :selectedPresale="selectedPresale"
+        @close="statusModalDetail = false"
+      />
     </JetModal>
     <div class="min-h-screen">
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
