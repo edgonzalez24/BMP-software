@@ -1,11 +1,11 @@
 <script setup>
-  import Toggle from '@/Components/Shared/Toggle.vue';
   import _ from 'lodash';
   import { useForm, usePage } from '@inertiajs/inertia-vue3';
-  import { ref, watch, getCurrentInstance } from 'vue';
+  import { ref, getCurrentInstance } from 'vue';
   import { POSITION } from 'vue-toastification';
   import Loading from 'vue3-loading-overlay';
   import InputPrice from '@/Components/Shared/inputPrice.vue';
+  import JetButton from '@/Components/Button.vue';
 
   const props = defineProps({
     selectedPresale: Object,
@@ -18,62 +18,25 @@
       default: false
     }
   });
-  const emit = defineEmits(['close'])
+  const emit = defineEmits(['close', 'getHistory'])
   const getTotal = (arr) => {
     return _.sumBy(arr, item => Number(item.total)).toFixed(2);
   }
 
-  const form = useForm(props.selectedPresale)
-  const paidStatus = ref(0);
-  paidStatus.value = props.selectedPresale.paid;
+  const form = useForm({
+    amount: 0,
+    presale_id: props.selectedPresale.id
+  })
   const isLoading = ref(false);
 
   const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
 
-  const debit = ref(0)
-
-
-  watch(paidStatus, value =>  {
-    if (value && form.dispatch.id !== 5) {
+  const updatePresale = () => {
+    if (form.amount > props.selectedPresale.total_pending ) {
+      toast.error('El abono no puede ser mayor al total pendiente', { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+    } else {
       isLoading.value = true;
-      form.transform(data => {
-        if (data.added === 1) {
-          return {
-            presale_id: data.id,
-            total_paid: data.total_pending,
-            total_pending: 0,
-            dispatch_id: value ? 4 : data.dispatch.id,
-            paid: value,
-            added: data.added,
-            client_id: data.client.id,
-            user_presale_id: usePage().props.value.user.id,
-            user_dispatch_id: usePage().props.value.user.id,
-            method_paid_id: data.method_paid.id,
-          }
-        } else {
-          return {
-            presale_id: data.id,
-            total_paid: getTotal(data.presale_detail),
-            total_pending: 0,
-            dispatch_id: value ? 4 : data.dispatch.id,
-            paid: value,
-            added: data.added,
-            client_id: data.client.id,
-            user_presale_id: usePage().props.value.user.id,
-            user_dispatch_id: usePage().props.value.user.id,
-            method_paid_id: data.method_paid.id,
-            old_presale_detail: data.presale_detail.map(item =>  {
-              return {
-                ...item,
-                id: item.article.id,
-                id_detail: item.id,
-                id_presale: data.id
-              }
-            }),
-            new_presale_detail: []
-          }
-        }
-      }).post(route('presale.change'), {
+      form.post(route('debit.save'), {
         onSuccess: () => {
           toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
           emit('close')
@@ -91,7 +54,7 @@
         }
       })
     }
-  })
+  }
 </script>
 <template>
   <div class="py-4 px-5">
@@ -126,9 +89,9 @@
         <span class="font-normal">{{ selectedPresale.paid === 1 ? 'Si' : 'No'}}</span>
       </p>
       <template v-if="isPending">
-        <div class="pb-5">
+        <div class="mb-3">
           <p class="font-medium md:text-base text-sm">Abono a Cuenta</p>
-          <InputPrice v-model:value="debit" class="mt-1 block w-full"/>
+          <InputPrice v-model:value="form.amount" class="mt-1 block w-full"/>
         </div>
       </template>
     </template>
@@ -141,14 +104,12 @@
               <font-awesome-icon icon="fa-solid fa-box-open" class="md:text-base text-sm text-white" />
             </div>
           </div>
-          <div>
+          <div class="w-full">
             <h6 class="text-dark-blue-500 font-semibold md:text-base text-sm">{{ detail.article.name }}</h6>
-            <div class="flex flex-row space-x-5 items-center">
-              <p class="md:text-sm text-xs">Cantidad: {{ detail.total_articles }}</p>
-              <span class="h-5 w-0.5 bg-gray-300"></span>
-              <p class="md:text-sm text-xs">Precio: ${{ detail.total }}</p>
-              <span class="h-5 w-0.5 bg-gray-300"></span>
-              <p class="md:text-sm text-xs">Unidad: {{ detail.article.measure_unit.name }}</p>
+            <div class="flex items-center w-full">
+              <p class="md:text-sm text-xs w-1/3">Cantidad: {{ detail.total_articles }}</p>
+              <p class="md:text-sm text-xs w-1/3">Precio: ${{ Number(detail.total).toFixed(2) }}</p>
+              <p class="md:text-sm text-xs w-1/3">Medida: {{ detail.article.measure_unit.name }}</p>
             </div>
           </div>
         </div>
@@ -159,18 +120,26 @@
         <div class="pt-3 md:w-3/6 w-full">
           <div class="flex justify-between mb-1 md:text-base text-sm">
             <p class="font-medium">Total Pagado:</p>
-            <span>${{ selectedPresale.total_paid.toFixed(2)}}</span>
+            <span>${{ (Number(getTotal(selectedPresale.presale_detail)) - Number(selectedPresale.total_pending)).toFixed(2) }}</span>
           </div>
           <div class="flex justify-between mb-1 md:text-base text-sm">
             <p class="font-medium">Total Pendiente:</p>
-            <span>${{ selectedPresale.total_pending.toFixed(2)}}</span>
+            <span>${{ Number(selectedPresale.total_pending).toFixed(2) }}</span>
           </div>
           <div class="flex justify-between mb-1 md:text-base text-sm">
             <p class="font-medium">Total de la venta:</p>
-            <span>${{ getTotal(selectedPresale.presale_detail) }}</span>
+            <span>${{ Number(getTotal(selectedPresale.presale_detail)).toFixed(2) }}</span>
           </div>
         </div>
       </div>
+    </div>
+    <div class="flex justify-between mt-5">
+      <div class="mb-1 cursor-pointer inline-flex items-center text-base text-blue-600 font-bold" @click="emit('getHistory', selectedPresale.id)">
+        Ver historial de abono
+      </div>
+      <JetButton  v-if="isPending" type="button" @click="updatePresale">
+        Agregar
+      </JetButton>
     </div>
   </div>
 </template>
