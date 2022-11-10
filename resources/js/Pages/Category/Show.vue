@@ -116,7 +116,7 @@ const submitDelete = () => {
     <JetModal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal" >
       <form class="py-8 px-5" @submit.prevent="submitCreateOrEdit">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          {{ isEdit ? 'Editar categoria' : 'Nueva categoria' }}
+          {{ isEdit ? 'Editar categoría' : 'Nueva categoría' }}
         </h2>
         <div class="mb-5">
           <JetLabel for="name" value="Nombre" />
@@ -181,7 +181,7 @@ const submitDelete = () => {
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
         <div class="flex justify-between items-center my-5">
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-            Categorias
+            Categorías
           </h2>
           <JetButton
             @click="isEdit = false; formCreateOrEdit.reset(); toggleFormModal()"

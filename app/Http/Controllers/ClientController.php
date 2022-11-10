@@ -44,7 +44,7 @@ class ClientController extends Controller
         }
 
 
-        $clients =  new ClientCollection($filter->paginate(25));
+        $clients =  new ClientCollection($filter->where('id', '<>', '1')->paginate(25));
         $typeClient = TypeClient::all();
         $zones = Zone::all();
         $payment_methods = MethodPaid::all();

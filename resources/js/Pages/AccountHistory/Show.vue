@@ -11,6 +11,7 @@
   import DetailPresale from '@/Components/Presale/Detail.vue';
   import { POSITION } from 'vue-toastification';
   import Loading from 'vue3-loading-overlay';
+  import { appendParams } from "@/Helpers/Functions";
 
   const props = defineProps({
     clients: Array,
@@ -92,10 +93,8 @@
   }
 
   const getHistory = (id) => {
-    isLoading.value = true
-    Inertia.get(route('pending-accounts', {
-      history: id
-    }, {
+    isLoading.value = true;
+    Inertia.get(route('pending-accounts', { ...appendParams(window.location.search, 'history'), history: id }, {
       preserveState: true,
       preserveScroll: true,
     }),{
@@ -234,7 +233,7 @@ onMounted(() => {
               <JetLabel value="Clientes" />
               <v-select
                 v-model="client.id"
-                :options="clients.length ? [{ id: null, name: 'Todos' }, ...clients] : []"
+                :options="clients.length ? [{ id: null, name: 'Todos' }, ...clients.filter(item => item.id !== 1)] : []"
                 :reduce="(option) => option.id"
                 label="name" 
                 placeholder="Seleccionar cliente"

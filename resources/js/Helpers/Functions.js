@@ -20,3 +20,10 @@ export const hasPermission = (value) => {
   const roles = [..._.map(arrRoles.value, 'name'), ''];
   return roles && roles.includes(value)
 }
+
+export const appendParams = (url, props) => {
+  const arrUrl = url.split(/[,.&=?\s]/).filter(e => e);
+  const group = _.chunk(arrUrl, 2);
+  const objParams = Object.fromEntries(group);
+  return _.omit(objParams, props);
+}

@@ -193,7 +193,12 @@ const savePresale = () => {
     }).post(route(EP), {
       onSuccess: () => {
         toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        Inertia.get('/dashboard/presales');
+        if(form.paid === 0 && form.dispatch_id.id !== 4) {
+          Inertia.get('/dashboard/presales');
+        } else if (form.paid === 0 && form.dispatch_id.id === 4) {
+          Inertia.get('/dashboard/pending-accounts');
+        }
+        
       },
       onError: () => {
         const errors = usePage().props.value.errors;
@@ -264,7 +269,7 @@ watch(form, value => {
             <JetLabel for="name" value="Seleccionar Cliente" />
             <v-select 
               v-model="form.client" 
-              :options="clients.data.length ? clients.data : []"
+              :options="clients.data.length ? clients.data.filter(item => item.id !== 1) : []"
               :reduce="(option) => option"
               :disabled="isEdit"
               label="name" 
@@ -327,7 +332,7 @@ watch(form, value => {
           <div>
             <JetLabel value="Estado" />
             <v-select 
-              v-model="form.dispatch_id" :options="dispatches.length ? dispatches : []"
+              v-model="form.dispatch_id" :options="dispatches.length ? dispatches.filter(item => item.id !== 5) : []"
               :reduce="(option) => option"
               :disabled="isPaid || isCanceled || form.added === 1"
               label="name"
