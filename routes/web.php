@@ -49,16 +49,15 @@ Route::middleware([
     Route::get('/dashboard/clients/filter', [ClientController::class, 'filter'])->name('client.filter');
     Route::get('/dashboard/presales/create', [PresaleController::class, 'getDetail'])->name('presales.create');
     Route::get('/dashboard/presales/{id}/edit', [PresaleController::class, 'show'])->name('presales.details');
-    Route::get('/dashboard/account-history', [AccountHistory::class, 'index'])->name('account-history');
-
-    Route::get('/dashboard/location', function () { return Inertia::render('Location'); })->name('location');
-    
+    Route::get('/dashboard/pending-accounts', [AccountHistory::class, 'index'])->name('pending-accounts');
+    Route::get('/dashboard/express', [PresaleController::class, 'indexExpressPresale'])->name('express');
+    Route::get('/dashboard/express/create', [PresaleController::class, 'searchProducts'])->name('express.create');
     
     // Routes only to request data(not views)
 
     // Users
     Route::get('/delete/{user}', [UserController::class, 'destroy'])->name('delete.user');
-    
+
     // Roles and permissions
     Route::post('/send/invitation', [RolePermissionController::class, 'send_invitation'])->name('invite.user');
     Route::post('/change/role', [RolePermissionController::class, 'change_role'])->name('change.role');
@@ -67,7 +66,7 @@ Route::middleware([
     Route::post('/category/save', [CategoryArticleController::class, 'store'])->name('category.save');
     Route::post('/category/change', [CategoryArticleController::class, 'update'])->name('category.change');
     Route::get('/category/delete/{categoryArticle}', [CategoryArticleController::class, 'destroy'])->name('category.delete');
-    
+
     // Measures
     Route::post('/measureUnits/save', [MeasureUnitsController::class, 'store'])->name('measureUnits.save');
     Route::post('/measureUnits/change', [MeasureUnitsController::class, 'update'])->name('measureUnits.change');
@@ -77,7 +76,7 @@ Route::middleware([
     Route::post('/supplier/save', [SupplierController::class, 'store'])->name('supplier.save');
     Route::post('/supplier/change', [SupplierController::class, 'update'])->name('supplier.change');
     Route::get('/supplier/delete/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.delete');
-    
+
     // Articles
     Route::post('/article/save', [ArticleController::class, 'store'])->name('article.save');
     Route::post('/article/change', [ArticleController::class, 'update'])->name('article.change');
@@ -99,7 +98,8 @@ Route::middleware([
     Route::get('/presale/delete/{presale}', [PresaleController::class, 'destroy'])->name('presale.delete');
     Route::get('/presale/delete/{presale}/uniq', [PresaleController::class, 'destroy_uniq'])->name('presale.delete_uniq');
 
-    // Map
-    Route::post('/map', [PositionController::class, 'store'])->name('map.save');
+    // History payment
+    Route::post('/presale/express/debit', [AccountHistory::class, 'payment'])->name('debit.save');
+    Route::post('/presale/express/save', [PresaleController::class, 'expressPresale'])->name('express.save');
 });
 

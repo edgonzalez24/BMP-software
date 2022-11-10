@@ -12,6 +12,10 @@ const numbers = reactive({
 
 const props = defineProps({
   value: String | Number,
+  disabled: {
+    type: Boolean,
+    default: false
+  }
 });
 
 
@@ -38,5 +42,6 @@ defineExpose({ focus: () => input.value.focus() });
     class="rounded-md border-gray-50 focus:border-gray-400 hover:border-gray-400 focus:ring hover:ring focus:ring-gray-300 hover:ring-gray-300 focus:ring-opacity-50 hover:ring-opacity-50  shadow-sm disabled:bg-slate-100"
     v-model="proxyPrice" 
     v-bind="numbers"
+    :disabled="disabled"
   />
 </template>

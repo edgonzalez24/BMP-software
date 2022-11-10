@@ -109,8 +109,8 @@ const redirectDetail = ({ article }) => {
             </div>
           </div>
         </div>
-        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto  shadow-xl rounded-lg min-h-base">
-          <Table :header="header">
+        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto  shadow-xl rounded-lg min-h-base animated fadeIn">
+          <Table :header="header" :items="stocks.data.length">
             <tbody class="px-5">
               <tr
                 v-if="stocks.data.length"
@@ -139,8 +139,7 @@ const redirectDetail = ({ article }) => {
         <div v-if="totalPages > 1" class="flex mt-8 justify-center">
           <Pagination
             :total="totalPages"
-            :previous="stocks.links.prev"
-            :next="stocks.links.next"
+            :perPage="stocks.meta.per_page"
             page="stocks"
           />
         </div>

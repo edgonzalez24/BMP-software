@@ -33,7 +33,7 @@ const header = reactive([
     showInMobile: true
   },
   {
-    name: 'Categoria',
+    name: 'Categoría',
     showInMobile: false
   },
   {
@@ -209,12 +209,12 @@ watch(formFilter, value => {
         </div>
         <div class="mb-5">
           <div class="flex justify-between items-center">
-            <JetLabel for="category" value="Categoria" />
+            <JetLabel for="category" value="Categoría" />
             <Link 
               href="categories" 
               class="cursor-pointer block text-xs text-blue-600"
             >
-            + Agregar Categoria
+            + Agregar Categoría
             </Link>
           </div>
           <v-select 
@@ -222,7 +222,7 @@ watch(formFilter, value => {
             :options="categories.length ? categories : []" 
             :reduce="(option) => option.id" 
             label="name"
-            placeholder="Seleccionar una categoria" class="appearance-none capitalize"
+            placeholder="Seleccionar una categoría" class="appearance-none capitalize"
           >
             <template #open-indicator="{ attributes }">
               <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -256,7 +256,7 @@ watch(formFilter, value => {
     <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
       <form class="py-8 px-5" @submit.prevent="submitDelete">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          Eliminar Artículo
+          ¿Deseas eliminar este artículo?
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
@@ -319,7 +319,7 @@ watch(formFilter, value => {
                   :options="categories.length ? [{ id: null, name: 'Todas' }, ...categories] : []"
                   :reduce="(option) => option.id"
                   label="name" 
-                  placeholder="Seleccionar una categoria"
+                  placeholder="Seleccionar una categoría"
                   :clearable="false"
                   class="appearance-none capitalize"
                 >
@@ -358,7 +358,7 @@ watch(formFilter, value => {
           </div>
         </div>
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-          <Table :header="header">
+          <Table :header="header" :items="articles.data.length">
             <tbody class="px-5">
               <tr 
                 v-if="articles.data.length"
@@ -399,9 +399,7 @@ watch(formFilter, value => {
         </div>
         <div v-if="totalPages > 1" class="flex mt-8 justify-center">
           <Pagination
-            :total="totalPages" 
-            :previous="articles.links.prev"
-            :next="articles.links.next"
+            :previous="articles.meta.per_page"
             page="articles" />
         </div>
       </div>

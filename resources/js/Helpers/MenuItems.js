@@ -57,16 +57,16 @@ export const menuItems = [
         rol: 'client_index', 
       },
       {
-        name: 'Historial de Cuentas',
-        slug: 'account-history',
+        name: 'Cuentas Pendientes',
+        slug: 'pending-accounts',
         icon: 'fa-chart-simple',
         rol:'acountHistory_index', 
       },
       {
-        name: 'Venta Express',
-        slug: '',
+        name: 'Ventas Express',
+        slug: 'express',
         icon: 'fa-tag',
-        rol: '',
+        rol: 'presale_index',
       },
     ]
   },
@@ -77,7 +77,7 @@ export const menuItems = [
     rol: '', 
     children: [
       {
-        name: 'Pedidos',
+        name: 'Preventas',
         slug: 'presales',
         icon: 'fa-cart-shopping',
         rol: 'presale_index'
@@ -107,6 +107,18 @@ export const menuItems = [
         name: 'Manual de Ayuda',
         slug: '',
         icon: 'fa-circle-info',
+        rol: ''
+      },
+      {
+        name: 'Videos Tutoriales',
+        slug: '',
+        icon: 'fa-video',
+        rol: ''
+      },
+      {
+        name: 'Política de privacidad',
+        slug: 'policy.show',
+        icon: 'fa-file-shield',
         rol: ''
       },
     ]

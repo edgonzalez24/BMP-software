@@ -28,12 +28,9 @@ const submit = () => {
 	<Head title="Recuperar contraseña" />
 
 	<JetAuthenticationCard>
-		<Link :href="'/'" class="inline-flex mb-2">
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="h-6 w-6 mr-2">
-			<path
-				d="M224 480c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25l192-192c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L77.25 256l169.4 169.4c12.5 12.5 12.5 32.75 0 45.25C240.4 476.9 232.2 480 224 480z" />
-		</svg>
-		Regresar
+		<Link :href="'/'" class="inline-flex items-center mb-2">
+			<font-awesome-icon icon="fa-solid fa-arrow-left-long" class="text-base mr-2" />
+			Regresar
 		</Link>
 		<h2 class="font-poppins font-bold text-dark-blue-500 md:text-2xl text-lg mb-5">
 			Recuperar contraseña

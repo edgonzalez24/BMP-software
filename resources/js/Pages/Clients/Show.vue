@@ -53,7 +53,7 @@ const form = useForm({
   method_paid_id: null,
   telephone: null,
   active: 1,
-  comment: null,
+  comment: null
 });
 const formDelete = useForm({
   client_id: null,
@@ -158,33 +158,34 @@ watch(form, value => {
   if (value.type_client_id !== 2) {
     value.zone_id = 3
   }
-})
+});
+
 </script>
 <template>
   <AppLayout>
     <Loading :active.sync="isLoading"></Loading>
     <JetModal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal">
-      <form class="py-8 px-5" @submit.prevent="submitForm">
-        <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
+      <form class="p-5" @submit.prevent="submitForm">
+        <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-3">
           {{ isEdit ? 'Editar Cliente' : 'Añadir Cliente' }}
         </h2>
-        <div class="mb-5">
+        <div class="mb-3">
           <JetLabel value="Estado" />
           <Toggle v-model:checked="form.active" />
         </div>
-        <div class="mb-5">
+        <div class="mb-3">
           <JetLabel for="name" value="Nombre" />
           <JetInput id="name" v-model="form.name" type="text" class="mt-1 block w-full" required autofocus />
         </div>
-        <div class="mb-5">
+        <div class="mb-3">
           <JetLabel for="phone" value="Teléfono" />
           <JetInput id="phone" v-model="form.telephone" type="text" class="mt-1 block w-full" phoneNumber autofocus />
         </div>
-        <div class="mb-5">
+        <div class="mb-3">
           <JetLabel for="comment" value="Comentario" />
           <QuillEditor v-model="form.comment" />
         </div>
-        <div class="mb-5">
+        <div class="mb-3">
           <JetLabel for="measure" value="Tipo de clientes" />
           <v-select v-model="form.type_client_id" :options="typeClient.length ? typeClient : []"
             :reduce="(option) => option.id" label="name" placeholder="Seleccionar tipo de cliente"
@@ -200,7 +201,7 @@ watch(form, value => {
             </template>
           </v-select>
         </div>
-        <div v-if="form.type_client_id === 2"  class="mb-5">
+        <div v-if="form.type_client_id === 2"  class="mb-3">
           <JetLabel value="Zona" />
           <v-select
             v-model="form.zone_id"
@@ -221,7 +222,7 @@ watch(form, value => {
             </template>
           </v-select>
         </div>
-        <div class="mb-5">
+        <div class="mb-3">
           <JetLabel value="Método de Pago" />
           <v-select
             v-model="form.method_paid_id"
@@ -264,12 +265,12 @@ watch(form, value => {
     <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal">
       <form class="py-8 px-5" @submit.prevent="submitDelete">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          Eliminar Cliente
+          ¿Deseas eliminar a este cliente?
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
-            Al eliminar a este cliente se borrará permanentemente del sistema,
-            por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
+            Al eliminar a este cliente se borrará permanentemente del sistema, incluyendo su historial de cuenta, preventas, entre otros.
+            Por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
           </p>
           <div class="flex justify-end mt-5">
             <div class="w-auto flex flex-row space-x-4 justify-between">
@@ -358,7 +359,7 @@ watch(form, value => {
 
 
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-          <Table :header="header">
+          <Table :header="header" :items="clients.data.length">
             <tbody class="px-5">
               <tr 
                 v-if="clients.data.length"
@@ -405,8 +406,7 @@ watch(form, value => {
         <div v-if="totalPages > 1" class="flex mt-8 justify-center">
           <Pagination 
             :total="totalPages"
-            :previous="clients.prev_page_url" 
-            :next="clients.next_page_url" 
+            :perPage="clients.per_page"
             page="clients"
           />
         </div>

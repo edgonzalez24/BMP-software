@@ -147,7 +147,7 @@ input:checked~.toggle__dot {
 	font-size: 1rem !important;
 }
 
-.sidebar {
+.sidebar, .scroll-container {
 	&::-webkit-scrollbar {
 			width: 7px;
 		}
@@ -191,4 +191,51 @@ input:checked~.toggle__dot {
 
 .animated {
 	animation-fill-mode: backwards !important;
+}
+
+.VuePagination {
+	& nav {
+		display: flex;
+		flex-direction: column;
+		@media (max-width: 768px) {
+			font-size: 0.75rem;
+		}
+	}
+	& ul {
+		display: flex;
+		& li {
+			margin: 0;
+			border-width: 1px;
+			border-color: #e2e8f0;
+			background-color: #fff;
+			&:hover {
+				background-color: #f3f4f6;
+			}
+			&:first-child {
+				border-top-left-radius: 0.25rem;
+				border-bottom-left-radius: 0.25rem;
+			}
+			&:last-child {
+				border-top-right-radius: 0.25rem;
+				border-bottom-right-radius: 0.25rem;
+			}
+			& button {
+				padding: 0.5rem 0.75rem;
+				@media (max-width: 768px) {
+					padding: 0.25rem 0.5rem;
+				}
+				&:disabled {
+					cursor: not-allowed;
+				}
+			}
+			&.active {
+				background-color: #f3f4f6;
+				font-weight: 700;
+			}
+		}
+	}
+	& p {
+		text-align: center;
+		margin-top: 0.5rem;
+	}
 }

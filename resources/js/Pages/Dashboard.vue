@@ -1,7 +1,7 @@
 <script setup>
   import AppLayout from '@/Layouts/AppLayout.vue';
   import { usePage } from '@inertiajs/inertia-vue3';
-  import { computed, ref } from 'vue';
+  import { computed, reactive } from 'vue';
   import CardPreview from '@/Components/Dashboard/CardPreview.vue';
   import BarChart from '@/Components/Charts/BarChart.vue';
   import LineChart from '@/Components/Charts/LineChart.vue';
@@ -28,6 +28,24 @@
     }
   ]
   const date = moment().locale("es").format('dddd, D [de] MMMM [del] YYYY');
+  const header = reactive([
+    {
+      name: 'ID',
+      showInMobile: true
+    },
+    {
+      name: 'Nombre',
+      showInMobile: true
+    },
+    {
+      name: 'Proveedor',
+      showInMobile: true
+    },
+    {
+      name: 'Precio por Unidad',
+      showInMobile: true
+    },
+  ]);
 </script>
 
 <template>
@@ -46,18 +64,24 @@
           </div>
         </div>
         <div class="w-full flex justify-between md:flex-row flex-col md:space-x-6 md:space-y-0 space-y-4 mb-8">
-          <div class="w-full md:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50">
-            <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Reporte de venta mensual</h4>
+          <div class="w-full md:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50 animated fadeIn">
+            <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Resumen de clientes con más preventas en el mes</h4>
             <LineChart />
           </div>
-          <div class="w-full md:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50">
+          <div class="w-full md:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50 animated fadeIn">
             <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Reporte de ventas anual</h4>
             <BarChart />
+
           </div>
         </div>
-        <div class="w-full bg-white rounded-lg overflow-hidden shadow-card min-h-table border border-gray-50 p-5">
+        <div class="w-full bg-white rounded-lg overflow-hidden shadow-card min-h-table border border-gray-50 p-5 animated fadeIn">
           <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Productos más vendidos</h4>
-          
+          <Table :header="header">
+            <tbody class="px-5">
+              <tr class="mt-2">
+              </tr>
+            </tbody>
+          </Table>
         </div>
       </div>
     </div>

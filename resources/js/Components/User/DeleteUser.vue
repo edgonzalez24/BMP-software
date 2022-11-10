@@ -40,11 +40,11 @@ const submit = () => {
 <template>
   <form @submit.prevent="submit" class="py-8 px-5">
     <Loading :active.sync="isLoading" ></Loading>
-    <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Esta seguro de eliminar a este usuario?</h2>
+    <h2 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-center">¿Deseas eliminar a este usuario?</h2>
     <div class="px-5">
       <p class="mt-5 text-justify text-gray-400">
-        Al  eliminar a este miembro se borrará permanentemente del sistema,
-        por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
+        Al  eliminar a este usuario se borrará permanentemente del sistema, y ya no tendrá ningún acceso al sistema.
+        Por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
       </p>
       <div class="flex justify-end mt-5">
         <div class="w-auto flex flex-row space-x-4 justify-between">

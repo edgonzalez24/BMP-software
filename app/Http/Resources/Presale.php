@@ -28,7 +28,9 @@ class Presale extends JsonResource
             'user_dispatch' => $this->user_dispatch,
             'presale_detail' => PresaleDetail::collection($this->presale_detail),
             'method_paid' => $this->method_paid,
-            'created_at' => $this->created_at
+            'paid' => $this->paid,
+            'added' => $this->added,
+            'created_at' => $this->created_at,
             /* 'updated' => $this->updated_at->diffForHumans(),
             'deleted' => $this->deleted_at->diffForHumans(),
             'created_at' => $this->created_at->format('d-m-y'),

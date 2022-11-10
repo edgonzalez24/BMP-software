@@ -116,7 +116,7 @@ const submitDelete = () => {
     <JetModal :show="statusModalForm" maxWidth="lg" @close="toggleFormModal" >
       <form class="py-8 px-5" @submit.prevent="submitCreateOrEdit">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          {{ isEdit ? 'Editar categoria' : 'Nueva categoria' }}
+          {{ isEdit ? 'Editar categoría' : 'Nueva categoría' }}
         </h2>
         <div class="mb-5">
           <JetLabel for="name" value="Nombre" />
@@ -150,11 +150,11 @@ const submitDelete = () => {
     <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal" >
       <form class="py-8 px-5" @submit.prevent="submitDelete">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          Eliminar Categoria
+          ¿Deseas eliminar esta categoría?
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
-            Al  eliminar a esta categoria se borrará permanentemente del sistema,
+            Al  eliminar a esta categoría se borrará permanentemente del sistema,
             por favor confirmar la acción haciendo click en el botón de 'Eliminar'.
           </p>
           <div class="flex justify-end mt-5">
@@ -181,7 +181,7 @@ const submitDelete = () => {
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
         <div class="flex justify-between items-center my-5">
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-            Categorias
+            Categorías
           </h2>
           <JetButton
             @click="isEdit = false; formCreateOrEdit.reset(); toggleFormModal()"
@@ -190,7 +190,7 @@ const submitDelete = () => {
           </JetButton>
         </div>
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-          <Table :header="header">
+          <Table :header="header" :items="categoryArticle.data.length">
             <tbody class="px-5">
               <tr v-for="item in categoryArticle.data" class="mt-2">
                 <td class="text-center p-2 md:text-base text-xs">{{ item.id }}</td>
@@ -207,11 +207,10 @@ const submitDelete = () => {
             </tbody>
           </Table>
         </div>
-        <div class="flex mt-8 justify-center">
+        <div v-if="totalPages > 1" class="flex mt-8 justify-center">
           <Pagination
             :total="totalPages"
-            :previous="categoryArticle.prev_page_url"
-            :next="categoryArticle.next_page_url"
+            :perPage="categoryArticle.per_page"
             page="categories"
           />
         </div>

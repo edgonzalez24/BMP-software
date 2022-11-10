@@ -147,7 +147,7 @@ const submitDelete = () => {
     <JetModal :show="statusModalDelete" maxWidth="lg" @close="toggleDeleteModal" >
       <form class="py-8 px-5" @submit.prevent="submitDelete">
         <h2 class="font-semibold text-2xl text-dark-blue-500 leading-tight text-center mb-5">
-          Eliminar Unidad de Medida
+          ¿Deseas eliminar esta unidad de medida?
         </h2>
         <div class="px-5">
           <p class="mt-5 text-justify text-gray-400">
@@ -187,7 +187,7 @@ const submitDelete = () => {
           </JetButton>
         </div>
         <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base animated fadeIn">
-          <Table :header="header">
+          <Table :header="header" :items="measureUnits.data.length">
             <tbody class="px-5">
               <tr v-for="item in measureUnits.data" class="mt-2">
                 <td class="text-center p-2 md:text-base text-xs">{{ item.id }}</td>
@@ -204,11 +204,10 @@ const submitDelete = () => {
             </tbody>
           </Table>
         </div>
-        <div class="flex mt-8 justify-center">
+        <div v-if="totalPages > 1" class="flex mt-8 justify-center">
           <Pagination
             :total="totalPages"
-            :previous="measureUnits.prev_page_url"
-            :next="measureUnits.next_page_url"
+            :perPage="measureUnits.per_page"
             page="measures"
           />
         </div>
