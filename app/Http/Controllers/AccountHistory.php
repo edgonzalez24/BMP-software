@@ -20,6 +20,7 @@ class AccountHistory extends Controller
         $filter = Presale::orderBy('id', 'desc');
         $client_id = $request->get('client_id');
         $clients = Client::orderBy('id', 'desc')->get();
+        $history = null;
 
         if ( ! Auth::user()->can('acountHistory_index')){
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
@@ -33,10 +34,15 @@ class AccountHistory extends Controller
                 $filter->where('client_id', $client_id);
             }
 
+            if($request->get('history')){
+              $history = HistoryPayment::where('presale_id', $request->get('history'))->orderBy('id', 'desc')->get();
+            }
+
             $presales = new PresaleCollection($filter->where('dispatch_id', '4')->where('total_pending', '>', 0)->paginate(25));
             return Inertia::render('AccountHistory/Show',[
                 'presales' => $presales,
                 'clients' => $clients,
+                'history'=> $history
 
             ]);
         } catch (\Throwable $th) {
@@ -47,30 +53,33 @@ class AccountHistory extends Controller
     public function payment(Request $request)
     {
       try {
-        if (issect($request->get('presale_id'))) {
+        if ($request->get('presale_id')) {
           $presale = Presale::find($request->get('presale_id'));
           if ($presale->total_pending > 0) {
             $pending = $presale->total_pending;
-            $mount = $request->get('presale_id');
-            $residue = $pending - $mount;
+            $amount = $request->get('amount');
+            $residue = $pending - $amount;
             if ($residue < 0) {
               $residue;
-              $presale->dispatch_id = 5;
+              $presale->paid = 1;
             }
 
             HistoryPayment::insert([
-              'mount' => $mount,
-              'presale_id' => $residue,
+              'amount' => $amount,
+              'presale_id' => $presale->id,
+              'created_at' => now(),
+              'updated_at' => now(),
             ]);
 
             $presale->total_pending = $residue;
             $presale->update();
+            return redirect()->back()->with('success', 'Abono agregado correctamente!.');
           }
         }else{
           return redirect()->back()->withErrors(['error' => 'No ha sido posible procesar el abono!.']);
         }
       } catch (\Throwable $th) {
-        //throw $th;
+        return redirect()->back()->withErrors(['error' => $th]);
       }
     }
 }

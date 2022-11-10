@@ -49,7 +49,7 @@ Route::middleware([
     Route::get('/dashboard/clients/filter', [ClientController::class, 'filter'])->name('client.filter');
     Route::get('/dashboard/presales/create', [PresaleController::class, 'getDetail'])->name('presales.create');
     Route::get('/dashboard/presales/{id}/edit', [PresaleController::class, 'show'])->name('presales.details');
-    Route::get('/dashboard/account-history', [AccountHistory::class, 'index'])->name('account-history');
+    Route::get('/dashboard/pending-accounts', [AccountHistory::class, 'index'])->name('pending-accounts');
     Route::get('/dashboard/express', [PresaleController::class, 'indexExpressPresale'])->name('express');
     Route::get('/dashboard/express/create', [PresaleController::class, 'searchProducts'])->name('express.create');
     
@@ -99,7 +99,7 @@ Route::middleware([
     Route::get('/presale/delete/{presale}/uniq', [PresaleController::class, 'destroy_uniq'])->name('presale.delete_uniq');
 
     // History payment
-    Route::get('/dashboard/history-payment', [AccountHistory::class, 'payment'])->name('history-payment');
+    Route::post('/presale/express/debit', [AccountHistory::class, 'payment'])->name('debit.save');
     Route::post('/presale/express/save', [PresaleController::class, 'expressPresale'])->name('express.save');
 });
 
