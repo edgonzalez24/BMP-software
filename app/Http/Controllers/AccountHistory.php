@@ -7,13 +7,14 @@ use App\Models\Client;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\Presale;
+use App\Models\HistoryPayment;
 use App\Http\Resources\Presale as PresaleResources;
 use App\Http\Resources\PresaleCollection;
 
 class AccountHistory extends Controller
 {
     public function index(Request $request)
-    {    
+    {
         $from = "{$request->get('from')} 00:00:00";
         $to = "{$request->get('to')} 23:59:59";
         $filter = Presale::orderBy('id', 'desc');
@@ -26,20 +27,50 @@ class AccountHistory extends Controller
         try {
             if ($request->get('from') && $request->get('to')){
                 $filter = Presale::whereBetween('created_at', [$from, $to]);
-            } 
+            }
 
             if (isset($client_id)) {
                 $filter->where('client_id', $client_id);
             }
 
             $presales = new PresaleCollection($filter->where('dispatch_id', '4')->where('total_pending', '>', 0)->paginate(25));
-            return Inertia::render('AccountHistory/Show',[ 
+            return Inertia::render('AccountHistory/Show',[
                 'presales' => $presales,
                 'clients' => $clients,
-                
+
             ]);
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th]);
         }
+    }
+
+    public function payment(Request $request)
+    {
+      try {
+        if (issect($request->get('presale_id'))) {
+          $presale = Presale::find($request->get('presale_id'));
+          if ($presale->total_pending > 0) {
+            $pending = $presale->total_pending;
+            $mount = $request->get('presale_id');
+            $residue = $pending - $mount;
+            if ($residue < 0) {
+              $residue;
+              $presale->dispatch_id = 5;
+            }
+
+            HistoryPayment::insert([
+              'mount' => $mount,
+              'presale_id' => $residue,
+            ]);
+
+            $presale->total_pending = $residue;
+            $presale->update();
+          }
+        }else{
+          return redirect()->back()->withErrors(['error' => 'No ha sido posible procesar el abono!.']);
+        }
+      } catch (\Throwable $th) {
+        //throw $th;
+      }
     }
 }
