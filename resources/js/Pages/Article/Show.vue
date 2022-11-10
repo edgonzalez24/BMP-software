@@ -33,7 +33,7 @@ const header = reactive([
     showInMobile: true
   },
   {
-    name: 'Categoria',
+    name: 'Categoría',
     showInMobile: false
   },
   {
@@ -209,12 +209,12 @@ watch(formFilter, value => {
         </div>
         <div class="mb-5">
           <div class="flex justify-between items-center">
-            <JetLabel for="category" value="Categoria" />
+            <JetLabel for="category" value="Categoría" />
             <Link 
               href="categories" 
               class="cursor-pointer block text-xs text-blue-600"
             >
-            + Agregar Categoria
+            + Agregar Categoría
             </Link>
           </div>
           <v-select 
@@ -222,7 +222,7 @@ watch(formFilter, value => {
             :options="categories.length ? categories : []" 
             :reduce="(option) => option.id" 
             label="name"
-            placeholder="Seleccionar una categoria" class="appearance-none capitalize"
+            placeholder="Seleccionar una categoría" class="appearance-none capitalize"
           >
             <template #open-indicator="{ attributes }">
               <svg v-bind="attributes" width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -319,7 +319,7 @@ watch(formFilter, value => {
                   :options="categories.length ? [{ id: null, name: 'Todas' }, ...categories] : []"
                   :reduce="(option) => option.id"
                   label="name" 
-                  placeholder="Seleccionar una categoria"
+                  placeholder="Seleccionar una categoría"
                   :clearable="false"
                   class="appearance-none capitalize"
                 >

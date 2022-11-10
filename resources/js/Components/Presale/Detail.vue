@@ -84,10 +84,6 @@
         Estado:
         <span class="font-normal">{{ selectedPresale.dispatch.name }}</span>
       </p>
-      <p v-if="!isExpress && !isPending" class="font-medium md:text-base text-sm mr-2">
-        Pagado:
-        <span class="font-normal">{{ selectedPresale.paid === 1 ? 'Si' : 'No'}}</span>
-      </p>
       <template v-if="isPending">
         <div class="mb-3">
           <p class="font-medium md:text-base text-sm">Abono a Cuenta</p>
@@ -134,7 +130,7 @@
       </div>
     </div>
     <div class="flex justify-between mt-5">
-      <div class="mb-1 cursor-pointer inline-flex items-center text-base text-blue-600 font-bold" @click="emit('getHistory', selectedPresale.id)">
+      <div v-if="selectedPresale.dispatch.id === 4" class="mb-1 cursor-pointer inline-flex items-center text-base text-blue-600 font-bold" @click="emit('getHistory', selectedPresale.id)">
         Ver historial de abono
       </div>
       <JetButton  v-if="isPending" type="button" @click="updatePresale">

@@ -42,8 +42,8 @@ const hasPermission = (type, value) => {
       <div class="overflow-y-auto h-full sidebar">
         <div class="px-5 py-3 flex justify-center relative">
           <img src="@/Assets/images/logo-tito.png" alt="" class="w-auto sm:w-1/2">
-          <div class="md:hidden block absolute right-0 top-0 mr-5 mt-5 text-xl text-gray-400">
-            <font-awesome-icon icon="fa-solid fa-xmark" class="text-xl cursor-pointer icon-xmark"
+          <div class="md:hidden block absolute right-0 top-0 mr-3 mt-8 text-xl text-gray-400">
+            <font-awesome-icon icon="fa-solid fa-xmark" class="text-2xl cursor-pointer icon-xmark"
               @click="$emit('changeStatus', !statusMenu)" />
           </div>
         </div>

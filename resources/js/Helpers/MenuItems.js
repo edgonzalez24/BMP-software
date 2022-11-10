@@ -115,6 +115,12 @@ export const menuItems = [
         icon: 'fa-video',
         rol: ''
       },
+      {
+        name: 'Política de privacidad',
+        slug: 'policy.show',
+        icon: 'fa-file-shield',
+        rol: ''
+      },
     ]
   }
 ];

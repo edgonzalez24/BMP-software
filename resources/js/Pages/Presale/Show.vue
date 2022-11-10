@@ -195,7 +195,7 @@
               <JetLabel value="Clientes" />
               <v-select
                 v-model="client.id"
-                :options="clients.length ? [{ id: null, name: 'Todos' }, ...clients] : []"
+                :options="clients.length ? [{ id: null, name: 'Todos' }, ...clients.filter(item => item.id !== 1)] : []"
                 :reduce="(option) => option.id"
                 label="name" 
                 placeholder="Seleccionar cliente"
