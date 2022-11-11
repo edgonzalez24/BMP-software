@@ -15,7 +15,7 @@
       <thead class="border-b border-gray-300">
         <tr>
           <th 
-            v-for="item in header" class="py-4 md:text-base text-sm px-2" 
+            v-for="item in header" class="py-4 lg:text-base text-sm px-2" 
             :class="{'hidden lg:block': !item.showInMobile }"
           >
             {{ item.name }}

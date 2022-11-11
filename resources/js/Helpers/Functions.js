@@ -27,3 +27,7 @@ export const appendParams = (url, props) => {
   const objParams = Object.fromEntries(group);
   return _.omit(objParams, props);
 }
+
+export const getTotal = (arr) => {
+  return _.sumBy(arr, item => Number(item.total)).toFixed(2);
+}

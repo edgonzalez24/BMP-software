@@ -6,6 +6,8 @@
   import Loading from 'vue3-loading-overlay';
   import InputPrice from '@/Components/Shared/inputPrice.vue';
   import JetButton from '@/Components/Button.vue';
+  import { getTotal } from '@/Helpers/Functions';
+import { computed } from '@vue/reactivity';
 
   const props = defineProps({
     selectedPresale: Object,
@@ -16,24 +18,29 @@
     isPending: {
       type: Boolean,
       default: false
-    }
+    },
   });
+
+
   const emit = defineEmits(['close', 'getHistory'])
-  const getTotal = (arr) => {
-    return _.sumBy(arr, item => Number(item.total)).toFixed(2);
-  }
+
 
   const form = useForm({
     amount: 0,
-    presale_id: props.selectedPresale.id
+    presale_id: props.selectedPresale.id,
+    total_paid: getTotal(props.selectedPresale.presale_detail)
   })
   const isLoading = ref(false);
 
+
   const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
+
 
   const updatePresale = () => {
     if (form.amount > props.selectedPresale.total_pending ) {
       toast.error('El abono no puede ser mayor al total pendiente', { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+    } else if (form.amount === 0 ) {
+      toast.error('El abono no puede ser 0', { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
     } else {
       isLoading.value = true;
       form.post(route('debit.save'), {
@@ -61,7 +68,7 @@
     <Loading :active.sync="isLoading"></Loading>
     <div class="flex justify-between items-center mb-2">
       <h3 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-left">
-        {{ isExpress ? `Venta #${selectedPresale.id}` : `Preventa #${selectedPresale.id}` }}
+        {{ isExpress ? `Venta #${selectedPresale.id}` : `Orden #${selectedPresale.id}`}}
       </h3>
       <a @click="emit('close')" class="cursor-pointer">
         <font-awesome-icon icon="fa-solid fa-xmark" class="text-2xl text-gray-300" />
@@ -114,12 +121,12 @@
     <div>
       <div class="border-t border-gray-300 flex justify-end">
         <div class="pt-3 md:w-3/6 w-full">
-          <div class="flex justify-between mb-1 md:text-base text-sm">
-            <p class="font-medium">Total Pagado:</p>
+          <div v-if="selectedPresale.paid === 0" class="flex justify-between mb-1 md:text-base text-sm">
+            <p class="font-medium">Total pagado:</p>
             <span>${{ (Number(getTotal(selectedPresale.presale_detail)) - Number(selectedPresale.total_pending)).toFixed(2) }}</span>
           </div>
-          <div class="flex justify-between mb-1 md:text-base text-sm">
-            <p class="font-medium">Total Pendiente:</p>
+          <div v-if="selectedPresale.paid === 0" class="flex justify-between mb-1 md:text-base text-sm">
+            <p class="font-medium">Total pendiente:</p>
             <span>${{ Number(selectedPresale.total_pending).toFixed(2) }}</span>
           </div>
           <div class="flex justify-between mb-1 md:text-base text-sm">
@@ -130,7 +137,7 @@
       </div>
     </div>
     <div class="flex justify-between mt-5">
-      <div v-if="selectedPresale.dispatch.id === 4" class="mb-1 cursor-pointer inline-flex items-center text-base text-blue-600 font-bold" @click="emit('getHistory', selectedPresale.id)">
+      <div v-if="selectedPresale.dispatch.id === 4 && !isExpress" class="mb-1 cursor-pointer inline-flex items-center md:text-base text-sm text-blue-600 font-bold" @click="emit('getHistory', selectedPresale.id)">
         Ver historial de abono
       </div>
       <JetButton  v-if="isPending" type="button" @click="updatePresale">

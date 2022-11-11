@@ -1,122 +1,125 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import JetButton from '@/Components/Button.vue';
-import Loading from 'vue3-loading-overlay';
-import JetModal from '@/Components/Modal.vue';
-import JetLabel from '@/Components/Label.vue';
-import JetInput from '@/Components/Input.vue';
-import Toggle from '@/Components/Shared/Toggle.vue';
-import { useForm, usePage } from '@inertiajs/inertia-vue3';
-import { ref, reactive, computed, getCurrentInstance } from 'vue';
-import Table from '@/Components/Table.vue';
-import Status from '@/Components/Shared/Status.vue';
-import Pagination from '@/Components/Shared/Pagination.vue';
-import { POSITION } from 'vue-toastification';
+  import AppLayout from '@/Layouts/AppLayout.vue';
+  import JetButton from '@/Components/Button.vue';
+  import Loading from 'vue3-loading-overlay';
+  import JetModal from '@/Components/Modal.vue';
+  import JetLabel from '@/Components/Label.vue';
+  import JetInput from '@/Components/Input.vue';
+  import Toggle from '@/Components/Shared/Toggle.vue';
+  import { useForm, usePage } from '@inertiajs/inertia-vue3';
+  import { ref, reactive, computed, getCurrentInstance } from 'vue';
+  import Table from '@/Components/Table.vue';
+  import Status from '@/Components/Shared/Status.vue';
+  import Pagination from '@/Components/Shared/Pagination.vue';
+  import { POSITION } from 'vue-toastification';
 
-const props = defineProps({
-  suppliers: Object
-});
-const header = reactive([
-  {
-    name: 'Nombre',
-    showInMobile: true
-  },
-  {
-    name: 'Teléfono',
-    showInMobile: true
-  },
-  {
-    name: 'Estado',
-    showInMobile: true
-  },
-  {
-    name: 'Correo Electrónico',
-    showInMobile: false
-  },
-  {
-    name: 'Acciones',
-    showInMobile: true
-  }
-]);
-const isLoading = ref(false);
-const isEdit = ref(false);
-const statusModalForm = ref(false);
-const statusModalDelete = ref(false);
-const formInitial = useForm({
-  supplier_id: null,
-  name: null,
-  telephone: null,
-  email: null,
-  active: 1
-});
-const formDelete = useForm({
-  id: null
-});
-const toggleFormModal = () => {
-  statusModalForm.value = !statusModalForm.value;
-};
-const toggleDeleteModal = () => {
-  statusModalDelete.value = !statusModalDelete.value;
-};
-const selectItem = item => {
-  formInitial.name = item.name;
-  formInitial.supplier_id = item.id;
-  formInitial.telephone = item.telephone;
-  formInitial.active = item.active;
-  formInitial.email = item.email;
-  isEdit.value = true;
-  toggleFormModal();
-};
-const selectDeleteItem = item => {
-  formDelete.id = item.id;
-  toggleDeleteModal();
-};
-const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
-const totalPages = computed(() => Math.ceil(props.suppliers.total / props.suppliers.per_page));
-
-const submitForm = () => {
-  isLoading.value = true;
-  const request = isEdit.value ? 'supplier.change' : 'supplier.save';
-  formInitial.post(route(request), {
-    onSuccess: () => {
-      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-      toggleFormModal()
-      formInitial.reset();
-    },
-    onError: () => {
-      const errors = usePage().props.value.errors;
-      for (const key in errors) {
-        if (Object.hasOwnProperty.call(errors, key)) {
-          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        }
-      }
-    },
-    onFinish: () => {
-      isLoading.value = false
-    }
-  })
-}
-
-
-const submitDelete = () => {
-  isLoading.value = true;
-  formDelete.get(route('supplier.delete', formDelete.id), {
-    onSuccess: () => {
-      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-    },
-    onError: () => {
-      const errors = usePage().props.value.errors;
-      for (const key in errors) {
-        if (Object.hasOwnProperty.call(errors, key)) {
-          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        }
-      }
-    },
-    onFinish: () => {
-      isLoading.value = false;
-    }
+  const props = defineProps({
+    suppliers: Object
   });
-}
+
+
+  const header = reactive([
+    {
+      name: 'Nombre',
+      showInMobile: true
+    },
+    {
+      name: 'Teléfono',
+      showInMobile: true
+    },
+    {
+      name: 'Estado',
+      showInMobile: true
+    },
+    {
+      name: 'Correo Electrónico',
+      showInMobile: false
+    },
+    {
+      name: 'Acciones',
+      showInMobile: true
+    }
+  ]);
+  const isLoading = ref(false);
+  const isEdit = ref(false);
+  const statusModalForm = ref(false);
+  const statusModalDelete = ref(false);
+  const formInitial = useForm({
+    supplier_id: null,
+    name: null,
+    telephone: null,
+    email: null,
+    active: 1
+  });
+  const formDelete = useForm({
+    id: null
+  });
+
+
+  const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
+  const totalPages = computed(() => Math.ceil(props.suppliers.total / props.suppliers.per_page));
+
+
+  const toggleFormModal = () => {
+    statusModalForm.value = !statusModalForm.value;
+  };
+  const toggleDeleteModal = () => {
+    statusModalDelete.value = !statusModalDelete.value;
+  };
+  const selectItem = item => {
+    formInitial.name = item.name;
+    formInitial.supplier_id = item.id;
+    formInitial.telephone = item.telephone;
+    formInitial.active = item.active;
+    formInitial.email = item.email;
+    isEdit.value = true;
+    toggleFormModal();
+  };
+  const selectDeleteItem = item => {
+    formDelete.id = item.id;
+    toggleDeleteModal();
+  };
+  const submitForm = () => {
+    isLoading.value = true;
+    const request = isEdit.value ? 'supplier.change' : 'supplier.save';
+    formInitial.post(route(request), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        toggleFormModal()
+        formInitial.reset();
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
+        }
+      },
+      onFinish: () => {
+        isLoading.value = false
+      }
+    })
+  }
+  const submitDelete = () => {
+    isLoading.value = true;
+    formDelete.get(route('supplier.delete', formDelete.id), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
+        }
+      },
+      onFinish: () => {
+        isLoading.value = false;
+      }
+    });
+  }
 </script>
 
 <template>
@@ -228,19 +231,19 @@ const submitDelete = () => {
           <Table :header="header" :items="suppliers.data.length">
             <tbody class="px-5">
               <tr v-for="item in suppliers.data" class="mt-2">
-                <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">
                   <a :href="`tel:${item.telephone}`">
                     {{ item.telephone }}
                   </a>
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
-                    <Status :status="item.active" class="sm:w-1/2 md:w-1/3 w-full" />
+                    <Status :status="item.active" class="w-auto" />
                   </div>
                 </td>
-                <td class="text-center p-2 md:text-base text-xs hidden lg:block">{{ item.email }}</td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs hidden lg:block">{{ item.email }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
                       <a @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>

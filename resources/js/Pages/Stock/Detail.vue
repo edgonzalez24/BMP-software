@@ -18,6 +18,11 @@
     measure_units: Array,
     stocks: Object
   });
+
+  const articleDetail = computed(() => props.article.data[0]);
+  const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
+
+
   const header = reactive([
     {
       name: 'Fecha',
@@ -44,12 +49,7 @@
       showInMobile: true
     },
   ]);
-  const articleDetail = computed(() => props.article.data[0]);
-  const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
   const isLoading = ref(false);
-  const getSupplier = id => {
-    return props.suppliers.find(item => item.id === id).name;
-  };
   const statusModalForm = ref(false);
   const isEdit = ref(false);
   const form = useForm({
@@ -62,6 +62,11 @@
     measure_unit_id: null,
     comment: articleDetail.value.name
   })
+
+  
+  const getSupplier = id => {
+    return props.suppliers.find(item => item.id === id).name;
+  };
   const toggleFormModal = () => {
     statusModalForm.value = !statusModalForm.value;
   };
@@ -87,7 +92,7 @@
     });
   }
   const formatDate = date => {
-    return moment.utc(date, "YYYY-MM-DD\THH:mm:ss\Z").format("DD-MM-YYYY");
+    return moment(date).format("DD-MM-YYYY");
   }
 </script>
 <template>
@@ -191,12 +196,12 @@
           <Table :header="header" :items="articleDetail.stocks.length">
             <tbody class="px-5">
               <tr v-for="item in articleDetail.stocks" class="mt-2">
-                <td class="text-center p-2 md:text-base text-xs">{{ formatDate(item.created_at) }}</td>
-                <td class="text-center p-2 md:text-base text-xs">{{ getSupplier(item.supplier_id) }}</td>
-                <td class="text-center p-2 md:text-base text-xs">${{ item.buy_price }}</td>
-                <td class="text-center p-2 md:text-base text-xs">${{ item.sale_price }}</td>
-                <td class="text-center p-2 md:text-base text-xs">{{ item.quantity_items }}</td>
-                <td class="text-center p-2 md:text-base text-xs">{{ item.units_for_unit }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">{{ formatDate(item.created_at) }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">{{ getSupplier(item.supplier_id) }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">${{ item.buy_price }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">${{ item.sale_price }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.quantity_items }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.units_for_unit }}</td>
               </tr>
             </tbody>
           </Table>

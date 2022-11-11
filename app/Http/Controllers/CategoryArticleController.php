@@ -65,7 +65,7 @@ class CategoryArticleController extends Controller
             $categoryArticle = new CategoryArticle($request->all());
             $categoryArticle->save();
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
 
         return redirect()->back()->with('success', 'Registro creado correctamente!.');
@@ -90,7 +90,7 @@ class CategoryArticleController extends Controller
             $categoryArticle = CategoryArticle::find($validateRequest->get('category_id'));
             $categoryArticle->update($validateRequest->all());
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
         return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
@@ -111,7 +111,7 @@ class CategoryArticleController extends Controller
             $categoryArticle->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
     }
 }

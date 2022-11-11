@@ -7,6 +7,7 @@ const numbers = reactive({
   separator: ',',
   prefix: '$ ',
   precision: 2,
+  minimumFractionDigits: 2
 });
 
 

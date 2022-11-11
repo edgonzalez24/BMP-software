@@ -22,7 +22,7 @@ class AccountHistory extends Controller
         $clients = Client::orderBy('id', 'desc')->get();
         $history = null;
 
-        if ( ! Auth::user()->can('acountHistory_index')){
+        if ( ! Auth::user()->can('accountHistory_index')){
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
         try {
@@ -46,7 +46,7 @@ class AccountHistory extends Controller
 
             ]);
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
     }
 
@@ -59,9 +59,10 @@ class AccountHistory extends Controller
             $pending = $presale->total_pending;
             $amount = $request->get('amount');
             $residue = $pending - $amount;
-            if ($residue < 0) {
+            if ($residue <= 0) {
               $residue;
               $presale->paid = 1;
+              $presale->total_paid = $request->get('total_paid');
             }
 
             HistoryPayment::insert([
@@ -79,19 +80,20 @@ class AccountHistory extends Controller
           return redirect()->back()->withErrors(['error' => 'No ha sido posible procesar el abono!.']);
         }
       } catch (\Throwable $th) {
-        return redirect()->back()->withErrors(['error' => $th]);
+        return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
       }
     }
 
-    public function historyPesaleClose(Request $request)
+    public function historyPresaleClose(Request $request)
     {
         $from = "{$request->get('from')} 00:00:00";
         $to = "{$request->get('to')} 23:59:59";
         $filter = Presale::orderBy('id', 'desc');
         $client_id = $request->get('client_id');
         $clients = Client::orderBy('id', 'desc')->get();
+        $history = null;
 
-        if ( ! Auth::user()->can('acountHistory_index')){
+        if ( ! Auth::user()->can('accountHistory_index')){
             return redirect()->back()->withErrors(['error' => 'No posees los permisos necesarios. Ponte en contacto con tu manager!.']);
         }
         try {
@@ -103,13 +105,18 @@ class AccountHistory extends Controller
                 $filter->where('client_id', $client_id);
             }
 
-            $presales = new PresaleCollection($filter->where('dispatch_id', '4')->where('total_pending', '=', 0)->paginate(25));
-            return Inertia::render('PresaleClose/Show',[
+            if($request->get('history')){
+              $history = HistoryPayment::where('presale_id', $request->get('history'))->orderBy('id', 'desc')->get();
+            }
+
+            $presales = new PresaleCollection($filter->where('client_id', '<>', '1')->where('dispatch_id', '4')->where('paid', '=', 1)->paginate(25));
+            return Inertia::render('Sale/Show',[
                 'presales' => $presales,
                 'clients' => $clients,
+                'history'=> $history
             ]);
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
     }
 }

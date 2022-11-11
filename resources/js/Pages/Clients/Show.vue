@@ -1,165 +1,169 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import Table from '@/Components/Table.vue';
-import JetButton from '@/Components/Button.vue';
-import { reactive, computed, ref, getCurrentInstance, watch } from 'vue';
-import Pagination from '@/Components/Shared/Pagination.vue';
-import Status from '@/Components/Shared/Status.vue';
-import JetModal from '@/Components/Modal.vue';
-import Loading from 'vue3-loading-overlay';
-import { useForm, usePage } from '@inertiajs/inertia-vue3';
-import Toggle from '@/Components/Shared/Toggle.vue';
-import JetLabel from '@/Components/Label.vue';
-import JetInput from '@/Components/Input.vue';
-import QuillEditor from '@/Components/Shared/QuillEditor.vue';
-import { POSITION } from 'vue-toastification';
-import DetailClient from '@/Components/Client/Detail.vue'
-import { hasPermission } from '@/Helpers/Functions';
-import { Inertia } from '@inertiajs/inertia';
+  import AppLayout from '@/Layouts/AppLayout.vue';
+  import Table from '@/Components/Table.vue';
+  import JetButton from '@/Components/Button.vue';
+  import { reactive, computed, ref, getCurrentInstance, watch } from 'vue';
+  import Pagination from '@/Components/Shared/Pagination.vue';
+  import Status from '@/Components/Shared/Status.vue';
+  import JetModal from '@/Components/Modal.vue';
+  import Loading from 'vue3-loading-overlay';
+  import { useForm, usePage } from '@inertiajs/inertia-vue3';
+  import Toggle from '@/Components/Shared/Toggle.vue';
+  import JetLabel from '@/Components/Label.vue';
+  import JetInput from '@/Components/Input.vue';
+  import QuillEditor from '@/Components/Shared/QuillEditor.vue';
+  import { POSITION } from 'vue-toastification';
+  import DetailClient from '@/Components/Client/Detail.vue'
+  import { hasPermission } from '@/Helpers/Functions';
+  import { Inertia } from '@inertiajs/inertia';
 
-const props = defineProps({
-  clients: Object,
-  typeClient: Array,
-  zones: Array,
-  payment_methods: Array
-})
-const header = reactive([
-  {
-    name: 'Nombre',
-    showInMobile: true
-  },
-  {
-    name: 'Tipo de cliente',
-    showInMobile: false
-  },
-  {
-    name: 'Estado',
-    showInMobile: true
-  },
-  {
-    name: 'Télefono',
-    showInMobile: true
-  },
-  {
-    name: 'Acciones',
-    showInMobile: true
-  }
-]);
-const form = useForm({
-  client_id : null,
-  name: null,
-  type_client_id: null,
-  zone_id: null,
-  method_paid_id: null,
-  telephone: null,
-  active: 1,
-  comment: null
-});
-const formDelete = useForm({
-  client_id: null,
-});
-const isLoading = ref(false);
-const isEdit = ref(false);
-const statusModalForm = ref(false);
-const statusModalDetail = ref(false);
-const statusModalDelete = ref(false);
-const selectedClient = reactive({});
-const totalPages = computed(() => Math.ceil(props.clients.total / props.clients.per_page));
-const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
+  const props = defineProps({
+    clients: Object,
+    typeClient: Array,
+    zones: Array,
+    payment_methods: Array
+  });
 
-const formFilter = useForm({
-  search: new URLSearchParams(window.location.search).get('search') || null,
-  type_client_id: Number(new URLSearchParams(window.location.search).get('type_client_id')) || null,
-  zone_id: Number(new URLSearchParams(window.location.search).get('zone_id')) || null,
-});
-const toggleFormModal = () => {
-  statusModalForm.value = !statusModalForm.value
-}
-const toggleDetailModal = () => {
-  statusModalDetail.value = !statusModalDetail.value;
-}
-const toggleDeleteModal = () => {
-  statusModalDelete.value = !statusModalDelete.value;
-}
-const selectClientItem = item => {
-  selectedClient.value = item;
-  toggleDetailModal();
-};
-const selectDeleteItem = item => {
-  formDelete.client_id = item.id;
-  toggleDeleteModal();
-};
-const selectItem = item => {
-  form.client_id = item.id;
-  form.name = item.name;
-  form.type_client_id = item.type_client.id,
-  form.zone_id = item.zone.id
-  form.method_paid_id = item.payment_method.id,
-  form.telephone = item.telephone,
-  form.active = item.active,
-  form.comment = item.comment,
-  form.comment = item.search,
-  isEdit.value = true;
-  toggleFormModal();
-};
-const submitForm = () => {
-  isLoading.value = true;
-  const request = isEdit.value ? 'client.change' : 'client.save';
-  form.post(route(request), {
-    onSuccess: () => {
-      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-      toggleFormModal()
-      form.reset();
+  
+  const header = reactive([
+    {
+      name: 'Nombre',
+      showInMobile: true
     },
-    onError: () => {
-      const errors = usePage().props.value.errors;
-      for (const key in errors) {
-        if (Object.hasOwnProperty.call(errors, key)) {
-          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        }
-      }
+    {
+      name: 'Tipo de cliente',
+      showInMobile: true
     },
-    onFinish: () => {
-      isLoading.value = false
+    {
+      name: 'Estado',
+      showInMobile: true
+    },
+    {
+      name: 'Télefono',
+      showInMobile: true
+    },
+    {
+      name: 'Acciones',
+      showInMobile: true
     }
-  })
-};
-const submitDelete = () => {
-  isLoading.value = true;
-  formDelete.get(route('client.delete', formDelete.client_id), {
-    onSuccess: () => {
-      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-    },
-    onError: () => {
-      const errors = usePage().props.value.errors;
-      for (const key in errors) {
-        if (Object.hasOwnProperty.call(errors, key)) {
-          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+  ]);
+  const form = useForm({
+    client_id : null,
+    name: null,
+    type_client_id: null,
+    zone_id: null,
+    method_paid_id: null,
+    telephone: null,
+    active: 1,
+    comment: null
+  });
+  const formDelete = useForm({
+    client_id: null,
+  });
+  const isLoading = ref(false);
+  const isEdit = ref(false);
+  const statusModalForm = ref(false);
+  const statusModalDetail = ref(false);
+  const statusModalDelete = ref(false);
+  const selectedClient = reactive({});
+
+
+  const totalPages = computed(() => Math.ceil(props.clients.total / props.clients.per_page));
+  const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
+
+
+  const formFilter = useForm({
+    search: new URLSearchParams(window.location.search).get('search') || null,
+    type_client_id: Number(new URLSearchParams(window.location.search).get('type_client_id')) || null,
+    zone_id: Number(new URLSearchParams(window.location.search).get('zone_id')) || null,
+  });
+  const toggleFormModal = () => {
+    statusModalForm.value = !statusModalForm.value
+  }
+  const toggleDetailModal = () => {
+    statusModalDetail.value = !statusModalDetail.value;
+  }
+  const toggleDeleteModal = () => {
+    statusModalDelete.value = !statusModalDelete.value;
+  }
+  const selectClientItem = item => {
+    selectedClient.value = item;
+    toggleDetailModal();
+  };
+  const selectDeleteItem = item => {
+    formDelete.client_id = item.id;
+    toggleDeleteModal();
+  };
+  const selectItem = item => {
+    form.client_id = item.id;
+    form.name = item.name;
+    form.type_client_id = item.type_client.id,
+    form.zone_id = item.zone.id
+    form.method_paid_id = item.payment_method.id,
+    form.telephone = item.telephone,
+    form.active = item.active,
+    form.comment = item.comment,
+    form.comment = item.search,
+    isEdit.value = true;
+    toggleFormModal();
+  };
+  const submitForm = () => {
+    isLoading.value = true;
+    const request = isEdit.value ? 'client.change' : 'client.save';
+    form.post(route(request), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        toggleFormModal()
+        form.reset();
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
         }
+      },
+      onFinish: () => {
+        isLoading.value = false
       }
-    },
-    onFinish: () => {
-      isLoading.value = false;
+    })
+  };
+  const submitDelete = () => {
+    isLoading.value = true;
+    formDelete.get(route('client.delete', formDelete.client_id), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
+        }
+      },
+      onFinish: () => {
+        isLoading.value = false;
+      }
+    });
+  };
+
+
+  watch(formFilter, value => {
+    Inertia.get('/dashboard/clients', {
+      search: value.search,
+      type_client_id: value.type_client_id,
+      zone_id: value.zone_id
+    }, {
+      preserveState: true
+    })
+  })
+  watch(form, value => {
+    if (value.type_client_id !== 2) {
+      value.zone_id = 3
     }
   });
-};
-
-watch(formFilter, value => {
-  Inertia.get('/dashboard/clients', {
-    search: value.search,
-    type_client_id: value.type_client_id,
-    zone_id: value.zone_id
-  }, {
-    preserveState: true
-  })
-})
-
-watch(form, value => {
-  if (value.type_client_id !== 2) {
-    value.zone_id = 3
-  }
-});
-
 </script>
 <template>
   <AppLayout>
@@ -302,7 +306,7 @@ watch(form, value => {
 
         <div class="bg-white w-full shadow-xl rounded-lg p-4 mb-5">
           <div class="flex lg:flex-row flex-col space-x-4 items-end justify-between">
-            <div class="md:w-1/2 w-full">
+            <div class="lg:w-1/2 w-full">
               <JetLabel value="Búsqueda" />
               <JetInput 
                 id="search" 
@@ -312,7 +316,7 @@ watch(form, value => {
                 class="mt-1 block w-full"
               />
             </div>
-            <div class="md:w-1/4 w-full md:mt-0 mt-5">
+            <div class="lg:w-1/4 w-full lg:mt-0 mt-5">
               <JetLabel value="Tipo de Cliente" />
               <v-select
                 v-model="formFilter.type_client_id"
@@ -333,7 +337,7 @@ watch(form, value => {
                 </template>
               </v-select>
             </div>
-            <div v-if="formFilter.type_client_id === 2" class="md:w-1/4 w-full md:mt-0 mt-5">
+            <div v-if="formFilter.type_client_id === 2" class="lg:w-1/4 w-full lg:mt-0 mt-5">
               <JetLabel value="Zona" />
               <v-select
                 v-model="formFilter.zone_id"
@@ -367,19 +371,19 @@ watch(form, value => {
                 class="mt-2 cursor-pointer hover:bg-slate-50 transition duration-300 ease-in-out"
                 @click="selectClientItem(item)"
               >
-                <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs">{{ item.type_client.id === 2 ? `${item.type_client.name}(${item.zone.name})` : item.type_client.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.type_client.id === 2 ? `${item.type_client.name}(${item.zone.name})` : item.type_client.name }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
-                    <Status :status="item.active" class="sm:w-1/2 md:w-1/3 w-full" />
+                    <Status :status="item.active" class="w-auto" />
                   </div>
                 </td>
-                <td class="text-center p-2 md:text-base text-xs" @click.stop>
+                <td class="text-center p-2 lg:text-base text-xs" @click.stop>
                   <a :href="`tel:${item.telephone}`">
                     {{ item.telephone || '-' }}
                   </a>
                 </td>
-                <td class="text-center p-2 md:text-base text-xs" @click.stop>
+                <td class="text-center p-2 lg:text-base text-xs" @click.stop>
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
                       <a v-if="hasPermission('client_edit')" @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
