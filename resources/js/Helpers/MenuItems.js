@@ -66,7 +66,7 @@ export const menuItems = [
         name: 'Historial de Ventas',
         slug: 'sales-history',
         icon: 'fa-chart-line',
-        rol: '',
+        rol: 'accountHistory_index',
       },
       {
         name: 'Ventas Express',
