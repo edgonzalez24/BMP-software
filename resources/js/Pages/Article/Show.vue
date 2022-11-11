@@ -286,7 +286,7 @@ watch(formFilter, value => {
         </div>
       </form>
     </JetModal>
-    <JetModal :show="statusModalDetail" maxWidth="2xl" @close="toggleDetailModal">
+    <JetModal :show="statusModalDetail" maxWidth="lg" @close="toggleDetailModal">
       <DetailArticle
         :article="article.value"
         @close="toggleDetailModal"
@@ -376,7 +376,7 @@ watch(formFilter, value => {
                 <td class="text-center p-2 lg:text-base text-xs md:block hidden">{{ item.category.name}}</td>
                 <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
-                    <Status :status="item.active" class="sm:w-1/2 md:w-1/3 w-full" />
+                    <Status :status="item.active" class="w-auto" />
                   </div>
                 </td>
                 <td class="text-center p-2 lg:text-base text-xs">{{ item.measure_unit.name }}</td>

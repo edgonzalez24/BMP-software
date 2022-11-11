@@ -10,8 +10,9 @@
   import DetailPresale from '@/Components/Presale/Detail.vue';
   import { POSITION } from 'vue-toastification';
   import Loading from 'vue3-loading-overlay';
-  import { appendParams } from "@/Helpers/Functions";
+  import { appendParams, getTotal } from "@/Helpers/Functions";
   import FilterPresale from '@/Components/Shared/FilterPresale.vue';
+  import { usePage } from '@inertiajs/inertia-vue3';
 
   // Props
   const props = defineProps({
@@ -23,11 +24,11 @@
   // PropsData
   const header = reactive([
     {
-      name: 'ID',
+      name: 'Fecha',
       showInMobile: true
     },
     {
-      name: 'Fecha',
+      name: 'Orden',
       showInMobile: true
     },
     {
@@ -73,9 +74,6 @@
     }, {
       preserveState: true
     }))
-  }
-  const getTotal = (arr) => {
-    return _.sumBy(arr, item => Number(item.total)).toFixed(2);
   }
   const detailPresale = (presale) => {
     selectedPresale.value = presale;
@@ -196,10 +194,10 @@
                 @click="detailPresale(item)"
               >
                 <td class="text-center p-2 lg:text-base text-xs">
-                  Orden #{{ item.id }}
+                  {{ formatDate(item.created_at) }}
                 </td>
                 <td class="text-center p-2 lg:text-base text-xs">
-                  {{ formatDate(item.created_at) }}
+                  Orden #{{ item.id }}
                 </td>
                 <td class="text-center p-2 lg:text-base text-xs">
                   {{ item.client.name }}

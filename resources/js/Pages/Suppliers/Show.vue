@@ -239,7 +239,7 @@
                 </td>
                 <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
-                    <Status :status="item.active" class="sm:w-1/2 md:w-1/3 w-full" />
+                    <Status :status="item.active" class="w-auto" />
                   </div>
                 </td>
                 <td class="text-center p-2 lg:text-base text-xs hidden lg:block">{{ item.email }}</td>

@@ -60,7 +60,7 @@ class ArticleController extends Controller
             $article = new Article($request->all());
             $article->save();
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
 
         return redirect()->back()->with('success', 'Registro creado correctamente!.');
@@ -91,7 +91,7 @@ class ArticleController extends Controller
                     ->update(['sale_price' => $request->get('global_price')]);
             }
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
         return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
@@ -118,7 +118,7 @@ class ArticleController extends Controller
             $article->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
     }
 

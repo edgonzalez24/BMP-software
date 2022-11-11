@@ -60,7 +60,7 @@ export const menuItems = [
         name: 'Cuentas Pendientes',
         slug: 'pending-accounts',
         icon: 'fa-user-clock',
-        rol: 'acountHistory_index',
+        rol: 'accountHistory_index',
       },
       {
         name: 'Historial de Ventas',

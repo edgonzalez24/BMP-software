@@ -26,7 +26,7 @@
       showInMobile: true
     },
     {
-      name: 'ID',
+      name: 'Orden',
       showInMobile: true
     },
     {
@@ -159,7 +159,7 @@
                 <td 
                   class="text-center p-2 lg:text-base text-xs"
                 >
-                  Preventa #{{ item.id }}
+                  Orden #{{ item.id }}
               </td>
                 <td 
                   class="text-center p-2 lg:text-base text-xs"

@@ -81,7 +81,7 @@ class PermissionsSeeder extends Seeder
         $presale_destroy = Permission::create(['name' => 'presale_destroy', 'descriptions' => 'Eliminar una entrada en preventas']);
 
         /* CUENTAS POR COBRAR */
-        $acountHistory_index = Permission::create(['name' => 'acountHistory_index', 'descriptions' => 'Listar todas las preventas marcadas como entregadas y que tienen saldos pendientes de cobro']);
+        $accountHistory_index = Permission::create(['name' => 'accountHistory_index', 'descriptions' => 'Listar todas las preventas marcadas como entregadas y que tienen saldos pendientes de cobro']);
         
 
         // ----------------------------------------
@@ -98,7 +98,7 @@ class PermissionsSeeder extends Seeder
             $stock_index, $stock_create, $stock_edit, $stock_destroy, $stock_show, 
             $client_index, $client_create, $client_edit, $client_destroy,            
             $presale_index, $presale_create, $presale_edit, $presale_destroy,
-            $acountHistory_index,
+            $accountHistory_index,
         ];        
         $encargado->syncPermissions($permission_encargado);
 
@@ -122,7 +122,7 @@ class PermissionsSeeder extends Seeder
         // ----------------- PERMISOS cuentas -----------------
         $permission_cuentas = [
             $client_index,
-            $acountHistory_index,
+            $accountHistory_index,
         ];        
         $cuentas->syncPermissions($permission_cuentas);
 

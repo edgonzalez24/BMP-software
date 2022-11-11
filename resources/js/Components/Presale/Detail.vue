@@ -6,6 +6,8 @@
   import Loading from 'vue3-loading-overlay';
   import InputPrice from '@/Components/Shared/inputPrice.vue';
   import JetButton from '@/Components/Button.vue';
+  import { getTotal } from '@/Helpers/Functions';
+import { computed } from '@vue/reactivity';
 
   const props = defineProps({
     selectedPresale: Object,
@@ -16,20 +18,23 @@
     isPending: {
       type: Boolean,
       default: false
-    }
+    },
   });
+
+
   const emit = defineEmits(['close', 'getHistory'])
-  const getTotal = (arr) => {
-    return _.sumBy(arr, item => Number(item.total)).toFixed(2);
-  }
+
 
   const form = useForm({
     amount: 0,
-    presale_id: props.selectedPresale.id
+    presale_id: props.selectedPresale.id,
+    total_paid: getTotal(props.selectedPresale.presale_detail)
   })
   const isLoading = ref(false);
 
+
   const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
+
 
   const updatePresale = () => {
     if (form.amount > props.selectedPresale.total_pending ) {
@@ -63,7 +68,7 @@
     <Loading :active.sync="isLoading"></Loading>
     <div class="flex justify-between items-center mb-2">
       <h3 class="font-semibold md:text-2xl text-lg text-dark-blue-500 leading-tight text-left">
-        {{ isExpress ? `Venta #${selectedPresale.id}` : `Preventa #${selectedPresale.id}` }}
+        {{ isExpress ? `Venta #${selectedPresale.id}` : `Orden #${selectedPresale.id}`}}
       </h3>
       <a @click="emit('close')" class="cursor-pointer">
         <font-awesome-icon icon="fa-solid fa-xmark" class="text-2xl text-gray-300" />

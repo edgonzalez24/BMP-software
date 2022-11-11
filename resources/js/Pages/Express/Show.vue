@@ -25,7 +25,7 @@
       showInMobile: true
     },
     {
-      name: 'ID',
+      name: 'Venta',
       showInMobile: true
     },
     {

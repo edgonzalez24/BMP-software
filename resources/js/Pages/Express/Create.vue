@@ -9,6 +9,7 @@
   import Table from '@/Components/Table.vue';
   import { POSITION } from 'vue-toastification';
   import Loading from 'vue3-loading-overlay';
+  import { getTotal } from '@/Helpers/Functions';
 
   const props = defineProps({
     articles: Object | null,
@@ -95,9 +96,6 @@
     selectedItem.value = { ...selected, total_articles: 0, total: 0, dischargued: 0 };
     search.value = null;
     error.value = '';
-  }
-  const getTotal = (arr) => {
-    return _.sumBy(arr, item => Number(item.total)).toFixed(2);
   }
   const validateStock = (stock, unit) => {
     return stock === 0 || unit > stock;
