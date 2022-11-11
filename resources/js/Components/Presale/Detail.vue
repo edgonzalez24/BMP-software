@@ -34,6 +34,8 @@
   const updatePresale = () => {
     if (form.amount > props.selectedPresale.total_pending ) {
       toast.error('El abono no puede ser mayor al total pendiente', { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+    } else if (form.amount === 0 ) {
+      toast.error('El abono no puede ser 0', { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
     } else {
       isLoading.value = true;
       form.post(route('debit.save'), {
@@ -130,7 +132,7 @@
       </div>
     </div>
     <div class="flex justify-between mt-5">
-      <div v-if="selectedPresale.dispatch.id === 4" class="mb-1 cursor-pointer inline-flex items-center text-base text-blue-600 font-bold" @click="emit('getHistory', selectedPresale.id)">
+      <div v-if="selectedPresale.dispatch.id === 4 && !isExpress" class="mb-1 cursor-pointer inline-flex items-center text-base text-blue-600 font-bold" @click="emit('getHistory', selectedPresale.id)">
         Ver historial de abono
       </div>
       <JetButton  v-if="isPending" type="button" @click="updatePresale">

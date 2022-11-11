@@ -55,8 +55,12 @@ const statusModalForm = ref(false);
 const statusModalDelete = ref(false);
 const statusModalDetail = ref(false);
 const isEdit = ref(false);
+
+
 const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
 const totalPages = computed(() => Math.ceil(props.articles.meta.total / props.articles.meta.per_page));
+
+
 const toggleFormModal = () => {
   statusModalForm.value = !statusModalForm.value;
 };
@@ -144,6 +148,8 @@ const submitDelete = () => {
     }
   });
 };
+
+
 watch(formFilter, value => {
   Inertia.get('/dashboard/articles/filter', {
       search: value.search,
@@ -366,15 +372,15 @@ watch(formFilter, value => {
                 class="mt-2 cursor-pointer hover:bg-slate-50 transition duration-300 ease-in-out"
                 @click="selectDetailItem(item)"
               >
-                <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs md:block hidden">{{ item.category.name}}</td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
+                <td class="text-center p-2 lg:text-base text-xs md:block hidden">{{ item.category.name}}</td>
+                <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
                     <Status :status="item.active" class="sm:w-1/2 md:w-1/3 w-full" />
                   </div>
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">{{ item.measure_unit.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs" @click.stop>
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.measure_unit.name }}</td>
+                <td class="text-center p-2 lg:text-base text-xs" @click.stop>
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
                       <a v-if="hasPermission('article_edit')" @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>

@@ -22,7 +22,7 @@ const logout = () => {
 };
 
 const active = (slug) => {
-  return window.location.pathname.includes(slug);
+  return window.location.pathname.includes(slug) || window.route().current() === slug;
 }
 
 const hasPermission = (type, value) => {

@@ -387,24 +387,24 @@ watch(() =>_.cloneDeep(form), (newVal, oldVal) => {
             <Table :header="headerPreview">
               <tbody v-if="Object.keys(selectedItem).length" class="px-5">
                 <tr>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     {{ selectedItem.name }}
                   </td>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     $ {{ selectedItem.price ? selectedItem.price.sale_price : 0 }}
                   </td>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     {{ selectedItem.measure_unit.name }}
                   </td>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     <div class="md:w-full w-28">
                       <InputCounter v-model:value="selectedItem.total_articles" hasLimit :limit="selectedItem.stock" />
                     </div>
                   </td>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     {{ selectedItem.stock }}
                   </td>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     <JetButton @click="addToCart(selectedItem)">
                       Agregar
                     </JetButton>
@@ -424,16 +424,16 @@ watch(() =>_.cloneDeep(form), (newVal, oldVal) => {
           <Table :header="header" :items="form.details.length">
             <tbody>
               <tr v-for="article in form.details">
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   {{ article.name }}
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   $ {{ getTotalPriceArticle(article) }}
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   {{ article.measure_unit.name }}
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   <template v-if="editUnit && article.id === selectedArticleID">
                     <div class="md:w-full w-28">
                       <InputCounter v-model:value="article.total_articles" hasLimit :limit="article.stock" />
@@ -443,7 +443,7 @@ watch(() =>_.cloneDeep(form), (newVal, oldVal) => {
                     {{ article.total_articles }}
                   </template>
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
                     <div v-if="isPaid || (presale && [4, 5].includes(presale.dispatch.id))">-</div>
                     <div v-else class="flex flex-row space-x-4">
