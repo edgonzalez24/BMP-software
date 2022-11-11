@@ -52,7 +52,7 @@ Route::middleware([
     Route::get('/dashboard/pending-accounts', [AccountHistory::class, 'index'])->name('pending-accounts');
     Route::get('/dashboard/express', [PresaleController::class, 'indexExpressPresale'])->name('express');
     Route::get('/dashboard/express/create', [PresaleController::class, 'searchProducts'])->name('express.create');
-    
+
     // Routes only to request data(not views)
 
     // Users
@@ -101,5 +101,6 @@ Route::middleware([
     // History payment
     Route::post('/presale/express/debit', [AccountHistory::class, 'payment'])->name('debit.save');
     Route::post('/presale/express/save', [PresaleController::class, 'expressPresale'])->name('express.save');
+    Route::post('/presale/history/presale/close', [AccountHistory::class, 'historyPesaleClose'])->name('history.presale.close');
 });
 

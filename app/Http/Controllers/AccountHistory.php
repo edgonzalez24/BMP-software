@@ -83,7 +83,7 @@ class AccountHistory extends Controller
       }
     }
 
-    public function presaleClose(Request $request)
+    public function historyPesaleClose(Request $request)
     {
         $from = "{$request->get('from')} 00:00:00";
         $to = "{$request->get('to')} 23:59:59";
