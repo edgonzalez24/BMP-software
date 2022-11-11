@@ -175,7 +175,7 @@
         </div>
         <div
           class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-          <Table :header="header" :items="presales.data.length">
+          <Table :header="header">
             <tbody class="px-5">
               <tr 
                 v-if="presales.data.length"

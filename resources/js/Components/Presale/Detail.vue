@@ -121,12 +121,12 @@ import { computed } from '@vue/reactivity';
     <div>
       <div class="border-t border-gray-300 flex justify-end">
         <div class="pt-3 md:w-3/6 w-full">
-          <div class="flex justify-between mb-1 md:text-base text-sm">
-            <p class="font-medium">Total Pagado:</p>
+          <div v-if="selectedPresale.paid === 0" class="flex justify-between mb-1 md:text-base text-sm">
+            <p class="font-medium">Total pagado:</p>
             <span>${{ (Number(getTotal(selectedPresale.presale_detail)) - Number(selectedPresale.total_pending)).toFixed(2) }}</span>
           </div>
-          <div class="flex justify-between mb-1 md:text-base text-sm">
-            <p class="font-medium">Total Pendiente:</p>
+          <div v-if="selectedPresale.paid === 0" class="flex justify-between mb-1 md:text-base text-sm">
+            <p class="font-medium">Total pendiente:</p>
             <span>${{ Number(selectedPresale.total_pending).toFixed(2) }}</span>
           </div>
           <div class="flex justify-between mb-1 md:text-base text-sm">
@@ -137,7 +137,7 @@ import { computed } from '@vue/reactivity';
       </div>
     </div>
     <div class="flex justify-between mt-5">
-      <div v-if="selectedPresale.dispatch.id === 4 && !isExpress" class="mb-1 cursor-pointer inline-flex items-center text-base text-blue-600 font-bold" @click="emit('getHistory', selectedPresale.id)">
+      <div v-if="selectedPresale.dispatch.id === 4 && !isExpress" class="mb-1 cursor-pointer inline-flex items-center md:text-base text-sm text-blue-600 font-bold" @click="emit('getHistory', selectedPresale.id)">
         Ver historial de abono
       </div>
       <JetButton  v-if="isPending" type="button" @click="updatePresale">
