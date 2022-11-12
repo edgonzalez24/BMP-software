@@ -14,6 +14,7 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PresaleController;
 use App\Http\Controllers\AccountHistory;
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,7 +34,8 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
 ])->group(function () {
-    Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
+    // Route::get('/dashboard', function () { return Inertia::render('Dashboard'); })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/users', [UserController::class, 'index'])->name('users');
     Route::get('/dashboard/profile', function () { return Inertia::render('Profile/Show'); })->name('profile');
     Route::get('/dashboard/categories',  [CategoryArticleController::class, 'index'])->name('categories');
