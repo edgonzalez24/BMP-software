@@ -45,7 +45,7 @@ class SupplierController extends Controller
             $supplier = new Supplier($request->all());
             $supplier->save();
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
 
         return redirect()->back()->with('success', 'Registro creado correctamente!.');
@@ -69,7 +69,7 @@ class SupplierController extends Controller
             $supplier = Supplier::find($request->get('supplier_id'));
             $supplier->update($request->all());
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
         return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
@@ -92,7 +92,7 @@ class SupplierController extends Controller
             $supplier->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
     }
 }

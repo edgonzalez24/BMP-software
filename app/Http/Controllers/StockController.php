@@ -52,7 +52,7 @@ class StockController extends Controller
             $stock = new Stock($request->all());
             $stock->save();
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
 
         return redirect()->back()->with('success', 'Registro creado correctamente!.');

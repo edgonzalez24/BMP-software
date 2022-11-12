@@ -10,37 +10,37 @@ export const menuItems = [
     name: 'Inventario',
     slug: '',
     icon: '',
-    rol: '', 
+    rol: '',
     children: [
       {
         name: 'Artículos',
         slug: 'articles',
         icon: 'fa-box-open',
-        rol: 'article_index', 
+        rol: 'article_index',
       },
       {
         name: 'Categorias',
         slug: 'categories',
         icon: 'fa-network-wired',
-        rol: 'category_article_index', 
+        rol: 'category_article_index',
       },
       {
         name: 'Unidades de medida',
         slug: 'measures',
         icon: 'fa-tag',
-        rol: 'measure_units_index', 
+        rol: 'measure_units_index',
       },
       {
         name: 'Proveedores',
         slug: 'suppliers',
         icon: 'fa-truck-field-un',
-        rol: 'supplier_index', 
+        rol: 'supplier_index',
       },
       {
         name: 'Stock',
         slug: 'stocks',
         icon: 'fa-cart-flatbed',
-        rol: 'stock_index', 
+        rol: 'stock_index',
       },
     ]
   },
@@ -48,19 +48,25 @@ export const menuItems = [
     name: 'Cuentas por cobrar',
     slug: '',
     icon: '',
-    rol: '', 
+    rol: '',
     children: [
       {
         name: 'Clientes',
         slug: 'clients',
         icon: 'fa-users',
-        rol: 'client_index', 
+        rol: 'client_index',
       },
       {
         name: 'Cuentas Pendientes',
         slug: 'pending-accounts',
-        icon: 'fa-chart-simple',
-        rol:'acountHistory_index', 
+        icon: 'fa-user-clock',
+        rol: 'accountHistory_index',
+      },
+      {
+        name: 'Historial de Ventas',
+        slug: 'sales-history',
+        icon: 'fa-chart-line',
+        rol: 'accountHistory_index',
       },
       {
         name: 'Ventas Express',

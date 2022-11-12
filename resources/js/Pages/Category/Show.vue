@@ -1,111 +1,112 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import JetButton from '@/Components/Button.vue';
-import Table from '@/Components/Table.vue';
-import JetModal from '@/Components/Modal.vue'
-import JetLabel from '@/Components/Label.vue';
-import JetInput from '@/Components/Input.vue';
-import Loading from 'vue3-loading-overlay';
-import { ref, getCurrentInstance, computed, reactive, onMounted } from 'vue';
-import { useForm, usePage } from '@inertiajs/inertia-vue3';
-import { POSITION } from 'vue-toastification';
-import Pagination from '@/Components/Shared/Pagination.vue';
+  import AppLayout from '@/Layouts/AppLayout.vue';
+  import JetButton from '@/Components/Button.vue';
+  import Table from '@/Components/Table.vue';
+  import JetModal from '@/Components/Modal.vue'
+  import JetLabel from '@/Components/Label.vue';
+  import JetInput from '@/Components/Input.vue';
+  import Loading from 'vue3-loading-overlay';
+  import { ref, getCurrentInstance, computed, reactive, onMounted } from 'vue';
+  import { useForm, usePage } from '@inertiajs/inertia-vue3';
+  import { POSITION } from 'vue-toastification';
+  import Pagination from '@/Components/Shared/Pagination.vue';
 
-// Props
-const props = defineProps({
-  categoryArticle: Object
-})
-
-
-// Setup State
-const header = reactive([
-  {
-    name: 'ID',
-    showInMobile: true
-  },
-  {
-    name: 'Nombre',
-    showInMobile: true
-  },
-  {
-    name: 'Acciones',
-    showInMobile: true
-  }
-]);
-const toast = getCurrentInstance().appContext.config.globalProperties.$toast
-const isEdit = ref(false);
-const isLoading = ref(false);
-const totalPages = computed(() => Math.ceil(props.categoryArticle.total / props.categoryArticle.per_page));
-const formCreateOrEdit = useForm({
-  name: null,
-  category_id: null
-});
-const formDelete = useForm({
-  id: null
-});
-const statusModalForm = ref(false);
-const statusModalDelete = ref(false);
-
-// Methods
-const toggleFormModal = () => {
-  statusModalForm.value = !statusModalForm.value;
-};
-const toggleDeleteModal = () => {
-  statusModalDelete.value = !statusModalDelete.value;
-};
-const selectItem = item => {
-  formCreateOrEdit.name = item.name;
-  formCreateOrEdit.category_id = item.id;
-  isEdit.value = true;
-  toggleFormModal();  
-};
-const selectDeleteItem = item => {
-  formDelete.id = item.id;
-  toggleDeleteModal();
-};
-
-const submitCreateOrEdit = () => {
-  isLoading.value = true;
-  const request = isEdit.value ? 'category.change' : 'category.save';
-  formCreateOrEdit.post(route(request), {
-    onSuccess: () => {
-      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-      toggleFormModal()
-      formCreateOrEdit.reset();
-    },
-    onError: () => {
-      const errors = usePage().props.value.errors;
-      for (const key in errors) {
-        if (Object.hasOwnProperty.call(errors, key)) {
-          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        }
-      }
-    },
-    onFinish: () => {
-      isLoading.value = false
-    }
+  // Props
+  const props = defineProps({
+    categoryArticle: Object
   })
-};
 
-const submitDelete = () => {
-  isLoading.value = true;
-  formDelete.get(route('category.delete', formDelete.id), {
-    onSuccess: () => {
-      toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+
+  // Setup State
+  const header = reactive([
+    {
+      name: 'ID',
+      showInMobile: true
     },
-    onError: () => {
-      const errors = usePage().props.value.errors;
-      for (const key in errors) {
-        if (Object.hasOwnProperty.call(errors, key)) {
-          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        }
-      }
+    {
+      name: 'Nombre',
+      showInMobile: true
     },
-    onFinish: () => {
-      isLoading.value = false;
+    {
+      name: 'Acciones',
+      showInMobile: true
     }
+  ]);
+  const isEdit = ref(false);
+  const isLoading = ref(false);
+  const formCreateOrEdit = useForm({
+    name: null,
+    category_id: null
   });
-};
+  const formDelete = useForm({
+    id: null
+  });
+  const statusModalForm = ref(false);
+  const statusModalDelete = ref(false);
+
+
+  const totalPages = computed(() => Math.ceil(props.categoryArticle.total / props.categoryArticle.per_page));
+  const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
+
+
+  // Methods
+  const toggleFormModal = () => {
+    statusModalForm.value = !statusModalForm.value;
+  };
+  const toggleDeleteModal = () => {
+    statusModalDelete.value = !statusModalDelete.value;
+  };
+  const selectItem = item => {
+    formCreateOrEdit.name = item.name;
+    formCreateOrEdit.category_id = item.id;
+    isEdit.value = true;
+    toggleFormModal();  
+  };
+  const selectDeleteItem = item => {
+    formDelete.id = item.id;
+    toggleDeleteModal();
+  };
+  const submitCreateOrEdit = () => {
+    isLoading.value = true;
+    const request = isEdit.value ? 'category.change' : 'category.save';
+    formCreateOrEdit.post(route(request), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+        toggleFormModal()
+        formCreateOrEdit.reset();
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
+        }
+      },
+      onFinish: () => {
+        isLoading.value = false
+      }
+    })
+  };
+  const submitDelete = () => {
+    isLoading.value = true;
+    formDelete.get(route('category.delete', formDelete.id), {
+      onSuccess: () => {
+        toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+      },
+      onError: () => {
+        const errors = usePage().props.value.errors;
+        for (const key in errors) {
+          if (Object.hasOwnProperty.call(errors, key)) {
+            toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+          }
+        }
+      },
+      onFinish: () => {
+        isLoading.value = false;
+      }
+    });
+  };
 
 </script>
 <template>
@@ -193,9 +194,9 @@ const submitDelete = () => {
           <Table :header="header" :items="categoryArticle.data.length">
             <tbody class="px-5">
               <tr v-for="item in categoryArticle.data" class="mt-2">
-                <td class="text-center p-2 md:text-base text-xs">{{ item.id }}</td>
-                <td class="text-center p-2 md:text-base text-xs">{{ item.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.id }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.name }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
                       <a @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>

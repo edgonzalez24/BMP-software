@@ -1,93 +1,93 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import JetLabel from '@/Components/Label.vue';
-import JetInput from '@/Components/Input.vue';
-import JetButton from '@/Components/Button.vue';
-import Loading from 'vue3-loading-overlay';
-import { useForm, usePage } from '@inertiajs/inertia-vue3';
-import { computed, ref } from 'vue';
-import { useToast, POSITION } from 'vue-toastification';
-import { getInitials } from '@/Helpers/Functions.js';
+	import AppLayout from '@/Layouts/AppLayout.vue';
+	import JetLabel from '@/Components/Label.vue';
+	import JetInput from '@/Components/Input.vue';
+	import JetButton from '@/Components/Button.vue';
+	import Loading from 'vue3-loading-overlay';
+	import { useForm, usePage } from '@inertiajs/inertia-vue3';
+	import { computed, ref } from 'vue';
+	import { useToast, POSITION } from 'vue-toastification';
+	import { getInitials } from '@/Helpers/Functions.js';
 
-const user = computed(() => usePage().props.value.user);
-const toast = useToast();
 
-const isLoading = ref(false);
-const changePassword = ref(false);
-const showConfirmPassword = ref(false);
-const showCurrentPassword = ref(false);
-const showNewPassword = ref(false);
-const form = useForm({
-	_method: 'PUT',
-	email: user.value.email,
-	name: user.value.name,
-	telephone: user.value.telephone,
-});
-
-const form_password = useForm({
-	current_password: '',
-	password: '',
-	password_confirmation: '',
-});
-
-const togglePassword = () => {
-	changePassword.value = !changePassword.value;
-	if(!changePassword.value){
-		form_password.current_password = '';
-		form_password.password = '';
-		form_password.password_confirmation = '';
-	}
-}
-
-const submit = () => {
-	isLoading.value = true;
-	
-	form.post(route('user-profile-information.update'), {
-		errorBag: 'updateProfileInformation',
-		preserveScroll: true,
-		onSuccess: () => {
-			toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-    },
-		onError: () => {
-      const errors = usePage().props.value.errors;
-      for (const key in errors) {
-        if (Object.hasOwnProperty.call(errors, key)) {
-          toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-        }
-      }
-    },
-		onFinish: () => {
-			if(!changePassword.value) {
-				isLoading.value = false;
-			}
-    }
+	const toast = useToast();
+	const isLoading = ref(false);
+	const changePassword = ref(false);
+	const showConfirmPassword = ref(false);
+	const showCurrentPassword = ref(false);
+	const showNewPassword = ref(false);
+	const form = useForm({
+		_method: 'PUT',
+		email: user.value.email,
+		name: user.value.name,
+		telephone: user.value.telephone,
+	});
+	const form_password = useForm({
+		current_password: '',
+		password: '',
+		password_confirmation: '',
 	});
 
-	if(changePassword.value) {
-		form_password.put(route('user-password.update'), {
-			errorBag: 'updatePassword',
+
+	const user = computed(() => usePage().props.value.user);
+
+
+	const togglePassword = () => {
+		changePassword.value = !changePassword.value;
+		if(!changePassword.value){
+			form_password.current_password = '';
+			form_password.password = '';
+			form_password.password_confirmation = '';
+		}
+	}
+	const submit = () => {
+		isLoading.value = true;
+		
+		form.post(route('user-profile-information.update'), {
+			errorBag: 'updateProfileInformation',
 			preserveScroll: true,
 			onSuccess: () => {
 				toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
-				form_password.current_password = '';
-				form_password.password = '';
-				form_password.password_confirmation = '';
 			},
 			onError: () => {
-				const errors = usePage().props.value.errors.updatePassword;
+				const errors = usePage().props.value.errors;
 				for (const key in errors) {
 					if (Object.hasOwnProperty.call(errors, key)) {
-						toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 7000 });
+						toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
 					}
 				}
 			},
 			onFinish: () => {
-				isLoading.value = false;
+				if(!changePassword.value) {
+					isLoading.value = false;
+				}
 			}
 		});
-	}
-}
 
+		if(changePassword.value) {
+			form_password.put(route('user-password.update'), {
+				errorBag: 'updatePassword',
+				preserveScroll: true,
+				onSuccess: () => {
+					toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+					form_password.current_password = '';
+					form_password.password = '';
+					form_password.password_confirmation = '';
+				},
+				onError: () => {
+					const errors = usePage().props.value.errors.updatePassword;
+					for (const key in errors) {
+						if (Object.hasOwnProperty.call(errors, key)) {
+							toast.error(errors[key], { position: POSITION.BOTTOM_RIGHT, timeout: 7000 });
+						}
+					}
+				},
+				onFinish: () => {
+					isLoading.value = false;
+				}
+			});
+		}
+	}
 </script>
 
 <template>
