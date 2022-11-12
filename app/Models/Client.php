@@ -32,7 +32,7 @@ class Client extends Model
     {
         return $this->belongsTo(Zone::class);
     }
-    
+
     /**
      * Get the method paid that owns the Client
      *
@@ -41,5 +41,5 @@ class Client extends Model
     public function method_paid()
     {
         return $this->belongsTo(MethodPaid::class);
-    }
+    } 
 }
