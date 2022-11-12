@@ -20,10 +20,7 @@ class DashboardController extends Controller
       $order_total = count($presale);
       $orders_complete = $presale->where('paid', '=', 1);
       $total_sale = $orders_complete->sum('total_paid');
-      $top_articles = DB::select('SELECT p.*
-      FROM presale_details p
-      ORDER BY p.total_articles DESC
-      LIMIT 5');
+      $top_articles = PresaleDetail::whereDate('created_at', '>=', date('Y-m') . '-01')->whereDate('created_at', '<=', date('Y-m-d'))->get();
       dd($presale, $order_total, count($orders_complete), $total_sale, $top_articles);
       return Inertia::render('Dashboard',[
         'presale' => $presale,
