@@ -25,7 +25,7 @@
       showInMobile: true
     },
     {
-      name: 'ID',
+      name: 'Venta',
       showInMobile: true
     },
     {
@@ -37,6 +37,8 @@
       showInMobile: true
     }
   ]);
+
+  const totalPages = computed(() => Math.ceil(props.presales.total / props.presales.per_page));
 
   const formatDate = date => {
     return moment(date).format("DD-MM-YYYY");
@@ -57,7 +59,6 @@
     datepicker.value.closeMenu();
     handleFilter();
   }
-
   const handleFilter = () => {
     Inertia.get(route('express', { 
       from: date.value && date.value.length ? formatRangeDate(date.value[0]) : null , 
@@ -66,7 +67,7 @@
       preserveState: true
     }))
   }
-  const totalPages = computed(() => Math.ceil(props.presales.total / props.presales.per_page));
+
   onMounted(() => {
     const startDate = new URLSearchParams(window.location.search).has('from') && moment(new URLSearchParams(window.location.search).get('from'));
 
@@ -112,7 +113,7 @@
                   :enableTimePicker="false"
                   placeholder="Seleccionar fechas" 
                   ref="datepicker"
-                  utc
+                  format="dd/MM/yyyy"
                   @cleared="alertFn"
                 >
                   <template #action-select>
@@ -129,16 +130,16 @@
             <tbody class="px-5">
               <tr v-if="presales.data.length" v-for="item in presales.data"
                 class="mt-2 cursor-pointer hover:bg-slate-50 transition duration-300 ease-in-out" @click="detailPresale(item)">
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   {{ formatDate(item.created_at) }}
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   Venta #{{ item.id }}
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   {{ item.dispatch.name }}
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   ${{ item.total_paid.toFixed(2) }}
                 </td>
               </tr>

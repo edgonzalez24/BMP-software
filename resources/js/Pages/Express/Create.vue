@@ -9,10 +9,12 @@
   import Table from '@/Components/Table.vue';
   import { POSITION } from 'vue-toastification';
   import Loading from 'vue3-loading-overlay';
+  import { getTotal } from '@/Helpers/Functions';
 
   const props = defineProps({
     articles: Object | null,
   });
+
 
   const form = useForm({
     details: [],
@@ -27,7 +29,6 @@
   const error = ref('');
   const selectedArticleID = ref(0);
   const editUnit = ref(false);
-  const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
   const isLoading = ref(false);
   const header = reactive([
     {
@@ -78,7 +79,10 @@
     }
   ]);
 
+
+  const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
   const getTotalPending = computed(() => (getTotal(form.details) - form.total_paid).toFixed(2));
+
 
   const searchArticle = (search, loading) => {
     const EP = '/dashboard/express/create'
@@ -92,9 +96,6 @@
     selectedItem.value = { ...selected, total_articles: 0, total: 0, dischargued: 0 };
     search.value = null;
     error.value = '';
-  }
-  const getTotal = (arr) => {
-    return _.sumBy(arr, item => Number(item.total)).toFixed(2);
   }
   const validateStock = (stock, unit) => {
     return stock === 0 || unit > stock;
@@ -125,11 +126,9 @@
     selectedArticleID.value = article.id;
     form.details.find(item => item.id === article.id).total = getTotalPriceArticle(article);
   }
-
   const deleteArticle = (article) => {
     _.remove(form.details, item => item.id === article.id)
   }
-
   const savePresale = () => {
     const EP = 'express.save';
     if (form.details.length) {
@@ -162,7 +161,6 @@
       toast.error('Información no ha sido completada', { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
     }
   }
-
 </script>
 <template>
   <AppLayout>
@@ -218,24 +216,24 @@
             <Table :header="headerPreview">
               <tbody v-if="Object.keys(selectedItem).length" class="px-5">
                 <tr>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     {{ selectedItem.name }}
                   </td>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     $ {{ selectedItem.price ? selectedItem.price.sale_price : 0 }}
                   </td>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     {{ selectedItem.measure_unit.name }}
                   </td>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     <div class="md:w-full w-28">
                       <InputCounter v-model:value="selectedItem.total_articles" hasLimit :limit="selectedItem.stock" />
                     </div>
                   </td>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     {{ selectedItem.stock }}
                   </td>
-                  <td class="text-center p-2 md:text-base text-xs">
+                  <td class="text-center p-2 lg:text-base text-xs">
                     <JetButton @click="addToCart(selectedItem)">
                       Agregar
                     </JetButton>
@@ -255,16 +253,16 @@
           <Table :header="header" :items="form.details.length">
             <tbody>
               <tr v-for="article in form.details">
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   {{ article.name }}
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   $ {{ getTotalPriceArticle(article) }}
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   {{ article.measure_unit.name }}
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   <template v-if="editUnit && article.id === selectedArticleID">
                     <div class="md:w-full w-28">
                       <InputCounter v-model:value="article.total_articles" hasLimit :limit="article.stock" />
@@ -274,7 +272,7 @@
                     {{ article.total_articles }}
                   </template>
                 </td>
-                <td class="text-center p-2 md:text-base text-xs">
+                <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
                       <a @click="editArticle(article)" class="text-blue-500 font-medium cursor-pointer">

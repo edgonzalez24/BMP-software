@@ -48,7 +48,7 @@ class MeasureUnitsController extends Controller
             $measureUnits = new MeasureUnits($request->all());
             $measureUnits->save();
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
 
         return redirect()->back()->with('success', 'Registro creado correctamente!.');
@@ -72,7 +72,7 @@ class MeasureUnitsController extends Controller
             $measureUnits = MeasureUnits::find($validateRequest->get('measure_id'));
             $measureUnits->update($validateRequest->all());
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
         return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
     }
@@ -95,7 +95,7 @@ class MeasureUnitsController extends Controller
             $measureUnits->delete();
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
     }
 }

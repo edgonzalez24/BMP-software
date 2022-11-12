@@ -4,24 +4,23 @@
   import { reactive, computed, ref, onMounted, getCurrentInstance } from 'vue';
   import Pagination from '@/Components/Shared/Pagination.vue';
   import moment from 'moment';
-  import { Inertia } from '@inertiajs/inertia';
-  import _ from 'lodash';
+  import JetLabel from '@/Components/Label.vue';
   import JetModal from '@/Components/Modal.vue';
   import DetailPresale from '@/Components/Presale/Detail.vue';
+  import FilterPresale from '@/Components/Shared/FilterPresale.vue';
+  import { getTotal, appendParams } from '@/Helpers/Functions';
+  import { Inertia } from '@inertiajs/inertia';
   import { POSITION } from 'vue-toastification';
   import Loading from 'vue3-loading-overlay';
-  import { appendParams, getTotal } from "@/Helpers/Functions";
-  import FilterPresale from '@/Components/Shared/FilterPresale.vue';
   import { usePage } from '@inertiajs/inertia-vue3';
 
-  // Props
   const props = defineProps({
     clients: Array,
     presales: Object,
     history: Array | null
-  });
+  })
 
-  // PropsData
+
   const header = reactive([
     {
       name: 'Fecha',
@@ -36,52 +35,34 @@
       showInMobile: true
     },
     {
-      name: 'Pendiente',
-      showInMobile: true
-    },
-    {
-      name: 'Abonado',
-      showInMobile: true
-    },
-    {
-      name: 'Total de la preventa',
+      name: 'Total',
       showInMobile: true
     }
   ]);
   const statusModalDetail = ref(false);
-  const statusModalHistory = ref(false);
   const selectedPresale = ref({});
   const isLoading = ref(false);
+  const statusModalHistory = ref(false);
   const presale = ref({});
+
   
-  // Computed Props
   const totalPages = computed(() => Math.ceil(props.presales.meta.total / props.presales.meta.per_page));
   const toast = getCurrentInstance().appContext.config.globalProperties.$toast;
-  
 
-  // Methods
+
   const formatDate = date => {
     return moment(date).format("DD-MM-YYYY");
-  };
+  }
   const formatRangeDate = date => {
     return moment(date).format("YYYY-MM-DD");
   };
-  const handleFilter = (date, client) => {
-    Inertia.get(route('pending-accounts', {
-      from: date && date.length ? formatRangeDate(date[0]) : null,
-      to: date && date.length ? formatRangeDate(date[1]) : null,
-      client_id: client
-    }, {
-      preserveState: true
-    }))
-  }
   const detailPresale = (presale) => {
     selectedPresale.value = presale;
     statusModalDetail.value = true;
   }
   const getHistory = (id) => {
     isLoading.value = true;
-    Inertia.get(route('pending-accounts', { ...appendParams(window.location.search, 'history'), history: id }, {
+    Inertia.get(route('sales-history', { ...appendParams(window.location.search, 'history'), history: id }, {
       preserveState: true,
       preserveScroll: true,
     }),{
@@ -98,8 +79,17 @@
       }
     })
   }
+  const handleFilter = (date, client) => {
+    Inertia.get(route('sales-history', {
+      from: date && date.length ? formatRangeDate(date[0]) : null,
+      to: date && date.length ? formatRangeDate(date[1]) : null,
+      client_id: client
+    }, {
+      preserveState: true
+    }))
+  }
 
-  // Mounted
+
   onMounted(() => {
     if (props.history) {
       statusModalHistory.value = true;
@@ -116,7 +106,6 @@
       @close="statusModalDetail = false"
     >
       <DetailPresale 
-        isPending
         :selectedPresale="selectedPresale"
         @close="statusModalDetail = false"
         @getHistory="getHistory"
@@ -175,22 +164,23 @@
       <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-8">
         <div class="flex justify-between items-center my-5">
           <h2 class="font-semibold md:text-3xl text-xl text-dark-blue-500 leading-tight animated zoomIn">
-            Cuentas Pendientes
+            Historial de Ventas
           </h2>
         </div>
         <div class="mb-5">
-          <FilterPresale 
+          <FilterPresale
             :clients="clients"
             @handleFilter="handleFilter"
           />
         </div>
-        <div class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
-          <Table :header="header" :items="presales.data.length">
+        <div
+          class="bg-white w-full sm:overflow-x-hidden overflow-x-auto shadow-xl rounded-lg min-h-base border border-gray-50 animated fadeIn">
+          <Table :header="header">
             <tbody class="px-5">
-              <tr
+              <tr 
                 v-if="presales.data.length"
                 v-for="item in presales.data"
-                class="mt-2 hover:bg-slate-50 transition duration-300 ease-in-out cursor-pointer"
+                class="mt-2 cursor-pointer hover:bg-slate-50 transition duration-300 ease-in-out"
                 @click="detailPresale(item)"
               >
                 <td class="text-center p-2 lg:text-base text-xs">
@@ -203,13 +193,7 @@
                   {{ item.client.name }}
                 </td>
                 <td class="text-center p-2 lg:text-base text-xs">
-                  ${{ Number(item.total_pending).toFixed(2) }}
-                </td>
-                <td class="text-center p-2 lg:text-base text-xs">
-                  ${{ Number(getTotal(item.presale_detail) - item.total_pending).toFixed(2) }}
-                </td>
-                <td class="text-center p-2 lg:text-base text-xs">
-                  ${{ Number(getTotal(item.presale_detail)).toFixed(2) }}
+                  ${{ getTotal(item.presale_detail) }}
                 </td>
               </tr>
               <tr v-else>

@@ -58,7 +58,7 @@ class PresaleController extends Controller
                 'clients' => $clients,
             ]);
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
 
     }
@@ -94,7 +94,7 @@ class PresaleController extends Controller
             }
 
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
 
         return redirect()->back()->with('success', 'Registro creado correctamente!.');
@@ -144,7 +144,7 @@ class PresaleController extends Controller
                 $this->takeOutStock($presale);
             }
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
 
         return redirect()->back()->with('success', 'Registro actualizado correctamente!.');
@@ -166,7 +166,7 @@ class PresaleController extends Controller
             Presale::find($presale->id)->update(['dispatch_id' => 5]);
             return redirect()->back()->with('success', 'Registro eliminado correctamente!.');
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
     }
 
@@ -229,7 +229,7 @@ class PresaleController extends Controller
             PresaleDetail::where('article_id', $request->id)->delete();
             return redirect()->back();
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
     }
 
@@ -288,7 +288,7 @@ class PresaleController extends Controller
                 'presales' => $presales
             ]);
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
     }
 
@@ -312,7 +312,7 @@ class PresaleController extends Controller
             ]);
         }
         catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
     }
     // Ventas expres
@@ -353,7 +353,7 @@ class PresaleController extends Controller
 
             $this->takeOutStock($presale);
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['error' => $th]);
+            return redirect()->back()->withErrors(['error' => 'Ops! Ha ocurrido un error']);
         }
 
         return redirect()->back()->with('success', 'Registro creado correctamente!.');

@@ -13,12 +13,12 @@
   const dummy = [
     {
       kind: 'orders',
-      description: 'Total de Ordenes',
+      description: 'Ordenes',
       value: 20
     },
     {
       kind: 'completed',
-      description: 'Total de ordenes completadas',
+      description: 'Ordenes completadas',
       value: 30
     },
     {
@@ -57,18 +57,18 @@
         </h2>
         <p class="mb-5">{{ date }}</p>
         <div class="w-full mb-8">
-          <div class="grid md:grid-cols-3 xl:gap-x-24 gap-x-20 md:gap-y-0 gap-y-5">
+          <div class="grid md:grid-cols-3 xl:gap-x-24 lg:gap-x-20 gap-x-5 md:gap-y-0 gap-y-5">
             <div v-for="item in dummy">
               <CardPreview  :value="item" />
             </div>
           </div>
         </div>
-        <div class="w-full flex justify-between md:flex-row flex-col md:space-x-6 md:space-y-0 space-y-4 mb-8">
-          <div class="w-full md:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50 animated fadeIn">
+        <div class="w-full flex justify-between lg:flex-row flex-col lg:space-x-6 lg:space-y-0 space-y-4 mb-8">
+          <div class="w-full lg:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50 animated fadeIn">
             <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Resumen de clientes con más preventas en el mes</h4>
             <LineChart />
           </div>
-          <div class="w-full md:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50 animated fadeIn">
+          <div class="w-full lg:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50 animated fadeIn">
             <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Reporte de ventas anual</h4>
             <BarChart />
 

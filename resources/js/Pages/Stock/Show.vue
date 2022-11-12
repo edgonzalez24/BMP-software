@@ -1,75 +1,78 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import Table from '@/Components/Table.vue';
-import JetLabel from '@/Components/Label.vue';
-import Loading from 'vue3-loading-overlay';
-import { ref, computed, reactive, onMounted } from 'vue';
-import Pagination from '@/Components/Shared/Pagination.vue';
-import moment from 'moment';
-import { Inertia } from '@inertiajs/inertia';
-import JetModal from '@/Components/Modal.vue';
+  import AppLayout from '@/Layouts/AppLayout.vue';
+  import Table from '@/Components/Table.vue';
+  import JetLabel from '@/Components/Label.vue';
+  import Loading from 'vue3-loading-overlay';
+  import { ref, computed, reactive, onMounted } from 'vue';
+  import Pagination from '@/Components/Shared/Pagination.vue';
+  import moment from 'moment';
+  import { Inertia } from '@inertiajs/inertia';
+  import JetModal from '@/Components/Modal.vue';
 
-// Props
-const props = defineProps({
-  stocks: Object,
-})
+  // Props
+  const props = defineProps({
+    stocks: Object,
+  })
 
-// Setup State
-const header = reactive([
-  {
-    name: 'Fecha',
-    showInMobile: true
-  },
-  {
-    name: 'Artículo',
-    showInMobile: true
-  },
-  {
-    name: 'Proveedor',
-    showInMobile: true
-  },
-  {
-    name: 'Unidades',
-    showInMobile: true
-  },
-]);
 
-const isLoading = ref(false);
-const totalPages = computed(() => Math.ceil(props.stocks.meta.total / props.stocks.meta.per_page));
-const formatDate = date => {
-  return moment(date).format("DD-MM-YYYY");
-}
+  // Setup State
+  const header = reactive([
+    {
+      name: 'Fecha',
+      showInMobile: true
+    },
+    {
+      name: 'Artículo',
+      showInMobile: true
+    },
+    {
+      name: 'Proveedor',
+      showInMobile: true
+    },
+    {
+      name: 'Unidades',
+      showInMobile: true
+    },
+  ]);
+  const isLoading = ref(false);
+  const date = ref();
+  const datepicker = ref();
 
-const formatRangeDate = date => {
-  return moment(date).format("YYYY-MM-DD");
-}
 
-const date = ref();
-const datepicker = ref()
-onMounted(() => {
-  const startDate = new URLSearchParams(window.location.search).has('from') && moment(new URLSearchParams(window.location.search).get('from'));
-  const endDate = new URLSearchParams(window.location.search).has('to') && moment(new URLSearchParams(window.location.search).get('to'));
-  date.value = startDate && endDate ? [startDate, endDate] : null;
-})
-const handleFilter = () => {
-  Inertia.get(route('stock.filter', { 
-    from: date.value && date.value.length ? formatRangeDate(date.value[0]) : null,
-    to: date.value && date.value.length ? formatRangeDate(date.value[1]) : null,
-  }))
-}
+  const totalPages = computed(() => Math.ceil(props.stocks.meta.total / props.stocks.meta.per_page));
 
-const alertDate = () => {
-  datepicker.value.selectDate();
-  datepicker.value.closeMenu();
-  handleFilter();
-}
-const alertFn = () => {
-  datepicker.value.closeMenu();
-  handleFilter();
-}
-const redirectDetail = ({ article }) => {
-  Inertia.get(`stocks/${article.id}/detail`);
-}
+
+  const formatDate = date => {
+    return moment(date).format("DD-MM-YYYY");
+  }
+  const formatRangeDate = date => {
+    return moment(date).format("YYYY-MM-DD");
+  }
+  const handleFilter = () => {
+    Inertia.get(route('stock.filter', {
+      from: date.value && date.value.length ? formatRangeDate(date.value[0]) : null,
+      to: date.value && date.value.length ? formatRangeDate(date.value[1]) : null,
+    }))
+  }
+  const alertDate = () => {
+    datepicker.value.selectDate();
+    datepicker.value.closeMenu();
+    handleFilter();
+  }
+  const alertFn = () => {
+    datepicker.value.closeMenu();
+    handleFilter();
+  }
+  const redirectDetail = ({ article }) => {
+    Inertia.get(`stocks/${article.id}/detail`);
+  }
+
+
+  onMounted(() => {
+    const startDate = new URLSearchParams(window.location.search).has('from') && moment(new URLSearchParams(window.location.search).get('from'));
+    const endDate = new URLSearchParams(window.location.search).has('to') && moment(new URLSearchParams(window.location.search).get('to'));
+    date.value = startDate && endDate ? [startDate, endDate] : null;
+  })
 </script>
 <template>
   <AppLayout>
@@ -98,7 +101,7 @@ const redirectDetail = ({ article }) => {
                   :enableTimePicker="false"
                   placeholder="Seleccionar fechas" 
                   ref="datepicker"
-                  utc
+                  format="dd/MM/yyyy"
                   @cleared="alertFn"
                 >
                   <template #action-select>
@@ -118,10 +121,10 @@ const redirectDetail = ({ article }) => {
                 class="mt-2 cursor-pointer hover:bg-slate-50 transition duration-300 ease-in-out"
                 @click="redirectDetail(item)"
               >
-                <td class="text-center p-2 md:text-base text-xs">{{ formatDate(item.created_at) }}</td>
-                <td class="text-center p-2 md:text-base text-xs">{{ item.article.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs">{{ item.supplier.name }}</td>
-                <td class="text-center p-2 md:text-base text-xs">{{ item.units_for_unit }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">{{ formatDate(item.created_at) }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.article.name }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.supplier.name }}</td>
+                <td class="text-center p-2 lg:text-base text-xs">{{ item.units_for_unit }}</td>
               </tr>
               <tr v-else>
                 <td :colspan="header.length">
