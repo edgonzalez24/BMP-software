@@ -31,10 +31,10 @@
         <font-awesome-icon :icon="`fa-solid ${styles.icon}`" :style="{ color: styles.iconColor }" class="text-white" />
       </div>
     </div>
-    <h6 class="text-center my-3 font-semibold lg:text-2xl text-lg text-dark-blue-500">
+    <h6 class="text-center my-3 font-semibold xl:text-2xl text-lg text-dark-blue-500">
       {{ value.value }}
     </h6>
-    <p class="text-center font-normal lg:text-xl text-sm text-dark-blue-500">
+    <p class="text-center font-normal xl:text-xl text-sm text-dark-blue-500">
       {{ value.description }}
     </p>
   </div>
