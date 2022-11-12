@@ -55,7 +55,7 @@ Route::middleware([
     Route::get('/dashboard/express', [PresaleController::class, 'indexExpressPresale'])->name('express');
     Route::get('/dashboard/express/create', [PresaleController::class, 'searchProducts'])->name('express.create');
     Route::get('/dashboard/sales', [AccountHistory::class, 'historyPresaleClose'])->name('sales-history');
-    
+
 
     // Routes only to request data(not views)
 

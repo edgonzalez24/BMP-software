@@ -31,17 +31,20 @@ class DashboardController extends Controller
       ORDER BY s.sale_price DESC
       LIMIT 10', [date('Y-m') . '-01', date('Y-m-d')]);
 
-      $clients = Presale::whereBetween('presales.created_at', [date('Y-m') . '-01', date('Y-m-d')])
-      ->orderBy('presales.total_paid', 'desc')
-      ->limit(10)
-      ->get();
-      //dd($clients[0]->client->name);
-      $top_clients = array();
-      foreach ($clients as $item) {
-        array_push($top_clients, [
-          'client' => $item->client->name,
-          'total_orders' => count(DB::select('select id from presales WHERE client_id = ? AND (created_at BETWEEN ? AND ?)', [$item->client->id, date('Y-m') . '-01', date('Y-m-d')]))
-        ]);
+      $clients = DB::select("select distinct(p.client_id), c.name
+      from presales p
+      inner join clients c on c.id = p.client_id
+      where (p.created_at BETWEEN '2022-11-01 23:59:59' AND '2022-11-12 23:59:59') and p.total_paid > 0
+      order by p.total_paid limit 10");
+
+      $top_clients = [];
+      for ($i=0; $i < count($clients); $i++) {
+        $item = [
+          'id' => $clients[$i]->client_id,
+          'client' => $clients[$i]->name,
+          'count_presales' => count(DB::select('select id from presales where client_id = ?', [$clients[$i]->client_id])),
+        ];
+        $top_clients[] = $item;
       }
 
       dd($presale, $order_total, count($orders_complete), $total_sale, $top_articles, $top_clients);
