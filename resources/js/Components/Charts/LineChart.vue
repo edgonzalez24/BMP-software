@@ -21,6 +21,10 @@
     CategoryScale
   );
   const props = defineProps({
+    value: {
+      type: Array,
+      default: () => []
+    },
     chartId: {
       type: String,
       default: 'line-chart'
@@ -47,7 +51,7 @@
     }
   });
   const chartData = {
-    labels: ['cliente 1', 'cliente 2', 'cliente 3', 'cliente 4', 'cliente 5'],
+    labels: props.value.map(item => item.client ),
     datasets: [
       {
         label: 'Número de preventas',
@@ -55,7 +59,7 @@
         borderColor: '#d1d5db',
         fill: false,
         lineTension: 0,
-        data: [50, 30, 22, 20, 20]
+        data: props.value.map(item => item.total_orders),
       },
     ]
   }
@@ -66,30 +70,7 @@
     legend: {
       display: false,
     },
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        gridLines: {
-          display: true
-        }
-      }],
-      xAxes: [{
-        type: 'time',
-        time: {
-          tooltipFormat: 'MMM DD',
-          unit: 'day',
-          unitStepSize: 5,
-          displayFormats: {
-            'day': 'DD'
-          }
-        },
-        gridLines: {
-          display: false
-        }
-      }]
-    },
+    scales: {},
     tooltips: {
       mode: 'label'
     },
