@@ -47,13 +47,23 @@ class DashboardController extends Controller
         $top_clients[] = $item;
       }
 
-      dd($presale, $order_total, count($orders_complete), $total_sale, $top_articles, $top_clients);
+      $sales_for_mont = Presale::select(
+        DB::raw('sum(presales.total_paid) as sums'),
+        DB::raw("DATE_FORMAT(presales.created_at,'%M %Y') as months"),
+        )
+      ->groupBy('months')
+      ->orderBy('presales.created_at', 'asc')
+      ->get()
+      ->toArray();
+
+      dd($presale, $order_total, count($orders_complete), $total_sale, $top_articles, $top_clients, $sales_for_mont);
       return Inertia::render('Dashboard',[
         'presale' => $presale,
         'order_total' => $order_total,
         'orders_complete' => count($orders_complete),
         'total_sale' => $total_sale,
         'top_clients' => $top_clients,
+        'sales_for_mont' => $sales_for_mont,
       ]);
     }
 }
