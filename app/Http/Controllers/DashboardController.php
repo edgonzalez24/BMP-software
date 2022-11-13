@@ -34,8 +34,8 @@ class DashboardController extends Controller
       $clients = DB::select("select distinct(p.client_id), c.name
       from presales p
       inner join clients c on c.id = p.client_id
-      where (p.created_at BETWEEN '2022-11-01 23:59:59' AND '2022-11-12 23:59:59') and p.total_paid > 0
-      order by p.total_paid limit 10");
+      where (p.created_at BETWEEN ? AND ?) and p.total_paid > 0
+      order by p.total_paid limit 10", [date('Y-m') . '-01 23:59:59', date('Y-m-d') . ' 23:59:59']);
 
       $top_clients = [];
       for ($i=0; $i < count($clients); $i++) {
