@@ -64,23 +64,6 @@
 
 
   const user = computed(() => usePage().props.value.user.name);
-  const top = computed(() => {
-    const values =  _(props.top_articles)
-      .groupBy('id')
-      .map((item,  index) => ({
-        id: item, //item[index].id,
-        article: null, //item[index].article,
-        sale_price: null, //item[index].sale_price,
-        category: null, //item[index].category,
-        suppliers: null, //item[index].suppliers,
-        total: _.sumBy(item, 'total')
-      }))
-      .value()
-      console.log(values)
-    // const order = _.orderBy(values, ['total'], ['desc', 'asc']);
-
-    return [] // _.take(order, 5);
-  })
   
 </script>
 
@@ -106,17 +89,17 @@
           </div>
           <div class="w-full lg:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50 animated fadeIn">
             <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Reporte de ventas anual</h4>
-            <BarChart />
+            <BarChart :value="sales_for_month" />
 
           </div>
         </div>
         <div class="w-full bg-white rounded-lg overflow-hidden shadow-card min-h-table border border-gray-50 p-5 animated fadeIn">
           <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Productos más vendidos en el mes</h4>
-          <Table :header="header" :items="top.length">
+          <Table :header="header" :items="top_articles.length">
             <tbody class="px-5">
               <tr 
                 class="mt-2"
-                v-for="item in top"
+                v-for="item in top_articles"
               >
                 <td class="text-center p-2 lg:text-base text-xs">#{{ item.id }}</td>
                 <td class="text-center p-2 lg:text-base text-xs">{{ item.article }}</td>

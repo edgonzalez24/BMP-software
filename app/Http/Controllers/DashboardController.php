@@ -50,7 +50,8 @@ class DashboardController extends Controller
 
       $sales_for_month = Presale::select(
         DB::raw('sum(presales.total_paid) as sums'),
-        DB::raw("DATE_FORMAT(presales.created_at,'%M %Y') as months"),
+        DB::raw("DATE_FORMAT(presales.created_at,'%m') as month"),
+        DB::raw("DATE_FORMAT(presales.created_at,'%Y') as year"),
         )
         ->groupBy('created_at')
         ->orderBy('presales.created_at', 'asc')
