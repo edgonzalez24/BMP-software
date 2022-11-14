@@ -17,7 +17,8 @@
     orders_complete: Number,
     total_sale: Number,
     top_articles: Array,
-    top_clients: Array
+    top_clients: Array,
+    sales_for_month: Object
   });
 
   const date = moment().locale("es").format('dddd, D [de] MMMM [del] YYYY');
@@ -67,17 +68,18 @@
     const values =  _(props.top_articles)
       .groupBy('id')
       .map((item,  index) => ({
-        id: item[index].id,
-        article: item[index].article,
-        sale_price: item[index].sale_price,
-        category: item[index].category,
-        suppliers: item[index].suppliers,
+        id: item, //item[index].id,
+        article: null, //item[index].article,
+        sale_price: null, //item[index].sale_price,
+        category: null, //item[index].category,
+        suppliers: null, //item[index].suppliers,
         total: _.sumBy(item, 'total')
       }))
       .value()
-    const order = _.orderBy(values, ['total'], ['desc', 'asc']);
+      console.log(values)
+    // const order = _.orderBy(values, ['total'], ['desc', 'asc']);
 
-    return _.take(order, 5);
+    return [] // _.take(order, 5);
   })
   
 </script>
