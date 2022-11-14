@@ -41,5 +41,15 @@ class Client extends Model
     public function method_paid()
     {
         return $this->belongsTo(MethodPaid::class);
-    } 
+    }
+
+    /**
+     * Get all of the presales for the Client
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function presales()
+    {
+        return $this->hasMany(Presale::class);
+    }
 }
