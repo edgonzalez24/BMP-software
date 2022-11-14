@@ -59,7 +59,7 @@
         borderColor: '#d1d5db',
         fill: false,
         lineTension: 0,
-        data: props.value.map(item => item.total_orders),
+        data: props.value.map(item => item.count_presales),
       },
     ]
   }
