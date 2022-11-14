@@ -52,18 +52,17 @@ class DashboardController extends Controller
         DB::raw('sum(presales.total_paid) as sums'),
         DB::raw("DATE_FORMAT(presales.created_at,'%M %Y') as months"),
         )
-        ->groupBy('months')
+        ->groupBy('created_at')
         ->orderBy('presales.created_at', 'asc')
-        ->get()
-        ->toArray();
-        
+        ->get();
+
       return Inertia::render('Dashboard',[
         'presale' => $presale,
         'order_total' => $order_total,
         'orders_complete' => count($orders_complete),
         'total_sale' => $total_sale,
         'top_clients' => $top_clients,
-        'sales_for_month' => $sales_for_month,
+        'sales_for_month' => $sales_for_month->toArray(),
         'top_articles' => $top_articles
       ]);
     }
