@@ -10,6 +10,7 @@
   import { POSITION } from 'vue-toastification';
   import Loading from 'vue3-loading-overlay';
   import { getTotal } from '@/Helpers/Functions';
+  import JetLabel from '@/Components/Label.vue';
 
   const props = defineProps({
     articles: Object | null,
