@@ -35,7 +35,8 @@ class DashboardController extends Controller
       FROM presales p
       INNER JOIN clients c on c.id = p.client_id
       WHERE (p.created_at BETWEEN ? AND ?) AND p.total_paid > 0 AND c.id != 1
-      ORDER BY p.created_at desc LIMIT 10", [date('Y-m') . '-01 00:00:00', date('Y-m-d') . ' 23:59:59']);
+      LIMIT 10", [date('Y-m') . '-01 00:00:00', date('Y-m-d') . ' 23:59:59']);
+
 
       $top_clients = [];
       for ($i=0; $i < count($clients); $i++) {
@@ -50,10 +51,8 @@ class DashboardController extends Controller
       }
 
       array_multisort($top_clients);
-      //dd($top_clients);
 
       $sales_for_month = DB::select("select sum(presales.total_paid) as sums, DATE_FORMAT(presales.created_at, '%m') as month from `presales` group by `month` order by `month` asc");
-      //dd($sales_for_month);
 
       return Inertia::render('Dashboard',[
         'presale' => $presale,
