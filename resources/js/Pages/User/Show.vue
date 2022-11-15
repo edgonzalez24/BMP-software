@@ -39,9 +39,10 @@
   const selectedUID = ref(0)
   const isEdit = ref(false);
   const selectedUser = reactive({
+    user_id: null,
     name: null,
     email: null,
-    rol_id: null
+    user_role: null
   })
   const statusModalForm = ref(false);
 
@@ -52,6 +53,14 @@
   const toggleDeleteModal = () => {
     statusModalDelete.value = !statusModalDelete.value;
   };
+  const selectItem = (item) => {
+    selectedUser.user_id = item.id
+    selectedUser.name = item.name
+    selectedUser.email = item.email
+    selectedUser.user_role = item.user_role
+    isEdit.value = true
+    toggleFormModal()
+  }
 
 </script>
 
@@ -90,7 +99,7 @@
                 <td class="text-center p-2 lg:text-base text-xs">
                   <div class="flex justify-center">
                     <div class="flex flex-row space-x-4">
-                      <a @click="toggleFormModal(); selectedUser = item; isEdit = true" class="text-blue-500 font-medium cursor-pointer">Editar</a>
+                      <a @click="selectItem(item)" class="text-blue-500 font-medium cursor-pointer">Editar</a>
                       <a @click="toggleDeleteModal(); selectedUID = item.id;" class="text-blue-500 font-medium cursor-pointer">Eliminar</a>
                     </div>
                   </div>

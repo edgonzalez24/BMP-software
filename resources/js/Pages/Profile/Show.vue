@@ -10,6 +10,8 @@
 	import { getInitials } from '@/Helpers/Functions.js';
 
 
+	const user = computed(() => usePage().props.value.user);
+
 	const toast = useToast();
 	const isLoading = ref(false);
 	const changePassword = ref(false);
@@ -28,8 +30,6 @@
 		password_confirmation: '',
 	});
 
-
-	const user = computed(() => usePage().props.value.user);
 
 
 	const togglePassword = () => {
