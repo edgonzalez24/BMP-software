@@ -54,12 +54,12 @@
     labels: props.value.map(item => item.client ),
     datasets: [
       {
-        label: 'Número de preventas',
+        label: 'Número de Ventas',
         backgroundColor: '#404E67',
         borderColor: '#d1d5db',
         fill: false,
         lineTension: 0,
-        data: props.value.map(item => item.count_presales),
+        data: props.value.map(item => item.sales),
       },
     ]
   }
