@@ -84,7 +84,7 @@
         </div>
         <div class="w-full flex justify-between lg:flex-row flex-col lg:space-x-6 lg:space-y-0 space-y-4 mb-8">
           <div class="w-full lg:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50 animated fadeIn">
-            <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Reporte de clientes con más pedidos en el mes</h4>
+            <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Reporte de clientes con más ventas en el mes</h4>
             <LineChart :value="top_clients" />
           </div>
           <div class="w-full lg:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50 animated fadeIn">

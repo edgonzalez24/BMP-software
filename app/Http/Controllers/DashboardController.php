@@ -31,31 +31,28 @@ class DashboardController extends Controller
       LIMIT 10', [date('Y-m') . '-01 00:00:00', date('Y-m-d 23:59:59')]);
 
 
-      $clients = DB::select("SELECT DISTINCT(p.client_id), c.name, p.total_paid
+      $clients = DB::select("SELECT DISTINCT(p.client_id), c.name
       FROM presales p
       INNER JOIN clients c on c.id = p.client_id
       WHERE (p.created_at BETWEEN ? AND ?) AND p.total_paid > 0 AND c.id != 1
-      ORDER BY p.total_paid LIMIT 10", [date('Y-m') . '-01 00:00:00', date('Y-m-d') . ' 23:59:59']);
+      LIMIT 10", [date('Y-m') . '-01 00:00:00', date('Y-m-d') . ' 23:59:59']);
+
 
       $top_clients = [];
       for ($i=0; $i < count($clients); $i++) {
+        $sale = DB::select('SELECT SUM(total_paid) as sales FROM presales WHERE client_id = ?', [$clients[$i]->client_id]);
         $item = [
+          'sales' => $sale[0]->sales,
+          'count_presales' => count(DB::select('SELECT id FROM presales WHERE client_id = ?', [$clients[$i]->client_id])),
           'id' => $clients[$i]->client_id,
           'client' => $clients[$i]->name,
-          'count_presales' => count(DB::select('SELECT id FROM presales WHERE client_id = ?', [$clients[$i]->client_id])),
         ];
         $top_clients[] = $item;
       }
 
+      array_multisort($top_clients);
 
-      $sales_for_month = Presale::select(
-        DB::raw('sum(presales.total_paid) as sums'),
-        DB::raw("DATE_FORMAT(presales.created_at,'%m') as month"),
-        DB::raw("DATE_FORMAT(presales.created_at,'%Y') as year"),
-        )
-        ->groupBy('created_at')
-        ->orderBy('presales.created_at', 'asc')
-        ->get();
+      $sales_for_month = DB::select("select sum(presales.total_paid) as sums, DATE_FORMAT(presales.created_at, '%m') as month from `presales` group by `month` order by `month` asc");
 
       return Inertia::render('Dashboard',[
         'presale' => $presale,
@@ -63,7 +60,7 @@ class DashboardController extends Controller
         'orders_complete' => count($orders_complete),
         'total_sale' => $total_sale,
         'top_clients' => $top_clients,
-        'sales_for_month' => $sales_for_month->toArray(),
+        'sales_for_month' => $sales_for_month,
         'top_articles' => $top_articles
       ]);
     }
