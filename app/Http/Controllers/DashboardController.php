@@ -18,7 +18,7 @@ class DashboardController extends Controller
       }
 
       $presale = Presale::whereDate('created_at', now())->paginate(25);
-      $order_total = count($presale);
+      $order_total = count($presale->where('client_id', '!=', 1));
       $orders_complete = $presale->where('paid', '=', 1);
       $total_sale = $orders_complete->sum('total_paid');
       $top_articles = DB::select('SELECT DISTINCT(p.article_id), a.id, a.name AS article, s.sale_price, ca.name AS category, su.name AS suppliers
