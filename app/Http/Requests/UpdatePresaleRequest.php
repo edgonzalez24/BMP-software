@@ -33,6 +33,7 @@ class UpdatePresaleRequest extends FormRequest
             'user_presale_id' => 'required|integer',
             'user_dispatch_id' => 'integer',
             'method_paid_id' => 'required',
+            'total_detail' => 'required'
         ];
     }
 }

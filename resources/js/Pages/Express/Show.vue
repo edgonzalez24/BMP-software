@@ -140,7 +140,7 @@
                   {{ item.dispatch.name }}
                 </td>
                 <td class="text-center p-2 lg:text-base text-xs">
-                  ${{ item.total_paid.toFixed(2) }}
+                  ${{ Number(item.total_detail).toFixed(2) }}
                 </td>
               </tr>
               <tr v-else>

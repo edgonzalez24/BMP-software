@@ -12,6 +12,7 @@ class Presale extends Model
     protected $fillable = [        
         'total_paid',
         'total_pending',
+        'total_detail',
         'dispatch_id',
         'paid',
         'client_id',

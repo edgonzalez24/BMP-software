@@ -326,6 +326,7 @@ class PresaleController extends Controller
             $presale = new Presale([
                 'total_paid' => $request->total_paid,
                 'total_pending' => 0,
+                'total_detail' => $request->total_detail,
                 'dispatch_id' => 4,
                 'paid' => 1,
                 'added'=> 0,
