@@ -94,7 +94,7 @@
           </div>
         </div>
         <div class="w-full bg-white rounded-lg overflow-hidden shadow-card min-h-table border border-gray-50 p-5 animated fadeIn">
-          <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Productos más vendidos en el mes</h4>
+          <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Productos más vendidos</h4>
           <Table :header="header" :items="top_articles.length">
             <tbody class="px-5">
               <tr 
