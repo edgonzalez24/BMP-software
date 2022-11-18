@@ -28,7 +28,7 @@ import { computed } from '@vue/reactivity';
   const form = useForm({
     amount: 0,
     presale_id: props.selectedPresale.id,
-    total_paid: props.selectedPresale.added == 1 ? props.selectedPresale.total_detail : getTotal(props.selectedPresale.presale_detail)
+    total_paid: props.selectedPresale.added === 1 ? props.selectedPresale.total_detail : getTotal(props.selectedPresale.presale_detail)
   })
   const isLoading = ref(false);
 
