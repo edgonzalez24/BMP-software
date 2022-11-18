@@ -206,7 +206,7 @@
                   ${{ Number(item.total_pending).toFixed(2) }}
                 </td>
                 <td class="text-center p-2 lg:text-base text-xs">
-                  ${{ Number(getTotal(item.presale_detail) - item.total_pending).toFixed(2) }}
+                  ${{ item.added === 0 ? Number(getTotal(item.presale_detail) - item.total_pending).toFixed(2) : Number(item.total_pending).toFixed(2) }}
                 </td>
                 <td class="text-center p-2 lg:text-base text-xs">
                   ${{ Number(getTotal(item.presale_detail)).toFixed(2) }}
