@@ -123,7 +123,7 @@ import { computed } from '@vue/reactivity';
         <div class="pt-3 md:w-3/6 w-full">
           <div v-if="selectedPresale.paid === 0" class="flex justify-between mb-1 md:text-base text-sm">
             <p class="font-medium">Total pagado:</p>
-            <span>${{ (Number(getTotal(selectedPresale.presale_detail)) - Number(selectedPresale.total_pending)).toFixed(2) }}</span>
+            <span>${{ selectedPresale.added == 0 ? (Number(getTotal(selectedPresale.presale_detail)) - Number(selectedPresale.total_pending)).toFixed(2) : Number(selectedPresale.total_pending).toFixed(2) }}</span>
           </div>
           <div v-if="selectedPresale.paid === 0" class="flex justify-between mb-1 md:text-base text-sm">
             <p class="font-medium">Total pendiente:</p>
