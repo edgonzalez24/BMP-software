@@ -58,8 +58,6 @@ class CategoryArticleController extends Controller
         }
 
         $validated = $request->validated();
-
-        PublicEvent::dispatch('Created');
         
         try {
             $categoryArticle = new CategoryArticle($request->all());
