@@ -28,7 +28,7 @@ import { computed } from '@vue/reactivity';
   const form = useForm({
     amount: 0,
     presale_id: props.selectedPresale.id,
-    total_paid: getTotal(props.selectedPresale.presale_detail)
+    total_paid: props.selectedPresale.added === 1 ? props.selectedPresale.total_detail : getTotal(props.selectedPresale.presale_detail)
   })
   const isLoading = ref(false);
 
@@ -123,7 +123,7 @@ import { computed } from '@vue/reactivity';
         <div class="pt-3 md:w-3/6 w-full">
           <div v-if="selectedPresale.paid === 0" class="flex justify-between mb-1 md:text-base text-sm">
             <p class="font-medium">Total pagado:</p>
-            <span>${{ selectedPresale.added == 0 ? (Number(getTotal(selectedPresale.presale_detail)) - Number(selectedPresale.total_pending)).toFixed(2) : Number(selectedPresale.total_pending).toFixed(2) }}</span>
+            <span>${{ (Number(selectedPresale.total_detail) - Number(selectedPresale.total_pending)).toFixed(2) }}</span>
           </div>
           <div v-if="selectedPresale.paid === 0" class="flex justify-between mb-1 md:text-base text-sm">
             <p class="font-medium">Total pendiente:</p>
@@ -131,7 +131,7 @@ import { computed } from '@vue/reactivity';
           </div>
           <div class="flex justify-between mb-1 md:text-base text-sm">
             <p class="font-medium">Total de la venta:</p>
-            <span>${{ Number(getTotal(selectedPresale.presale_detail)).toFixed(2) }}</span>
+            <span>${{ selectedPresale.total_detail.toFixed(2) }}</span>
           </div>
         </div>
       </div>
