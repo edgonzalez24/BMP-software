@@ -89,6 +89,7 @@
     dispatch_id: props.isEdit ? props.presale.dispatch : { "id": 4, "name": "Entregado", "created_at": null, "updated_at": null },
     added: props.isEdit ? props.presale.added :0,
     total_paid: props.isEdit ? props.presale.total_paid : 0,
+    total_detail: props.isEdit ? props.presale.total_detail : 0
   });
   const isLoading = ref(false)
   const search = ref('');
@@ -178,12 +179,13 @@
             method_paid_id: data.client.payment_method.id,
             new_presale_detail: _.filter(data.details, { kind: 'new'}),
             old_presale_detail: _.filter(data.details, { kind: 'old' }),
+            total_detail: data.paid === 0 ? data.added === 1 ? data.pending : getTotalPending.value : getTotalPending.value,
           }
         } else {
           return {
             presale_id: data.presale_id,
-            total_paid: data.paid === 1 ? data.added ? data.pending : getTotalPending.value : data.total_paid,
-            total_pending: data.paid === 0 ? data.added ? data.pending : getTotalPending.value: 0,
+            total_paid: data.paid === 1 ? data.added === 1 ? data.pending : getTotalPending.value : data.total_paid,
+            total_pending: data.paid === 0 ? data.added === 1 ? data.pending : getTotalPending.value: 0,
             dispatch_id: data.paid === 1 ? 4 :data.dispatch_id.id,
             paid: data.paid,
             added: data.added,
@@ -191,7 +193,8 @@
             user_presale_id: usePage().props.value.user.id,
             user_dispatch_id: usePage().props.value.user.id,
             method_paid_id: data.client.payment_method.id,
-            presale_detail: data.details
+            presale_detail: data.details,
+            total_detail: data.paid === 0 ? data.added === 1 ? data.pending : getTotalPending.value : getTotalPending.value,
           }
         }
       }).post(route(EP), {

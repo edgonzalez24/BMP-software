@@ -10,7 +10,7 @@
   import DetailPresale from '@/Components/Presale/Detail.vue';
   import { POSITION } from 'vue-toastification';
   import Loading from 'vue3-loading-overlay';
-  import { appendParams, getTotal } from "@/Helpers/Functions";
+  import { appendParams } from "@/Helpers/Functions";
   import FilterPresale from '@/Components/Shared/FilterPresale.vue';
   import { usePage } from '@inertiajs/inertia-vue3';
 
@@ -206,10 +206,10 @@
                   ${{ Number(item.total_pending).toFixed(2) }}
                 </td>
                 <td class="text-center p-2 lg:text-base text-xs">
-                  ${{ item.added === 0 ? Number(getTotal(item.presale_detail) - item.total_pending).toFixed(2) : Number(item.total_pending).toFixed(2) }}
+                  ${{ Number(item.total_detail - item.total_pending).toFixed(2) }}
                 </td>
                 <td class="text-center p-2 lg:text-base text-xs">
-                  ${{ Number(getTotal(item.presale_detail)).toFixed(2) }}
+                  ${{ Number(item.total_detail).toFixed(2) }}
                 </td>
               </tr>
               <tr v-else>

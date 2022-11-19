@@ -21,6 +21,7 @@ class Presale extends JsonResource
             'id' => $this->id,
             'total_paid' => $this->total_paid,
             'total_pending' => $this->total_pending,
+            'total_detail' => $this->total_detail,
             'dispatch' => $this->dispatch,
             'client' =>  Client::collection(array($this->client))[0],
             'method_paid_client' => $this->client->method_paid,

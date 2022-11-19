@@ -137,6 +137,7 @@
       form.transform(data => {
         return {
           total_paid:  getTotalPending.value,
+          total_detail: getTotalPending.value,
           user_presale_id: usePage().props.value.user.id,
           user_dispatch_id: usePage().props.value.user.id,
           presale_detail: data.details

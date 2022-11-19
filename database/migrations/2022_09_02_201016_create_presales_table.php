@@ -17,6 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->float('total_paid')->nullable()->comment('Total de monto pagado de esta venta');
             $table->float('total_pending')->nullable()->comment('Total de monto pendiente de pago de esta venta');
+            $table->float('total_detail')->nullable()->comment('Total del detalle de la venta');
             $table->boolean('paid')->comment('Marca como pagada la preventa')->default(false);
             $table->boolean('added')->comment('Marca como agregado a la preventa')->default(false);
             $table->unsignedInteger('dispatch_id')->nullable()->comment('Estado del despacho')->default(false);
