@@ -69,7 +69,7 @@
 				errorBag: 'updatePassword',
 				preserveScroll: true,
 				onSuccess: () => {
-					toast.success(usePage().props.value.flash.success, { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
+					toast.success('Contraseña actualizada correctamente', { position: POSITION.BOTTOM_RIGHT, timeout: 5000 });
 					form_password.current_password = '';
 					form_password.password = '';
 					form_password.password_confirmation = '';
