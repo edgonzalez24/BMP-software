@@ -1,7 +1,7 @@
 <script setup>
   import AppLayout from '@/Layouts/AppLayout.vue';
   import { usePage } from '@inertiajs/inertia-vue3';
-  import { computed, reactive } from 'vue';
+  import { computed, reactive, ref } from 'vue';
   import CardPreview from '@/Components/Dashboard/CardPreview.vue';
   import BarChart from '@/Components/Charts/BarChart.vue';
   import LineChart from '@/Components/Charts/LineChart.vue';
@@ -20,6 +20,9 @@
     top_clients: Array,
     sales_for_month: Object
   });
+
+  const user = computed(() => usePage().props.value.user.name);
+  const isAdmin = computed(() => [1, 4].includes(usePage().props.value && usePage().props.value.user.roles[0].id));
 
   const date = moment().locale("es").format('dddd, D [de] MMMM [del] YYYY');
   const header = reactive([
@@ -44,26 +47,44 @@
       showInMobile: true
     },
   ]);
-  const cardsInfo = reactive([
-    {
-      kind: 'orders',
-      description: 'Ordenes',
-      value: props.order_total
-    },
-    {
-      kind: 'completed',
-      description: 'Ventas',
-      value: props.orders_complete
-    },
-    {
-      kind: 'presales',
-      description: 'Total de Ventas',
-      value: `$ ${Number(props.total_sale).toFixed(2) }`
-    }
-  ])
+
+  
+  const cardsInfo = ref([])
+
+  if(isAdmin.value) {
+    cardsInfo.value = [
+      {
+        kind: 'orders',
+        description: 'Ordenes',
+        value: props.order_total
+      },
+      {
+        kind: 'completed',
+        description: 'Ventas',
+        value: props.orders_complete
+      },
+      {
+        kind: 'presales',
+        description: 'Total de Ventas',
+        value: `$ ${Number(props.total_sale).toFixed(2)}`
+      }
+    ]
+  } else {
+    cardsInfo.value = [
+      {
+        kind: 'orders',
+        description: 'Ordenes',
+        value: props.order_total
+      },
+      {
+        kind: 'completed',
+        description: 'Ventas',
+        value: props.orders_complete
+      },
+    ]
+  }
 
 
-  const user = computed(() => usePage().props.value.user.name);
   
 </script>
 
@@ -82,7 +103,7 @@
             </div>
           </div>
         </div>
-        <div class="w-full flex justify-between lg:flex-row flex-col lg:space-x-6 lg:space-y-0 space-y-4 mb-8">
+        <div v-if="isAdmin" class="w-full flex justify-between lg:flex-row flex-col lg:space-x-6 lg:space-y-0 space-y-4 mb-8">
           <div class="w-full lg:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50 animated fadeIn">
             <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Reporte de clientes con más ventas en el mes</h4>
             <LineChart :value="top_clients" />
@@ -90,7 +111,6 @@
           <div class="w-full lg:w-1/2 p-5 bg-white rounded-lg overflow-hidden shadow-card border border-gray-50 animated fadeIn">
             <h4 class="font-semibold md:text-xl text-base text-dark-blue-500 leading-tight animated zoomIn">Reporte de ventas anual</h4>
             <BarChart :value="sales_for_month" />
-
           </div>
         </div>
         <div class="w-full bg-white rounded-lg overflow-hidden shadow-card min-h-table border border-gray-50 p-5 animated fadeIn">

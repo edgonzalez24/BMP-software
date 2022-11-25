@@ -78,8 +78,20 @@ const hasPermission = (type, value) => {
                   class="mb-3 transition duration-300 ease-in-out"
                   :class="child.slug && active(child.slug) ? 'text-white font-bold' : 'hover:text-white text-gray-400'"
                 >
+                  <a 
+                    v-if="hasPermission('child', child.rol) && child.hasOwnProperty('href')" 
+                    class="cursor-pointer block text-sm xl:text-base"
+                    :href="child.href"
+                    target="_blank"
+                  >
+                    <font-awesome-icon 
+                      :icon="`fa-solid ${child.icon}`" 
+                      class="mr-2" 
+                    />
+                    {{ child.name }}
+                  </a>
                   <Link 
-                    v-if="hasPermission('child', child.rol)"
+                    v-else-if="hasPermission('child', child.rol) && !child.hasOwnProperty('href')"
                     :href="child.slug && route && route(child.slug)" 
                     class="cursor-pointer block text-sm xl:text-base"
                   >
