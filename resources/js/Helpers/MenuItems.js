@@ -113,13 +113,15 @@ export const menuItems = [
         name: 'Manual de Ayuda',
         slug: '',
         icon: 'fa-circle-info',
-        rol: ''
+        rol: '',
+        href: import.meta.env.VITE_URL_DOCUMENTS
       },
       {
         name: 'Videos Tutoriales',
         slug: '',
         icon: 'fa-video',
-        rol: ''
+        rol: '',
+        href: import.meta.env.VITE_URL_VIDEOS
       },
       {
         name: 'Política de privacidad',
