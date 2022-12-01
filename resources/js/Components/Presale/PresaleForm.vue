@@ -179,7 +179,7 @@
             method_paid_id: data.client.payment_method.id,
             new_presale_detail: _.filter(data.details, { kind: 'new'}),
             old_presale_detail: _.filter(data.details, { kind: 'old' }),
-            total_detail: data.paid === 0 ? data.added === 1 ? data.pending : getTotalPending.value : getTotalPending.value,
+            total_detail: data.paid === 0 ? data.added === 1 ? data.pending : getTotal(data.details) : getTotal(data.details)
           }
         } else {
           return {
@@ -194,7 +194,7 @@
             user_dispatch_id: usePage().props.value.user.id,
             method_paid_id: data.client.payment_method.id,
             presale_detail: data.details,
-            total_detail: data.paid === 0 ? data.added === 1 ? data.pending : getTotalPending.value : getTotalPending.value,
+            total_detail: data.paid === 0 ? data.added === 1 ? data.pending : getTotal(data.details) : getTotal(data.details),
           }
         }
       }).post(route(EP), {
